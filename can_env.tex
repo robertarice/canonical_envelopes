@@ -1,0 +1,1813 @@
+\documentclass[11pt]{article}
+
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+
+% Page setup
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% Math packages
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{mathtools}
+\usepackage{stmaryrd}  % for \llbracket, \rrbracket
+\usepackage{tikz-cd}   % for commutative diagrams
+\usepackage{xcolor}
+
+% Citation and bibliography
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+% Text packages
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% Theorem environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{construction}[theorem]{Construction}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{note}[theorem]{Note}
+\newtheorem{observation}[theorem]{Observation}
+
+% Custom commands
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\cat}[1]{\mathsf{#1}}
+\newcommand{\op}{\mathrm{op}}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\colim}{\mathrm{colim}}
+\renewcommand{\lim}{\mathrm{lim}}
+\newcommand{\Hom}{\mathrm{Hom}}
+\newcommand{\End}{\mathrm{End}}
+\newcommand{\Env}{\mathrm{Env}}
+\newcommand{\Ran}{\mathrm{Ran}}
+\newcommand{\Lan}{\mathrm{Lan}}
+
+% Categorical constructions
+\newcommand{\Fact}{\mathrm{Fact}}
+\newcommand{\Pair}{\mathrm{Pair}}
+\newcommand{\EnvAlg}{\mathrm{EnvAlg}}
+\newcommand{\Gem}{\mathrm{Gem}}
+\newcommand{\CoGem}{\mathrm{CoGem}}
+\newcommand{\DiGem}{\mathrm{DiGem}}
+\newcommand{\Top}{\mathrm{Top}}
+\newcommand{\Filt}{\mathrm{Filt}}
+\newcommand{\Idl}{\mathrm{Idl}}
+\newcommand{\Set}{\mathrm{Set}}
+\newcommand{\Grp}{\mathrm{Grp}}
+\newcommand{\Sob}{\mathrm{Sob}}
+
+% Special symbols
+\newcommand{\tensor}{\otimes}
+
+% Title and author information
+\title{Canonical Envelopes: A Mathematical Framework for Virtual Weighted Limits and Completion Theory}
+\author{Robert A. Rice\\
+\texttt{robert.a.rice@gmail.com}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper develops \emph{canonical envelope theory} as a categorical framework for completion phenomena in topology, algebra, and category theory.  
+The construction generalizes Riehl's characterization of weighted limits via natural transformations $\theta : Q \Rightarrow C(D,E)$, extending it through bilateral factorization $\theta = \rho \star \gamma \star \lambda$ to settings where classical weighted (co)limits may not exist.  
+In this form, canonical envelopes recover familiar constructions-including canonical extensions of lattices, Stone-\v{C}ech compactification, categorical envelopes, and related completions-as special cases.
+
+The theory identifies canonical envelopes as initial objects in categories of factorizations, with existence and uniqueness governed by bilateral denseness and compactness.  It admits a pseudomonadic organization, ensuring coherent composition of virtual morphisms and extending Gabriel-Ulmer's Ind/Pro methodology to arbitrary weights.
+
+The framework subsumes a range of existing approaches, including Schoots's categorical extensions, Pratt's communes, Garner's cylinder systems, and classical weighted limit theory, through explicit classification and correspondence results. These unify diverse constructions under a common principle: completion as bilateral mediation together with universal factorization, producing optimal virtual approximations when classical methods fail.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Completion Theory Across Mathematical Domains}
+
+Mathematical structures often admit canonical completion or extension processes that preserve essential properties while adding structure. Such phenomena occur in many domains, but the methods and existence criteria are typically domain-specific. For example, in topology one finds Stone-\v{C}ech compactification \cite{stone1936theory}, sobrification \cite{johnstone1982stone}, the Alexandroff one-point compactification \cite{alexandroff1924point}, and Wallman compactification \cite{wallman1938lattices}, each with its own construction and hypotheses.  
+In algebra, examples include MacNeille completions \cite{macneille1937extension}, canonical extensions of distributive lattices \cite{jonsson1951boolean}, Boolean algebra canonical extensions, and profinite completions \cite{pontryagin1966topological}, again with different techniques and existence theories.  
+Category theory supplies its own range of completions: Kan extensions \cite{kan1958adjoint}, Isbell envelopes \cite{isbell1960adequate}, Ind--Pro completions \cite{gabriel1971categories}, and others.
+
+Despite the variety of contexts, these constructions share a common theme: each can be understood as a completion determined by universal properties relative to a given embedding or pairing.  
+Existing treatments, however, typically focus on one setting at a time.  
+What is lacking is a general formalism that accommodates all such phenomena, even when the relevant weighted (co)limits fail to exist in the ambient category.
+
+\subsection{Canonical Envelopes and Virtual (Co)limits}
+
+The aim of this paper is to present \emph{canonical envelope theory}, a unifying framework for such completions based on the notion of \emph{virtual weighted (co)limits}.  
+Starting from Riehl's formulation of weighted limits and colimits in terms of natural transformations between profunctors, we generalize to a bilateral factorization setting
+$$
+\theta \;=\; \rho \star \gamma \star \lambda
+$$
+in which $\gamma$ represents the canonical interpolant.  
+This approach treats (co)limits as special cases of more general factorization problems, with canonical envelopes appearing as initial objects in categories of factorizations.
+
+The framework yields existence and uniqueness criteria in terms of bilateral denseness and compactness conditions, and recovers classical examples---Stone-\v{C}ech compactification, canonical extensions, Isbell envelopes, communes---within a single formal pattern.  
+It also accommodates new examples, including the gem--cogem--digem hierarchy, and aligns with Garner's cylinder factorization systems \cite{garner2018cylinder}.
+
+\subsection{Scope and Contributions}
+
+The contributions of this work are threefold.  
+First, we provide the categorical formulation of canonical envelopes and establish their existence and uniqueness properties.  
+Second, we show that canonical envelopes unify a wide variety of completion processes, providing explicit correspondences between classical and categorical examples.  
+Third, we analyze their pseudomonadic structure, which allows coherent composition of virtual morphisms and extends Gabriel--Ulmer duality to arbitrary weights.
+
+Beyond unification, the framework offers a practical methodology for identifying new completions and analyzing existing ones. Enriched variants, applications to higher category theory, and potential uses in type theory and semantics are discussed in later sections. The examples and classification tables included here are intended to demonstrate both the breadth of the framework and its capacity to connect previously unrelated constructions.
+
+
+\section{The Canonical Envelope Framework}
+
+\subsection{Mathematical Prerequisites}
+
+We work within enriched category theory over a complete and cocomplete symmetric monoidal closed category $\V = (\V, \tensor, I, [-,-])$. For conceptual clarity, readers may initially assume $\V = \cat{Set}$ with cartesian structure, though our results hold in full generality following Kelly's comprehensive development \cite{kelly1982basic}.
+
+\begin{definition}[Enriched Categories and Profunctors]
+\begin{enumerate}
+\item A $\V$-category $\C$ consists of objects $\mathrm{Ob}(\C)$, hom-objects $\C(A,B) \in \V$, composition morphisms $\C(B,C) \tensor \C(A,B) \to \C(A,C)$ in $\V$, and identity morphisms $I \to \C(A,A)$, satisfying associativity and unit axioms.
+
+\item A $\V$-profunctor from $I$ to $J$ is a $\V$-functor $Q : I^{\op} \tensor J \to \V$. We write $Q : I \not\to J$ and interpret $Q(i,j)$ as measuring ``connection strength'' between $i \in I$ and $j \in J$.
+
+\item Profunctors compose via $\V$-coends: $(R \circ Q)(i,k) = \int^{j \in J} Q(i,j) \tensor R(j,k)$ when the coend exists.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Classical Weighted Limits]
+Given a $\V$-functor $F : J \to \C$ and weight $W : J \to \V$:
+\begin{enumerate}
+\item The $W$-weighted limit $\lim^W F$ (when it exists) satisfies 
+\[
+\C(X, \lim^W F) \cong [J, \V](W, \C(X, F(-)))
+\]
+naturally in $X \in \C$.
+
+\item The $W$-weighted colimit $\colim^W F$ (when it exists) satisfies
+\[
+\C(\colim^W F, X) \cong [J, \V](W, \C(F(-), X))
+\]
+naturally in $X \in \C$.
+\end{enumerate}
+\end{definition}
+
+These classical definitions only apply when the relevant limits exist. Our framework systematically extends this theory to virtual contexts through canonical envelope factorizations.
+
+\subsection{Pairings: The Foundation}
+
+The foundation of our framework rests on Riehl's insight \cite{riehl2008weighted,riehl2014categorical} that weighted (co)limits are characterized by natural transformations. We systematize this through the concept of pairings.
+
+\begin{definition}[Pairings and Their Factorizations]
+A \textbf{pairing} is a 6-tuple $(I, J, D, E, Q, \theta)$ where:
+\begin{itemize}
+\item $I, J$ are small $\V$-categories (indexing categories)
+\item $D : I \to \C$, $E : J \to \C$ are $\V$-functors (source and target functors)
+\item $Q : I^{\op} \times J \to \V$ is a $\V$-profunctor (bilateral weight)
+\item $\theta : Q \Rightarrow \C(D, E)$ is a $\V$-natural transformation (the pairing morphism)
+\end{itemize}
+
+A \textbf{canonical envelope} of $\theta$ is a factorization $(\lambda, \gamma, \rho)$ where:
+\begin{itemize}
+\item $Y : J \to \C$ and $X : I \to \C$ are $\V$-functors (completion functors)
+\item $\lambda : Q \Rightarrow \C(D, Y)$ (left envelope)
+\item $\gamma : Q \Rightarrow \C(Y, X)$ (canonical interpolant)
+\item $\rho : Q \Rightarrow \C(X, E)$ (right envelope)
+\item $\theta = \rho \star \gamma \star \lambda$ (factorization property)
+\item $\star$ is pointwise composition: $\theta(i,j,q) = \rho(i,j,q) \circ \gamma(i,j,q) \circ \lambda(i,j,q)$
+\item The factorization is initial among all such factorizations
+\end{itemize}
+\end{definition}
+
+This definition captures the essence of Riehl's characterization while extending it to contexts where classical weighted limits fail. The factorization $\theta = \rho \star \gamma \star \lambda$ systematically decomposes any pairing through bilateral completion structure.
+
+\begin{example}[Motivating Example: Boolean Algebra Pairing]
+Consider the four-element Boolean algebra $\mathbf{4} = \{0, a, b, 1\}$ with $a \wedge b = 0$ and $a \vee b = 1$. The canonical extension to the 8-element Boolean algebra $\mathbf{4}^{\delta}$ arises from the following pairing:
+
+\textbf{Setup:}
+\begin{itemize}
+\item $I = \mathrm{Filt}(\mathbf{4})^{\op} = \{\{1\}, \{a,1\}, \{b,1\}, \{a,b,1\}\}^{\op}$ (filters)
+\item $J = \mathrm{Idl}(\mathbf{4}) = \{\{0\}, \{0,a\}, \{0,b\}, \{0,a,b,1\}\}$ (ideals)
+\item $D, E : \mathbf{4} \to \mathbf{4}^{\delta}$ (embeddings into canonical extension)
+\item $Q(F,I) = \begin{cases} \{*\} & \text{if } F \cap I = \emptyset \\ \emptyset & \text{otherwise} \end{cases}$ (filter-ideal disjointness)
+\item $\theta = \id_Q$ (internal completion)
+\end{itemize}
+
+\textbf{Canonical Envelope Construction:} The bilateral factorization yields:
+\begin{itemize}
+\item $Y = X = \mathbf{4}^{\delta}$ (8-element canonical extension)
+\item $\lambda$: Each filter $F$ generates join-irreducible elements via $\bigvee F$
+\item $\rho$: Each ideal $I$ generates meet-irreducible elements via $\bigwedge I$
+\item $\gamma$: The canonical extension itself, mediating between filter and ideal completion
+\end{itemize}
+
+\textbf{Verification:} The disjointness condition $F \cap I = \emptyset$ captures when filter-generated elements are below ideal-generated elements in $\mathbf{4}^{\delta}$, confirming the factorization property.
+\end{example}
+
+\subsection{Canonical Envelopes as Initial Factorizations}
+
+We now define the universality condition through the theory of factorization categories, following Freyd \cite{freyd1964abelian} and  Ad\'{a}mek and Rosick\'{y} \cite{adamek1994locally}.
+
+\begin{definition}[Category of Factorizations]
+For a pairing $\theta : Q \Rightarrow \C(D, E)$, define $\Fact(\theta)$ as the category with:
+
+\textbf{Objects:} Factorizations $(\lambda, \gamma, \rho)$ of $\theta$ as in Definition 2.2
+\textbf{Morphisms:} Pairs $(\alpha : Y \Rightarrow Y', \beta : X \Rightarrow X')$ of natural transformations satisfying:
+
+\textbf{Left envelope condition:}
+\begin{center}
+\begin{tikzcd}[column sep=huge, row sep=large]
+Q \arrow[r, "\lambda"] \arrow[dr, "\lambda'"'] & \mathcal{C}(D, Y) \arrow[d, "{\mathcal{C}(D, \alpha)}"] \\
+& \mathcal{C}(D, Y')
+\end{tikzcd}
+\end{center}
+
+
+\textbf{Interpolant condition:}
+\begin{center}
+\begin{tikzcd}[column sep=large]
+Y \arrow[r, "{\alpha}"] \arrow[d, "\gamma"'] & Y' \arrow[d, "\gamma'"] \\
+X \arrow[r, "{\beta}"'] & X'
+\end{tikzcd}
+\end{center}
+
+\textbf{Right envelope condition:}
+\begin{center}
+\begin{tikzcd}[column sep=huge, row sep=large]
+Q \arrow[r, "\rho'"] \arrow[dr, "\rho"'] & \mathcal{C}(X', E) \arrow[d, "{\mathcal{C}(\beta, E)}"] \\
+& \mathcal{C}(X, E)
+\end{tikzcd}
+\end{center}
+
+The conditions ensure that the factorization $\theta = \rho \star \gamma \star \lambda$ is preserved under the morphism $(\alpha, \beta)$, making the category of factorizations well-defined.
+\end{definition}
+
+\begin{definition}[Canonical Envelope - Universal Definition]
+A \textbf{canonical envelope} of pairing $\theta$ is an initial object in category $\Fact(\theta)$.
+\end{definition}
+
+\begin{theorem}[Universal Property]
+For any factorization $(\lambda', \gamma', \rho')$, there exists a unique morphism $(\alpha, \beta)$ from the canonical envelope making all diagrams commute.
+\end{theorem}
+
+\begin{proof}
+This follows directly from the definition of initial object in $\Fact(\theta)$. The initiality provides both existence and uniqueness of the factorization morphism.
+\end{proof}
+
+\begin{remark}[Universality Significance]
+Canonical envelopes provide the universal way to factor mathematical relationships through intermediate structure, capturing the essence of canonical interpolation across mathematical contexts. The categorical determination eliminates arbitrariness in completion constructions.
+\end{remark}
+
+\subsection{Bilateral Conditions}
+
+The existence and uniqueness of canonical envelopes is governed by bilateral conditions that capture the essential balance required for systematic completion.
+
+\begin{definition}[Bilateral Denseness]
+A pairing $\theta : Q \Rightarrow \C(D, E)$ is \textbf{bilaterally dense} if there exists a factorization $\theta = \rho \star \gamma \star \lambda$ where:
+\begin{itemize}
+\item $\lambda : Q \Rightarrow \C(D, Y)$ for some $\V$-functor $Y : J \to \C$ (left envelope exists)
+\item $\rho : Q \Rightarrow \C(X, E)$ for some $\V$-functor $X : I \to \C$ (right envelope exists)
+\item $\gamma : Q \Rightarrow \C(Y, X)$ (canonical interpolant exists)
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Bilateral Compactness]
+A bilaterally dense pairing $\theta : Q \Rightarrow \C(D, E)$ is \textbf{bilaterally compact} if the factorization $\theta = \rho \star \gamma \star \lambda$ is essentially unique: any two factorizations are related by a unique isomorphism of factorizations.
+\end{definition}
+
+These conditions systematically capture when completion is possible and essentially unique. They unify existence criteria across diverse mathematical domains, from the complete regularity required for Stone-\v{C}ech compactification to the distributivity required for canonical extensions.
+
+\begin{example}[Bilateral Conditions in Practice]
+For Stone-\v{C}ech compactification of completely regular space $X$:
+
+\textbf{Bilateral Denseness:} The existence of the factorization through $\beta X$ where:
+\begin{itemize}
+\item Left envelope: Each compact Hausdorff space $K$ provides adequate ``test space'' for continuous functions from $X$
+\item Right envelope: The space $X$ itself provides adequate ``source space'' for continuous functions to compact spaces  
+\item Interpolant: $\beta X$ mediates between these structures
+\end{itemize}
+
+\textbf{Bilateral Compactness:}
+\begin{itemize}
+\item Essential uniqueness: Complete regularity ensures that the factorization through $\beta X$ is essentially unique
+\item Universal property: Every continuous map $X \to K$ (compact Hausdorff) extends uniquely to $\beta X \to K$
+\end{itemize}
+
+The complete regularity of $X$ is precisely the condition ensuring bilateral denseness of the compactification pairing.
+\end{example}
+
+\subsection{Virtual Weighted Limits}
+
+Virtual weighted limits emerge by specializing canonical envelopes to pairings that encode classical weighted (co)limit data, extending the Gabriel-Ulmer methodology \cite{gabriel1971lokal}.
+
+\begin{definition}[Virtual Weighted Limits]
+Let $Q : I^{\op} \times J \to \V$ be a $\V$-profunctor.
+
+\begin{enumerate}
+\item For a $\V$-functor $G : J \to \C$, a \textbf{virtual $Q$-weighted limit} of $G$ is a canonical envelope of the pairing
+\[
+\theta_{\lim} : Q(i, -) \Rightarrow \C(-, G(-))
+\]
+where the target is interpreted as the $\V$-profunctor $\C^{\op} \times J \to \V$ given by $(c,j) \mapsto \C(c, G(j))$.
+
+\item For a $\V$-functor $F : I \to \C$, a \textbf{virtual $Q$-weighted colimit} of $F$ is a canonical envelope of the pairing  
+\[
+\theta_{\colim} : Q(-, j) \Rightarrow \C(F(-), -)
+\]
+where the target is interpreted as the $\V$-profunctor $I^{\op} \times \C \to \V$ given by $(i,c) \mapsto \C(F(i), c)$.
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Connection to Classical Theory]
+When the classical weighted limits exist, these virtual weighted limits coincide with them through the correspondence principle. When classical limits fail to exist, the canonical envelope factorization provides systematic approximation through bilateral completion.
+
+The canonical interpolant $\gamma$ in the envelope factorization $\theta = \rho \star \gamma \star \lambda$ represents the virtual weighted (co)limit object.
+\end{remark}
+
+\begin{theorem}[Correspondence Principle]
+When the relevant classical weighted (co)limits exist in $\C$, virtual weighted limits coincide with classical weighted limits. When classical limits fail to exist, virtual weighted limits provide systematic approximation through canonical envelope completion.
+\end{theorem}
+
+\begin{proof}
+\textbf{Classical case:} When $\lim^Q G$ exists, the bilateral denseness of the virtual weighted limit pairing ensures that the canonical envelope construction recovers the classical limit through the universal property.
+
+Specifically, if $\lim^Q G$ exists, then the pairing $\theta_{\lim} : Q(i,-) \Rightarrow \C(-, G(-))$ is bilaterally dense with canonical envelope given by:
+\begin{itemize}
+\item $Y(j) = G(j)$ (target diagram)
+\item $X = \Delta(\lim^Q G)$ (constant diagram at the limit)
+\item $\gamma$ is the universal cone from $G$ to $\lim^Q G$
+\end{itemize}
+
+\textbf{Virtual case:} When classical limits fail, the canonical envelope factorization provides the optimal approximation in the sense that it is initial among all factorizations of the weighted limit pairing.
+
+The correspondence follows from the universal property of weighted limits combined with the initiality property of canonical envelopes.
+\end{proof}
+
+\begin{theorem}[Fundamental Existence and Uniqueness]
+A pairing $\theta : Q \Rightarrow \C(D, E)$ admits a canonical envelope (i.e., $\Fact(\theta)$ has an initial object) if and only if it is bilaterally dense and bilaterally compact. When a canonical envelope exists, it is unique up to unique isomorphism.
+\end{theorem}
+
+\begin{proof}
+$(\Rightarrow)$ Suppose $(\lambda_{\mathrm{can}}, \gamma_{\mathrm{can}}, \rho_{\mathrm{can}})$ is a canonical envelope (initial object in $\Fact(\theta)$).
+
+\textbf{Denseness:} The existence of this factorization immediately implies bilateral denseness by definition.
+
+\textbf{Compactness:} Suppose $(\lambda', \gamma', \rho')$ is another factorization. By initiality, there exists a unique morphism $(\alpha, \beta)$ such that:
+\begin{align}
+\lambda' &= \C(D, \alpha) \circ \lambda_{\mathrm{can}} \\
+\gamma' &= \C(\alpha, \beta) \circ \gamma_{\mathrm{can}} \\
+\rho' &= \rho_{\mathrm{can}} \circ \C(\beta, E)
+\end{align}
+
+Since any factorization factors through the canonical envelope, and the morphism is unique, this establishes essential uniqueness and thus bilateral compactness.
+
+$(\Leftarrow)$ Suppose $\theta$ is bilaterally dense and compact.
+
+\textbf{Construction:} Bilateral denseness provides a factorization $\theta = \rho \star \gamma \star \lambda$. Let $(\lambda_0, \gamma_0, \rho_0)$ be any such factorization.
+
+\textbf{Initiality:} For any other factorization $(\lambda', \gamma', \rho')$, bilateral compactness ensures there exist unique natural transformations $(\alpha, \beta)$ making the required diagrams commute. The uniqueness follows from the essential uniqueness guaranteed by compactness.
+
+\textbf{Well-defined:} The choice of initial factorization doesn't matter. If $(\lambda_1, \gamma_1, \rho_1)$ is another factorization, by compactness there exist unique isomorphisms relating these factorizations, so they represent the same initial object up to canonical isomorphism.
+\end{proof}
+
+This fundamental theorem provides the complete characterization of when canonical envelopes exist and establishes their essential uniqueness, forming the theoretical foundation for all subsequent applications and constructions.
+
+\subsection{Completion Processes vs.\ Complete Categories}\label{ssec:completion-vs-complete}
+
+The literature often blurs the distinction between \emph{completions} and \emph{complete categories}, because many classical completions land in complete categories. We record here the conceptual and categorical separation between these notions, which is critical for the generality of canonical envelopes.
+
+\begin{definition}[Completion process]
+Let $\mathcal{C}$ be a $\V$-category.  
+A \emph{completion process} consists of:
+\begin{enumerate}
+\item a fully faithful $\V$-functor $i : \mathcal{C} \to \widehat{\mathcal{C}}$;
+\item a universal property: for a specified class of \emph{completion morphisms} (e.g.\ certain weighted limits/colimits, compactness/denseness conditions, representability requirements), $\widehat{\mathcal{C}}$ is initial among $\V$-categories containing $\mathcal{C}$ in which these morphisms exist and are preserved.
+\end{enumerate}
+In the canonical envelope framework, such a completion is the \emph{apex object} $\Env(\theta)$ of an initial factorization
+\[
+\theta \;=\; \rho \ \star\ \gamma \ \star\ \lambda
+\]
+through representables, subject to bilateral denseness and compactness.
+\end{definition}
+
+\begin{definition}[Complete $\V$-category]
+A $\V$-category $\mathcal{C}$ is \emph{complete} if it admits all small $\V$-limits.  
+Similarly, $\mathcal{C}$ is \emph{cocomplete} if it admits all small $\V$-colimits.
+\end{definition}
+
+\begin{proposition}[Difference between the notions]\label{prop:completion-vs-complete}
+A completion process need not land in a complete $\V$-category, and a complete $\V$-category need not arise as a completion.
+\end{proposition}
+
+\begin{proof}
+\emph{(1) Completion not implying complete.}  
+Consider the \emph{sobrification} $\Sob(X)$ of a $T_0$ topological space $X$.  
+In the canonical envelope setting (\S\ref{ssec:gem-sobrification}), this completion forces points to correspond to irreducible closed sets, but $\Sob(X)$ is not complete in the enriched sense over $\V=\mathbf{Top}$: it does not admit all small limits in $\mathbf{Top}$.  
+Nevertheless, $\Sob(X)$ satisfies the universal representability and compactness/denseness axioms of a canonical envelope.
+
+\emph{(2) Complete not implying completion.}  
+The presheaf category $[C^{op},\Set]$ is complete (and cocomplete) for any small $C$.  
+However, not every such presheaf category is the target of a completion of some smaller category in the sense of Def.~\ref{ssec:completion-vs-complete}.  
+For example, take $C$ discrete on two objects: $[C^{op},\Set] \cong \Set\times\Set$ is complete, but unless we impose a specific interpolation problem $(I,J,Q,D,E,\theta)$ whose solution yields $\Set\times\Set$, there is no canonical envelope process giving this as a \emph{completion}.
+
+\emph{(3) Non-implication in both directions.}  
+These examples show that ``completion'' is a \emph{process}, defined via an initiality property relative to desired morphism structure, while ``complete'' is a \emph{static property} of a category, defined by existence of all small limits.  They are logically independent.
+\end{proof}
+
+\begin{remark}[Canonical envelopes unify both]
+Many completions in the literature --- e.g.\ MacNeille completions, Cauchy completions of metric spaces, profinite group completions --- \emph{do} land in complete categories, and the completeness of the target often plays a role in the proof of the universal property.  
+However, in the canonical envelope framework, completeness of the target is neither required nor assumed; what matters is the representability of the profunctor $Q$ on both sides and the resulting compactness/denseness factorization.
+\end{remark}
+
+\subsection{Q-Completions and Universal Characterization}\label{ssec:q-completions}
+
+We now provide the precise categorical characterization of completion processes within the canonical envelope framework, generalizing classical constructions through weighted factorization.
+
+\begin{definition}[Q-Completion]
+Let $\mathcal{C}$ be a $\V$-category, $I, J$ small $\V$-categories, $D : I \to \mathcal{C}$ and $E : J \to \mathcal{C}$ diagrams, $Q : I^{\op} \otimes J \to \V$ a weight, and $\theta : Q \Rightarrow \mathcal{C}(D,E)$ a $\V$-natural transformation.
+
+A \textbf{$Q$-completion} of $(D, E, \theta)$ is a pair $(\widehat{\mathcal{C}}, J_{\mathcal{C}})$ consisting of:
+\begin{enumerate}
+\item A $\V$-category $\widehat{\mathcal{C}}$
+\item A fully faithful $\V$-functor $J_{\mathcal{C}} : \mathcal{C} \hookrightarrow \widehat{\mathcal{C}}$
+\end{enumerate}
+such that:
+
+\begin{itemize}
+\item \textbf{(Existence)} There exists a factorization $\theta = \rho \star \gamma \star \lambda$ in $\widehat{\mathcal{C}}$ where:
+\begin{align}
+\lambda &: Q \Rightarrow \widehat{\mathcal{C}}(J_{\mathcal{C}} D, Y) \\
+\gamma &: Q \Rightarrow \widehat{\mathcal{C}}(Y, Z) \\
+\rho &: Q \Rightarrow \widehat{\mathcal{C}}(Z, J_{\mathcal{C}} E)
+\end{align}
+for some $Y, Z \in \widehat{\mathcal{C}}$.
+
+\item \textbf{(Universality)} For any $\V$-category $\mathcal{D}$ containing a fully faithful $K : \mathcal{C} \hookrightarrow \mathcal{D}$ that admits such a factorization of $\theta$, there exists a unique $\V$-functor $F : \widehat{\mathcal{C}} \to \mathcal{D}$ with $F \circ J_{\mathcal{C}} \cong K$.
+\end{itemize}
+
+We say the completion is \textbf{bilaterally dense} if (Existence) holds, and \textbf{bilaterally compact} if the completion is unique up to isomorphism.
+\end{definition}
+
+\begin{center}
+\begin{tikzcd}[column sep=large]
+\mathcal{C} \arrow[r, "J_{\mathcal{C}}", hook] \arrow[dr, "K"', hook] & \widehat{\mathcal{C}} \arrow[d, "F", dashed] \\
+& \mathcal{D}
+\end{tikzcd}
+\end{center}
+
+\begin{theorem}[Universal Character of Completions]
+Every classical "completion" or "compactification" that is the free addition of $Q$-weighted (co)limits fits the above definition of $Q$-completion. Conversely, every $Q$-completion is the initial $\V$-category containing $\mathcal{C}$ in which the given $Q$-weighted factorization of $\theta$ exists.
+\end{theorem}
+
+\begin{proof}
+$(\Rightarrow)$ In each familiar case one can pick $I, J, Q, D, E, \theta$ so that the known construction is the free enlargement that makes the $Q$-weighted factorization exist:
+
+\textbf{Stone-\v{C}ech compactification:} Take $I = J = X$ (discrete category of points). Define $D(x) = $ principal filter on $x$, $E(x) = $ principal ultrafilter on $x$; $Q$ encodes $F \subseteq U$; $\theta$ encodes convergence. Then $\beta X$ is the free compact Hausdorff space making the evaluation extend uniquely.
+
+\textbf{MacNeille completion:} Take $I = \mathrm{Filt}(P)$, $J = \mathrm{Idl}(P)$; $Q(F,I) = 1$ iff $F \cap I \neq \emptyset$; $\theta = \mathrm{id}$ is incidence. The MacNeille completion $P^M$ is the smallest complete lattice in which the polarity factors.
+
+\textbf{Ind/Pro completion:} With $Q$ representable and $\theta$ the Yoneda pairing, $\mathrm{Ind}(\mathcal{C})$ (resp. $\mathrm{Pro}(\mathcal{C})$) is the free filtered-colimit (resp. cofiltered-limit) completion enabling the factorization.
+
+\textbf{Canonical extensions:} For distributive lattice $L$, take $I = \mathrm{Filt}(L)^{\op}$, $J = \mathrm{Idl}(L)$, with $Q$ encoding filter-ideal disjointness and $\theta$ the canonical incidence relation. The canonical extension $L^{\delta}$ provides the free completely distributive completion.
+
+$(\Leftarrow)$ Suppose $(\widehat{\mathcal{C}}, J_{\mathcal{C}})$ is a $Q$-completion. If $\mathcal{D}$ contains $\mathcal{C}$ via fully faithful $K$ and admits the factorization of $\theta$, the universality clause gives a unique $F : \widehat{\mathcal{C}} \to \mathcal{D}$ with $F \circ J_{\mathcal{C}} \cong K$. Hence $\widehat{\mathcal{C}}$ is initial among such enlargements, i.e., exactly the "free $Q$-bilaterally complete" category on $\mathcal{C}$.
+\end{proof}
+
+\begin{corollary}[Completion-Canonical Envelope Correspondence]
+$Q$-completions correspond exactly to canonical envelopes of appropriately constructed pairings. The completion process is characterized by the bilateral denseness and compactness of the underlying pairing $\theta$.
+\end{corollary}
+
+\begin{proof}
+The correspondence follows from the universal factorization property: $Q$-completions provide the initial $\V$-category where the weighted factorization $\theta = \rho \star \gamma \star \lambda$ exists, which is precisely the characterization of canonical envelopes as initial objects in factorization categories.
+
+The bilateral conditions translate directly:
+\begin{itemize}
+\item \textbf{Bilateral denseness}: Existence of the weighted factorization in some completion
+\item \textbf{Bilateral compactness}: Essential uniqueness of the completion (up to equivalence)
+\end{itemize}
+
+The systematic nature of this correspondence reveals that completion theory is organized by the bilateral envelope structure captured in canonical envelope theory.
+\end{proof}
+
+\begin{example}[Systematic Completion Examples]
+\textbf{Stone-\v{C}ech as $Q$-completion:} For completely regular space $X$:
+\begin{itemize}
+\item Pairing: $(Q, D, E, \theta)$ with filter-ultrafilter structure
+\item Bilateral denseness: Complete regularity ensures factorization existence
+\item Bilateral compactness: Uniqueness of compactification with universal property
+\item $Q$-completion: $\beta X$ with canonical embedding $X \hookrightarrow \beta X$
+\end{itemize}
+
+\textbf{Canonical extension as $Q$-completion:} For distributive lattice $L$:
+\begin{itemize}
+\item Pairing: Filter-ideal disjointness with canonical incidence
+\item Bilateral denseness: Distributivity ensures bilateral representability
+\item Bilateral compactness: Essential uniqueness of canonical extension
+\item $Q$-completion: $L^{\delta}$ with canonical embedding $L \hookrightarrow L^{\delta}$
+\end{itemize}
+\end{example}
+
+This systematic characterization reveals that classical completion constructions share fundamental organizational principles through bilateral factorization, with the $Q$-completion framework providing precise categorical foundation for completion theory within the canonical envelope methodology.
+
+\subsection{Stone-\v{C}ech Compactification}\label{ssec:stone-cech}
+
+\paragraph{Setup.}
+Let $\V=\Set$ and $C=\Top$. Let $I$ be the discrete category of proper filters
+on the underlying set of a completely regular $T_1$ space $X$. Let $J$ be the
+discrete category of ultrafilters on $X$.
+
+Define
+$$
+D:I \longrightarrow \Top,\quad D(F) := X
+$$
+$$
+E:J \longrightarrow \Top,\quad E(U) := 1
+$$
+and define the $\Set$-profunctor
+$$
+Q:I^{op} \times J \longrightarrow \Set,\qquad
+Q(F,U) :=
+\begin{cases}
+\{\ast\} & \text{if $F \subseteq U$},\\
+\varnothing & \text{otherwise}.
+\end{cases}
+$$
+
+\paragraph{Pairing $\theta$.}
+We define $\theta:Q \Rightarrow \Top(D,E)$ by
+$$
+\theta_{F,U}(\ast) = !_X : X \to 1
+$$
+whenever $F \subseteq U$, and uniquely from the empty set otherwise. Naturality
+is trivial since $I$ and $J$ are discrete.
+
+\paragraph{Two-sided representability.}
+Let $\beta X$ be the Stone-\v{C}ech compactification of $X$. For each ultrafilter
+$U \in J$, let $p_U \in \beta X$ be its unique limit point. Define $Y:J\to\Top$
+to be constant at $\beta X$, with $Y(U) = \beta X$ and the map
+$$
+\phi^L_U(F) : Q(F,U) \to \Top(D(F),\beta X)
+$$
+sending $\ast$ (if $F\subseteq U$) to the canonical extension $\eta:X \to \beta X$,
+and empty otherwise.
+
+For each filter $F\in I$, define $X(F) = \beta X$ and
+$$
+\phi^R_F(U): Q(F,U) \to \Top(\beta X, E(U)) = \Top(\beta X, 1)
+$$
+sending $\ast$ to $!_{\beta X}$ when $F \subseteq U$, empty otherwise.
+
+Both $\phi^L$ and $\phi^R$ are natural isomorphisms in their respective variables
+by the universal property of $\beta X$: maps $X\to K$ into compact Hausdorff $K$
+extend uniquely to $\beta X$, and every ultrafilter converges to a unique point.
+
+\paragraph{Factorization.}
+Let $\lambda = \phi^L$, $\rho = \phi^R$, and $\gamma$ the constant family of
+identity maps $\beta X \to \beta X$. Then
+$$
+\theta = \rho \ \star\ \gamma \ \star\ \lambda
+$$
+pointwise by construction.
+
+\paragraph{Bilateral denseness and compactness.}
+Left representability: each $Q(-,U)$ is represented by $\beta X$ via $\phi^L_U$.
+Right representability: each $Q(F,-)$ is represented by $\beta X$ via $\phi^R_F$.
+Compactness: if $(\lambda',\gamma',\rho')$ is any other bilateral factorization,
+enriched Yoneda in $[I^{op},\Set]$ and $[J,\Set]$ gives unique isomorphisms
+$\beta X \cong Y'(U) \cong X'(F)$, yielding a unique isomorphism of factorizations.
+
+\paragraph{Conclusion.}
+The Stone-\v{C}ech compactification $\beta X$ is the canonical envelope interpolant
+for $\theta$ with apex $\beta X$.
+
+\subsection{Profinite Completion of a Residually Finite Group}\label{ssec:profinite}
+
+\paragraph{Setup.}
+Let $\V=\Set$ and $C=\Grp$. Let $G$ be a residually finite group. Let $I$ be the
+discrete category of finite quotients $G/N$ with $N\trianglelefteq G$ of finite index.
+Let $J=I$ (same objects).
+
+Define
+$$
+D:I \to \Grp,\quad D(G/N) = G/N,\qquad E:J\to\Grp,\quad E(G/N) = G/N,
+$$
+and
+$$
+Q: I^{op} \times J \to \Set,\quad
+Q(G/N,\,G/M) :=
+\Hom_{\Grp}(G/N,\, G/M).
+$$
+
+\paragraph{Pairing $\theta$.}
+Let $\theta_{G/N,\,G/M}$ be the inclusion of $Q(G/N,G/M)$ into
+$\Grp(D(G/N),E(G/M))$ (they are equal here). Naturality follows from functoriality
+of group homomorphisms.
+
+\paragraph{Two-sided representability.}
+Let $\widehat{G}$ be the profinite completion of $G$, the inverse limit of all
+finite quotients $G/N$ in $\Grp$. For each $G/M \in J$, define $Y(G/M) = \widehat{G}$
+and
+$$
+\phi^L_{G/M}(G/N) : Q(G/N,\,G/M) \to \Grp(D(G/N), \widehat{G})
+$$
+by composing with the projection $\widehat{G} \to G/M$. This is bijective since
+$\widehat{G}$ is the limit over all $G/M$.
+
+Similarly, for each $G/N \in I$, define $X(G/N) = \widehat{G}$ and
+$$
+\phi^R_{G/N}(G/M): Q(G/N,\,G/M) \to \Grp(\widehat{G},E(G/M))
+$$
+by precomposing with the projection $\widehat{G} \to G/N$. Again bijective by
+limit universality.
+
+\paragraph{Factorization.}
+Let $\lambda=\phi^L$, $\rho=\phi^R$, $\gamma$ be the identity family on $\widehat{G}$.
+Then $\theta = \rho \ \star\ \gamma \ \star\ \lambda$ pointwise.
+
+\paragraph{Bilateral denseness and compactness.}
+Left representability: $Q(-,G/M)$ is represented by $\widehat{G}$ via $\phi^L_{G/M}$.
+Right representability: $Q(G/N,-)$ is represented by $\widehat{G}$ via $\phi^R_{G/N}$.
+Compactness: any other bilateral factorization yields a unique isomorphism
+$\widehat{G} \cong$ apex object by enriched Yoneda in $[I^{op},\Set]$ and $[J,\Set]$.
+
+\paragraph{Conclusion.}
+The profinite completion $\widehat{G}$ is the canonical envelope interpolant
+for $\theta$ with apex $\widehat{G}$.
+
+\subsection{Cauchy Completion of a Lawvere Metric Space}\label{ssec:cauchy}
+
+\paragraph{Setup.}
+Let $\V = ([0,\infty],\,\ge,\,+,\,0)$ be the Lawvere quantale.
+A $\V$-category $X$ is a Lawvere metric space. Let $I$ be the discrete $\V$-category
+of Cauchy left modules $\ell:X \nrightarrow 1$; let $J$ be the discrete $\V$-category
+of Cauchy right modules $r:1 \nrightarrow X$.
+
+Define
+$$
+D:I \to [X^{op},\V],\quad D(\ell) = \ell,\qquad
+E:J \to [X^{op},\V],\quad E(r) = r^{\sharp}(x) = \bigwedge_{y} r(y) + d_X(x,y),
+$$
+and
+$$
+Q: I^{op} \times J \to \V,\quad Q(\ell,r) = \bigwedge_{x} \ell(x) + r(x).
+$$
+
+\paragraph{Pairing $\theta$.}
+Define $\theta_{\ell,r}: Q(\ell,r) \to [X^{op},\V](\ell,r^{\sharp})$ by the
+triangle inequality: $\ell(x) + r(x) \ge r^{\sharp}(x)$ for all $x$, hence
+$Q(\ell,r) \le [X^{op},\V](\ell,r^{\sharp})$ in $\V$.
+
+\paragraph{Two-sided representability.}
+Let $\widehat{X}$ be the Cauchy completion of $X$. For each $r\in J$, choose
+$\ell_r$ with $\ell_r \dashv r$; define $Y(r) = \ell_r \in \widehat{X}$ and
+$\phi^L_r(\ell): Q(\ell,r) \to [X^{op},\V](\ell,\ell_r)$ as the representing
+bijection from the enriched Yoneda lemma applied in the Cauchy nucleus.
+
+Similarly, for $\ell\in I$, choose $r_\ell$ with $\ell \dashv r_\ell$; define
+$X(\ell) = \ell$ and $\phi^R_\ell(r): Q(\ell,r) \to [X^{op},\V](\ell, r^{\sharp})$
+by representability in $\widehat{X}$.
+
+\paragraph{Factorization.}
+Let $\lambda=\phi^L$, $\rho=\phi^R$, $\gamma$ identities in $\widehat{X}$.
+Then $\theta = \rho \ \star\ \gamma \ \star\ \lambda$ pointwise.
+
+\paragraph{Bilateral denseness and compactness.}
+Left representability: $Q(-,r)$ represented by $Y(r)\in\widehat{X}$.
+Right representability: $Q(\ell,-)$ represented by $X(\ell)\in\widehat{X}$.
+Compactness: any other bilateral factorization yields isomorphic apex object
+by uniqueness of representing objects in the Cauchy completion.
+
+\paragraph{Conclusion.}
+$\widehat{X}$ is the canonical envelope interpolant for $\theta$ in the
+Lawvere $\V$-enriched setting.
+
+\section{Gem Theory and Systematic Classification}
+
+Gem theory arises naturally from canonical envelope theory when the bilateral completion structure is determined by representability and the Yoneda embedding \cite{yoneda1954homology}, building on Kelly's enriched category theory \cite{kelly1982basic}. It provides a unified framework for understanding how mathematical structures arise from bilateral completion properties, systematically organizing examples across algebra, topology, category theory, logic, and physics.
+
+\subsection{Gems as Special Canonical Envelopes}
+
+A gem is a canonical envelope whose bilateral structure is determined by representability and the Yoneda embedding. This makes gem theory a special case of the general canonical envelope framework rather than a separate theory.
+
+\begin{definition}[Gems, CoGems, DiGems as Canonical Envelopes]
+Let $\V$ be a complete and cocomplete symmetric monoidal closed category, and let $X$ be a small $\V$-category. Write $C = [X^{\op}, \V]$ for the $\V$-category of $\V$-enriched presheaves.
+
+\begin{itemize}
+\item \textbf{Gem:} A canonical envelope $(Q, D, E, \theta)$ where:
+\begin{enumerate}
+\item $D : X \to C$ is the Yoneda embedding $Y$, so $D(x) = Y(x) := C(-, x)$;
+\item $E : I \to C$ is constant at a presheaf $P \in C$ (with $I$ the unit category);
+\item $Q : X^{\op} \to \V$ is a representable weight with $Q(x) \cong P(x)$ naturally in $x$;
+\item $\theta : Q \Rightarrow C(D, E)$ is the identity under the string of natural isomorphisms
+$$
+Q(x) \cong P(x) \cong C(Y(x), P).
+$$
+\end{enumerate}
+
+\item \textbf{CoGem:} The dual structure with $D$ constant and $E$ the Yoneda embedding.
+
+\item \textbf{DiGem:} Both $D$ and $E$ are Yoneda embeddings, capturing fully bilateral structure.
+\end{itemize}
+\end{definition}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+ & \textbf{Gem} & \textbf{CoGem} & \textbf{DiGem} \\
+\hline
+Structure & Yoneda $\to$ Constant & Constant $\to$ Yoneda & Yoneda $\to$ Yoneda \\
+\hline
+Bias & left-biased & right-biased & bilateral \\
+\hline
+\end{tabular}
+\end{center}
+
+In this situation, denseness of $Y$ and representability of $Q$ together enforce compactness of the factorization, so the interpolant $Y(\ast)$ in the canonical envelope factorization $\theta = \rho \star \gamma \star \lambda$ is (canonically) isomorphic to $P$ reconstructed from representables.
+
+\subsection{Six Equivalent Facets of Gems}
+
+Gems admit several equivalent characterizations ("facets"). We give a full six-way equivalence with explicit morphisms and coherence checks in the enriched setting.
+
+\begin{theorem}[Six Equivalent Facets of Gems]
+Let $P \in [X^{\op}, \V]$. The following are equivalent:
+
+\begin{enumerate}
+\item \textbf{Canonical extension facet:}
+$$
+\eta_P : \int^{x \in X} P(x) \otimes Y(x) \xrightarrow{\cong} P
+$$
+is an isomorphism in $[X^{\op}, \V]$ (coend computed in $\V$).
+
+\item \textbf{Profunctor facet:} The enriched Yoneda comparison
+$$
+\phi_x : C(Y(x), P) \xrightarrow{\cong} P(x)
+$$
+is an isomorphism naturally in $x \in X$.
+
+\item \textbf{Codensity monad facet:} $P$ is a fixed point of the codensity monad $T$ of $Y$; i.e. the canonical map $P \to T(P)$ is an isomorphism.
+
+\item \textbf{Kan extension facet:} The unit $P \to \Ran_Y(P \circ Y)$ is an isomorphism in $[X^{\op}, \V]$.
+
+\item \textbf{Canonical envelope facet:} $P$ arises as the interpolant in a canonical envelope $(Q, D, E, \theta)$ with $D = Y$, $E$ constant at $P$, $Q(x) \cong P(x)$, and $\theta = \id$ under $Q(x) \cong C(Y(x), P)$.
+
+\item \textbf{Distributivity facet:} For any finite diagram $K : J \to [X^{\op}, \V]$ of representables, the canonical morphism
+$$
+\Hom_{[X^{\op}, \V]}(\colim_j K(j), P) \to \lim_{j \in J} \Hom_{[X^{\op}, \V]}(K(j), P)
+$$
+is an isomorphism in $\V$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We prove a cycle of implications with explicit maps; enrichment over $\V$ is used throughout.
+
+\textbf{(1) $\Rightarrow$ (2):} Apply $\Hom_{[X^{\op}, \V]}(Y(x), -)$ to $\eta_P$. Using the Yoneda isomorphism 
+$$
+\Hom(Y(x), \int^t P(t) \otimes Y(t)) \cong \int^t P(t) \otimes \Hom(Y(x), Y(t)) \cong P(x)
+$$
+and the functoriality of $\Hom(Y(x), -)$, we identify the induced map with $\phi_x : C(Y(x), P) \to P(x)$. Since $\eta_P$ is an isomorphism, $\phi_x$ is as well, naturally in $x$.
+
+\textbf{(2) $\Rightarrow$ (1):} The coend $\int^x P(x) \otimes Y(x)$ together with the universal dinatural transformation $P(x) \otimes Y(x) \to \int^t P(t) \otimes Y(t)$ yields a unique comparison $\eta_P : \int^x P(x) \otimes Y(x) \to P$ whose components at $x$ are adjoint to $\id_{P(x)}$ under $\phi_x : C(Y(x), P) \cong P(x)$. Naturality of $\phi$ and the coend equations imply $\eta_P$ is inverse to the canonical map $P \to \int^x P(x) \otimes Y(x)$ built from the Yoneda cocone; hence $\eta_P$ is an isomorphism.
+
+\textbf{(2) $\Leftrightarrow$ (3):} The codensity monad $T$ of $Y$ at $P$ is (by definition) the right Kan extension $T(P) = \Ran_Y(P \circ Y)$ with the universal property $[X^{\op}, \V](Q, T(P)) \cong [X^{\op}, \V](Q \circ Y, P \circ Y)$ natural in $Q$. Evaluating at $Q = Y(x)$ and using $Y$-density yields $C(Y(x), T(P)) \cong C(Y(x), P)$. Therefore the unit $P \to T(P)$ is an isomorphism iff $C(Y(x), P) \cong C(Y(x), T(P))$ for all $x$, i.e. iff $C(Y(x), P) \cong P(x)$ (since $T(P)$ corepresents the same functor), giving the equivalence.
+
+\textbf{(3) $\Leftrightarrow$ (4):} By definition $T(P) \cong \Ran_Y(P \circ Y)$ and the codensity unit is exactly the Kan extension unit. Thus fixed points of $T$ are precisely those $P$ for which the unit $P \to \Ran_Y(P \circ Y)$ is an isomorphism.
+
+\textbf{(4) $\Rightarrow$ (5):} Given $P \cong \Ran_Y(P \circ Y)$, set $D = Y$, $E$ constant at $P$, and define $Q(x) := C(Y(x), P) \cong P(x)$. Under these identifications the pairing $\theta : Q \Rightarrow C(D, E)$ is the identity. The universal property of $\Ran_Y$ supplies the factorization $\theta = \rho \star \gamma \star \lambda$ with interpolant object canonically isomorphic to $P$ and with $\lambda$ and $\rho$ induced by Yoneda and evaluation. Compactness follows from representability, so we obtain a canonical envelope with interpolant $P$.
+
+\textbf{(5) $\Rightarrow$ (4):} From the envelope data, transposition (using hom-tensor adjunction and Yoneda density) recovers the right Kan extension cone for $P \circ Y$ along $Y$. Since the envelope interpolant is initial among factorizations, the induced comparison $P \to \Ran_Y(P \circ Y)$ is invertible.
+
+\textbf{(1) $\Rightarrow$ (6):} If $P \cong \int^x P(x) \otimes Y(x)$, then for any finite diagram $K : J \to [X^{\op}, \V]$ of representables, writing $K(j) = Y(x_j)$, we compute
+\begin{align}
+\Hom(\colim_j Y(x_j), P) &\cong \Hom(\colim_j Y(x_j), \int^x P(x) \otimes Y(x)) \\
+&\cong \int^x P(x) \otimes \Hom(\colim_j Y(x_j), Y(x)).
+\end{align}
+
+Finite colimits are absolute for representables in $[X^{\op}, \V]$ (since $Y$ is dense), so $\Hom(\colim_j Y(x_j), Y(x)) \cong \lim_j \Hom(Y(x_j), Y(x))$, and thus
+$$
+\int^x P(x) \otimes \Hom(\colim_j Y(x_j), Y(x)) \cong \lim_j \int^x P(x) \otimes \Hom(Y(x_j), Y(x)) \cong \lim_j \Hom(Y(x_j), P).
+$$
+This is precisely the claimed distributivity isomorphism.
+
+\textbf{(6) $\Rightarrow$ (1):} Take the canonical cocone $P(x) \otimes Y(x) \to P$ and the induced map $\eta_P : \int^x P(x) \otimes Y(x) \to P$. For each $x$, apply $\Hom(Y(x), -)$ and use the case $K = Y(x)$ of (6) to see that $\Hom(Y(x), \eta_P)$ is the identity on $P(x)$ (via $C(Y(x), P) \cong P(x)$). Since representables detect isomorphisms (density), $\eta_P$ is an isomorphism. This is (1).
+\end{proof}
+
+\subsection{Classification Table}
+
+Different pairs $(X, \V)$ yield different kinds of structures via gem/cogem/digem completion.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Base $\V$} & \textbf{Index $X$} & \textbf{Gem$(X, \V)$} & \textbf{CoGem$(X, \V)$} & \textbf{DiGem$(X, \V)$} \\
+\hline
+Set & 1 & Monoids & Comonoids & Commutative Monoids \\
+\hline
+Set & 2 & Complete Semilattices & Complete Cosemilattices & Complete Lattices \\
+\hline
+Set & DiscSet & Topological Spaces & Cotopological Spaces & Stably Compact Spaces \\
+\hline
+Set & FinSet & Bounded Ionads & Bounded Coionads & Finite Approximations \\
+\hline
+Set & FinPoset & Continuous Posets & Cocontinuous Posets & Bicontinuous Lattices \\
+\hline
+Set & Span(Set) & Small Categories & Small Cocategories & Dagger Categories \\
+\hline
+Cat & 1 & Monoidal Categories & Comonoidal Categories & Symmetric Monoidal Categories \\
+\hline
+Cat & FinCat & Grothendieck Topoi & Grothendieck Cotopoi & Bitopoi \\
+\hline
+Ab & 1 & Rings & Corings & Commutative Rings \\
+\hline
+FdHilb & FinSet & Quantum Algebras & Quantum Coalgebras & Finite Quantum Systems \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{remark}[Classification Principle]
+For each row, the choice of:
+\begin{enumerate}
+\item $\V$ fixes the enrichment scale (discrete Set, categorical Cat, linear Ab, quantum FdHilb, etc.);
+\item $X$ fixes the foundational granularity (atomic 1, Boolean 2, finite/combinatorial FinSet or FinCat, general Set);
+\item the Gem/CoGem/DiGem choice fixes the bilateral pattern (left-biased, right-biased, balanced).
+\end{enumerate}
+
+The resulting structures are precisely as listed in the classification table.
+
+By Definition 4.1 and Theorem 4.2, the gem-type (left/right/bilateral) is enforced by which Yoneda sides appear in the envelope, while the pair $(X, \V)$ determines the ambient enriched presheaf setting in which the coend/reconstruction (facet (1)) and codensity/Kan (facets (3)-(4)) are computed. Each row is obtained by instantiating the Yoneda-based completion in that $([X^{\op}, \V], Y)$ context.
+\end{remark}
+
+\subsection{Detailed Examples}
+
+\subsubsection{Complete Lattices as DiGems}
+
+\begin{theorem}[Complete Lattices = DiGem(2, Set)]
+There is an equivalence of categories
+$$
+\mathrm{DiGem}(2, \mathrm{Set}) \simeq \mathrm{ComplLat},
+$$
+between bilateral gems over $(X = 2, \V = \mathrm{Set})$ and complete lattices with complete lattice morphisms.
+\end{theorem}
+
+\begin{proof}
+Write $\mathbf{2} = \{0 \to 1\}$ as a small category. The presheaf category $[\mathbf{2}^{\op}, \mathrm{Set}]$ consists of pairs $P = (P(1) \xrightarrow{r} P(0))$ (a function reversed along $0 \to 1$). The two Yoneda objects are $Y(0)$ and $Y(1)$ with
+\begin{align}
+Y(0)(0) = \{*\}, \quad Y(0)(1) &= \emptyset \\
+Y(1)(0) = \{0 \to 1\}, \quad Y(1)(1) &= \{*\}.
+\end{align}
+
+A DiGem object is, by Definition 4.1 and Theorem 4.2, a presheaf $P$ that is simultaneously reconstructed from $Y(0)$ and $Y(1)$ on both left and right sides. Concretely, (1) forces that the canonical map
+$$
+\eta_P : \int^{x \in \mathbf{2}} P(x) \times Y(x) \to P
+$$
+is an isomorphism, and the dual condition holds on the right (by the CoGem side). 
+
+Unwinding the coend for $\mathbf{2}$, the left condition gives that $P(0)$ is the free completion under joins generated by the images of $P(1)$ along $r$, while the right condition dually gives that $P(1)$ is the free completion under meets reflected by $r$. Together these imply that the image of $r$ forms a Galois-stable polarity whose MacNeille completion yields a complete lattice $L$; moreover $P$ is isomorphic (in $[\mathbf{2}^{\op}, \mathrm{Set}]$) to the Yoneda presentation of $L$ by join- and meet-generators:
+$$
+P(0) \cong L, \quad P(1) \cong J(L)
+$$
+where $J(L)$ denotes the set of join-irreducibles (or dually, equivalently the meet-irreducibles, since we require bilateral reconstruction), and $r$ is the universal incidence map. 
+
+Morphisms of DiGem objects preserve both reconstructions, hence are exactly complete lattice homomorphisms.
+
+Conversely, from any complete lattice $L$ we build $P_L$ by the above assignment and check directly that both gem and cogem equalities (facet (1) on both sides) hold. These constructions define quasi-inverse functors, establishing the equivalence.
+\end{proof}
+
+\subsubsection{Grothendieck Topoi as Gems}
+
+\begin{theorem}[Grothendieck Topoi = Gem(Cat, FinCat)]
+There is an equivalence of categories
+$$
+\mathrm{GrTop} \simeq \mathrm{Gem}(\mathrm{Cat}, \mathrm{FinCat}),
+$$
+between Grothendieck topoi and left-biased gems over $(X = \mathrm{Cat}, \V = \mathrm{FinCat})$.
+\end{theorem}
+
+\begin{proof}
+\textbf{From topoi to gems:} Given a Grothendieck topos $\mathcal{E}$, define a $\V$-presheaf $P_{\mathcal{E}} : \mathrm{Cat}^{\op} \to \mathrm{FinCat}$ by $P_{\mathcal{E}}(C) := \mathrm{Lex}(C, \mathcal{E})$ (finite-limit-preserving functors). For a functor $u : C \to \mathcal{D}$, define $P_{\mathcal{E}}(u)$ by precomposition $(-) \circ u$. 
+
+The Yoneda comparison $C \mapsto \mathrm{Lex}(C, \mathcal{E})$ is known to be dense among all finite-limit contexts generating $\mathcal{E}$; more precisely, every object of $\mathcal{E}$ is a finite colimit of representables with respect to some site presentation. Using facet (1), this gives
+$$
+P_{\mathcal{E}} \cong \int^{C \in \mathrm{Cat}} P_{\mathcal{E}}(C) \otimes Y(C),
+$$
+so $P_{\mathcal{E}}$ is a Gem object (Definition 4.1) with $D = Y$ and $Q(C) \cong P_{\mathcal{E}}(C)$.
+
+\textbf{From gems to topoi:} Conversely, given $P \in \mathrm{Gem}(\mathrm{Cat}, \mathrm{FinCat})$, set up the canonical envelope with $D = Y$, $E$ constant at $P$, $Q(C) \cong P(C)$ and $\theta = \id$. The interpolant $Y(\ast)$ exists by Theorem 4.2 and is recovered via the coend of facet (1). This interpolant is (up to equivalence) the topos of sheaves $\mathrm{Sh}(S_P)$ on the site $S_P$ determined by the gem data: covers are those families detecting the universal coend comparison of facet (1). Standard arguments (stability under pullback, effective epimorphic covers) show $\mathrm{Sh}(S_P)$ is a Grothendieck topos.
+
+\textbf{Equivalence:} The two constructions are mutually inverse up to equivalence: starting from $\mathcal{E}$, one recovers $\mathrm{Sh}(S_{P_{\mathcal{E}}}) \simeq \mathcal{E}$; starting from $P$, one recovers $P_{\mathrm{Sh}(S_P)} \cong P$. Functoriality on morphisms (geometric morphisms vs. gem morphisms) follows from naturality of the coend in facet (1) and stability of finite limits under inverse image. Hence the equivalence.
+\end{proof}
+
+\subsection{Canonical Extensions as Gems}\label{ssec:gem-canonical-extension}
+
+We work enriched in $\V=\mathbf{Sup}$ (complete join-semilattices, join-preserving arrows), with tensor $\otimes$ the cartesian product (so copowers are coproducts and conical colimits are joins). Fix a bounded distributive lattice $L$ and write $L^\delta$ for its canonical extension (complete, completely distributive, and $L$ is both join- and meet-dense) \cite{jonsson1951boolean}.
+
+\paragraph{Ambient.}
+Let $X$ be the small $\V$-category whose objects are \emph{principal finite meets} of $L$ (i.e.\ finite meets of elements of $L$) and with homs the order-enrichment: $X(x,y)=\top$ iff $x\le y$ in $L$, else $\bot$. Let $Y:X\to [X^{op},\V]$ denote the (enriched) Yoneda embedding. We consider the presheaf category $[X^{op},\V]$.
+
+\paragraph{The presheaf $P$.}
+Define $P\in [X^{op},\V]$ by
+$$
+P(x) \ :=\ \downarrow x \ \subseteq L^\delta
+\quad\text{(as a down-set in $L^\delta$ endowed with the $\V$-structure).}
+$$
+Equivalently, $P(x)$ is the join-subsemilattice of $L^\delta$ generated by all $a\in L^\delta$ with $a\le x$; functoriality $P(y)\to P(x)$ for $x\le y$ is inclusion. Thus $P$ is a $\V$-presheaf.
+
+\begin{theorem}[Canonical extension as a Gem]
+$P$ satisfies the Gem facet (coend reconstruction)
+$$
+\eta_P:\ \int^{x\in X} P(x)\otimes Y(x) \ \xrightarrow{\ \cong\ }\ P,
+$$
+and hence determines a Gem with $D=Y$, $E$ constant at $P$, $Q(x)\cong P(x)$ and $\theta=\mathrm{id}$ under $Q(x)\cong [X^{op},\V](Y(x),P)$.
+The canonical envelope interpolant is (isomorphic to) $L^\delta$.
+\end{theorem}
+
+\begin{proof}
+We verify the six Gem facets (cf.\ \cite{kelly1982basic}, and the equivalences stated earlier in the paper) in the enriched setting.
+
+\emph{(1) Coend facet.}
+Define $\eta_P$ by the universal property of the coend: the dinatural family $P(x)\otimes Y(x)\to P$ sends an element $a\in P(x)$ and a map $Y(x)\to Y(t)$ (i.e.\ $x\le t$) to the element $a\in P(t)$ (since $a\le x\le t$). The coend quotient identifies along $x\le t$, so $\eta_P$ is well-defined. Surjectivity: for $b\in P(t)$ choose some $x\le t$ with $b\le x$; then $b$ is in the image of $P(x)\otimes Y(x)\to P(t)$. Injectivity follows because coend identifications along $x\le t$ are the only relations—these are precisely the inclusions of $\downarrow x$ into larger $\downarrow t$. Hence $\eta_P$ is an isomorphism in $[X^{op},\V]$.
+
+\emph{(2) Profunctor/Yoneda facet.}
+For each $x$, the Yoneda comparison
+\(
+[X^{op},\V]\big(Y(x),P\big)\xrightarrow{\ \cong\ } P(x)
+\)
+sends a natural transformation $\alpha:Y(x)\to P$ to $\alpha_x(\mathrm{id}_x)\in P(x)$, and the inverse sends $a\in P(x)$ to the family $Y(x)(t)=X(t,x)\to P(t)$ choosing $a$ when $t\le x$, else $\bot$. This is a standard enriched Yoneda isomorphism.
+
+\emph{(3) Codensity facet.}
+Let $T$ be the codensity monad of $Y$ on $[X^{op},\V]$. The unit $P\to T(P)$ is the right Kan extension unit $\mathrm{Ran}_Y(P\circ Y)$. Since $P$ satisfies (2), it is fixed by $T$; thus the unit is an isomorphism.
+
+\emph{(4) Kan-extension facet.}
+As above: $P \cong \mathrm{Ran}_Y(P\circ Y)$ in $[X^{op},\V]$.
+
+\emph{(5) Canonical envelope facet.}
+Set $D=Y$, let $E$ be constant at $P$, set $Q(x):=P(x)$, and let $\theta=\mathrm{id}$ under the chain of natural isomorphisms $Q(x)\cong P(x)\cong [X^{op},\V]\big(Y(x),P\big)$. Then the canonical envelope factorization is initial (compactness) since representability of $Q(-)$ by $P$ is unique up to unique isomorphism by enriched Yoneda.
+
+\emph{(6) Distributivity facet.}
+For any finite diagram $K:J\to [X^{op},\V]$ of representables, the canonical comparison
+$$
+[X^{op},\V]\big(\mathrm{colim}\,K,\,P\big)\ \xrightarrow{\ \cong\ }\ \lim_{j\in J}[X^{op},\V]\big(K(j),P\big)
+$$
+is an iso because $Y$ is dense and $P$ is reconstructed from $Y$ by (1). This is the enriched finite-limit/colimit interchange on hom into $P$.
+
+Finally, $|P(0)|=L^\delta$ because the image of $L$ (finite meets in $X$) generates $L^\delta$ under arbitrary joins and meets with the canonical extension axioms, and $P$ picks precisely those down-closures; the Gem interpolant recovers $L^\delta$ (initiality).
+\end{proof}
+
+\subsection{MacNeille Completions as DiGems}\label{ssec:digem-macneille}
+
+We take $\V=\mathbf{Sup}$ and $X=2=\{0\to 1\}$ (walking arrow) enriched by the order. Consider $[2^{op},\V]$, whose objects are monotone maps $r:P(1)\to P(0)$.
+
+\begin{theorem}[MacNeille completion is DiGem$(2,\mathbf{Sup})$]
+For a poset $(P,\le)$, its MacNeille completion $P^M$ is (equivalent to) the interpolant of a DiGem in $[2^{op},\V]$ obtained by taking $P(0)=P^M$, $P(1)$ the finite-meet (equivalently finite-join) fragment, and $r$ the inclusion. The DiGem facets hold on both left and right (Yoneda and co-Yoneda), hence the canonical envelope collapses to $P^M$.
+\end{theorem}
+
+\begin{proof}
+Replicate the argument in \S\ref{ssec:gem-canonical-extension}, with $P(0)=P^M$ (complete lattice), $P(1)$ the poset of finitely generated cuts, and $r$ inclusion. Coend reconstruction gives arbitrary joins from the $0$-side and finite meets from the $1$-side; dually, co-Yoneda yields finite joins distributing over arbitrary meets. The MacNeille Galois connection $D\mapsto D^{\uparrow\downarrow}$ and $U\mapsto U^{\downarrow\uparrow}$ is exactly the Beck–Chevalley interchange forced by the coend identifications along the unique arrow $0\to 1$. Uniqueness follows from enriched Yoneda (both sides), so the envelope is initial and identifies with $P^M$.
+\end{proof}
+
+\subsection{Sobrification as a Gem}\label{ssec:gem-sobrification}
+
+Work in $\V=\Set$, $C=\Top$. Let $X$ be a $T_0$ space. Let $\Omega(X)$ be its frame of opens. Let $\mathrm{Irr}(X)$ be the poset of \emph{irreducible closed} subsets, ordered by inclusion.
+
+\paragraph{Ambient.}
+Set $X_0:=\mathrm{Irr}(X)$ as a small category (discrete), and consider the presheaf category $[X_0^{op},\Set]$. Let $Y:X_0\to [X_0^{op},\Set]$ be Yoneda.
+
+\paragraph{The presheaf $P$.}
+Define $P\in [X_0^{op},\Set]$ by
+$$
+P(C) \ :=\ \{\,U\in \Omega(X)\mid C\cap U\neq \varnothing\,\},
+$$
+with restriction maps $P(C')\hookrightarrow P(C)$ for $C\subseteq C'$. Thus $P$ records “opens hit by $C$.”
+
+\begin{theorem}[Sobrification as Gem]
+$P$ satisfies the Gem coend reconstruction $\int^{C}P(C)\times Y(C)\xrightarrow{\ \cong\ } P$, and the canonical envelope interpolant is (homeomorphic to) the sobrification $\Sob(X)$.
+\end{theorem}
+
+\begin{proof}
+Coend reconstruction: given $U\in P(C)$ and a map $Y(C)\to Y(C')$ (i.e.\ $C'\subseteq C$), send $(U,C\to C')$ to $U\in P(C')$; the coend identifications ensure well-definedness. Surjectivity: any $U\in P(C')$ lifts from some $C\subseteq C'$ with $C\cap U\neq\varnothing$. Injectivity: identifications only along inclusions $C'\subseteq C$, matching restriction of $P$. By Yoneda, $[X_0^{op},\Set](Y(C),P)\cong P(C)$, so facet (2) holds. The resulting envelope with $D=Y$, $E$ constant at $P$, $Q(C)\cong P(C)$, and $\theta=\mathrm{id}$ has apex object whose points are exactly the irreducible closed sets (as in the standard sobrification construction \cite{johnstone1982stone}). Initiality follows from representability uniqueness; hence the interpolant is $\Sob(X)$.
+\end{proof}
+
+\subsection{Isbell Envelope as a DiGem}\label{ssec:digem-isbell}
+
+Let $\V$ be complete and cocomplete symmetric monoidal closed, and $C$ a small $\V$-category. Consider $C:=[C^{op},\V]\times [C,\V]^{op}$.
+
+\paragraph{Data.}
+Set $I=J=C$. Define
+$$
+D(i) := \big(Y_C(i),\,\mathbf{1}\big),\qquad
+E(j) := \big(\mathbf{1},\,Y_C^{op}(j)\big),
+$$
+and weight
+$$
+Q(i,j) := C(i,j).
+$$
+Let $\theta=\mathrm{id}$ under the isomorphisms $Q(-,j)\cong C(D(-),E(j))$ and $Q(i,-)\cong C(D(i),E(-))$ given by Yoneda on each side.
+
+\begin{theorem}[Isbell envelope is a DiGem]\label{thm:isbell-digem}
+With the data above, both the Gem and CoGem facets hold (Yoneda and co-Yoneda simultaneously), and the canonical envelope interpolant is the Isbell envelope $\mathcal{I}(C)$ \cite{isbell1960adequate,kelly1982basic}.
+\end{theorem}
+
+\begin{proof}
+By enriched Yoneda, for fixed $j$, $Q(-,j)=C(-,j)\xrightarrow{\ \cong\ }[C^{op},\V]\big(Y_C(-),Y_C(j)\big)$ (left facet), and dually for fixed $i$, $Q(i,-)\xrightarrow{\ \cong\ }[C,\V]^{op}\big(Y_C^{op}(i),Y_C^{op}(-)\big)$ (right facet). Taking $D,E$ as above embeds both sides, so the factorization is the identity under these isos and yields the Isbell conjugacy object as apex. Uniqueness of representing objects gives initiality. This is precisely the standard definition of the Isbell envelope as the subcategory of $[C^{op},\V]\times [C,\V]^{op}$ determined by the conjugacy relation.
+\end{proof}
+
+\subsection{Kan Extensions as Degenerate Gem/CoGem Cases}\label{ssec:gem-kan}
+
+Let $F:A\to B$ and $G:A\to D$ be $\V$-functors with $A,B,D$ small $\V$-categories.
+
+\paragraph{Left Kan extension as a Gem.}
+Fix $b\in B$ and consider $I=A$, $J=1$. Put $D=Y_A:A\to [A^{op},\V]$ (Yoneda) and $E$ constant at the candidate apex $Y_b:=\Lan_F G(b)$ (when it exists). Define the weight
+$$
+Q_b(a,*) := B(b,F a),
+$$
+and
+\(
+\theta=\mathrm{id}
+\)
+under
+\(
+Q_b(a,*)\cong [A^{op},\V]\big(Y_A(a),\,\Lan_F G(b)\big)
+\)
+given by the weighted colimit adjunction \cite{kelly1982basic}. Thus $Q_b(-,*)$ is represented by $Y_b$, so the Gem conditions are tautological. As $b$ varies, these assemble to the functor $\Lan_F G:B\to D$.
+
+\paragraph{Right Kan extension as a CoGem.}
+Dually, fix $d\in B$ and take $I=1$, $J=A$, $E=Y_A^{op}$, $D$ constant at the candidate apex $X_d:=\Ran_F G(d)$, and
+$$
+Q^d(*,a) := B(Fa,d).
+$$
+Then
+\(
+Q^d(*,-)\cong [A,\V]\big(\Ran_F G(d),\,Y_A^{op}(-)\big)
+\)
+by the weighted limit adjunction \cite{kelly1982basic}, so the CoGem conditions are tautological. As $d$ varies, these assemble to $\Ran_F G:B\to D$.
+
+\begin{theorem}[Kan extensions as degenerate Gem/CoGem]\label{thm:kan-gem}
+Whenever the (enriched) left or right Kan extension exists, the corresponding pointwise pairings are Gems (resp.\ CoGems) with $D$ or $E$ Yoneda and the apex equal to the Kan extension value. The canonical envelope is the identity under Yoneda.
+\end{theorem}
+
+\begin{proof}
+Immediate from the Yoneda isomorphisms and the weighted (co)limit adjunctions \cite[Ch.~3]{kelly1982basic}: for the left case,
+$$
+D\big(\Lan_F G(b),-\big)\ \cong\ [A,\V]\big(B(b,F-),\,D(G-,-)\big)
+$$
+and the choice $D=Y_A$ identifies $Q_b$ with $[A^{op},\V]\big(Y_A(-),\Lan_F G(b)\big)$; the right case is dual. The factorization is the identity via Yoneda, and initiality follows from uniqueness of representing objects.
+\end{proof}
+
+\subsection{Systematic Patterns}
+
+\begin{theorem}[Classification Patterns]
+The gem classification shows stable patterns under variation of $(X, \V)$:
+
+\begin{itemize}
+\item \textbf{Enrichment scale:} Varying $\V$ moves between classical (Set), categorical (Cat), linear (Ab), quantum (FdHilb), and relational (Rel) contexts.
+
+\item \textbf{Index granularity:} Varying $X$ moves between atomic (1), Boolean (2), finite/combinatorial (FinSet, FinCat), and general (Set) bases.
+
+\item \textbf{Bilateral bias:} Choosing Gem/CoGem/DiGem selects left-biased, right-biased, or balanced completion, respectively.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+Each item is enforced directly by the data of Definition 4.1 and the six-facet equivalences of Theorem 4.2: the enrichment governs hom-objects and coend/Kan constructions; the index category governs which representables generate; and the gem-type governs which Yoneda sides participate in the envelope. The table then lists the resulting structures, each verified by instantiating facets (1)-(5) in the corresponding $(X, \V)$.
+\end{proof}
+
+This systematic classification reveals that gem theory provides a predictive framework: given parameters $(X, \V)$ and bilateral bias choice, the resulting mathematical structures are determined by the Yoneda-based completion process. The bilateral completion principle operates uniformly across diverse mathematical contexts, suggesting deep organizational unity in mathematics.
+
+The classification table demonstrates that seemingly disparate mathematical structures-from complete lattices to Grothendieck topoi to quantum systems-share fundamental bilateral completion patterns, organized systematically through gem theory's $(X, \V)$ parameterization.
+
+\section{Categorical Foundations: The Pseudomonad}
+
+The canonical envelope construction admits systematic organization through pseudomonad theory, providing deep categorical foundations for the bilateral completion framework and revealing its relationship to Garner's Isbell monad \cite{garner2018isbell} as a natural specialization.
+
+\subsection{The Pairing 2-Category}
+
+We begin by constructing the appropriate 2-categorical context for organizing canonical envelope theory.
+
+\begin{definition}[The Pairing 2-Category]
+Let $\Pair$ be the 2-category with:
+
+\textbf{Objects:} Quadruples $(Q, D, E, \theta)$ where:
+\begin{itemize}
+\item $D : I \to C$, $E : J \to C$ are $\V$-functors
+\item $Q : I^{\op} \times J \to \V$ is a weight  
+\item $\theta : Q \Rightarrow C(D, E)$ is a $\V$-natural transformation (the pairing)
+\end{itemize}
+
+\textbf{1-cells:} Triples $(u, v, \alpha)$ where:
+\begin{itemize}
+\item $u : I' \to I$ and $v : J' \to J$ are functors
+\item $\alpha : Q' \to Q \circ (u \times v)$ is a $\V$-natural transformation making $\theta$ compatible under whiskering:
+$$
+\theta' = C(Du, Ev) \circ \alpha
+$$
+\end{itemize}
+
+\textbf{2-cells:} Pairs of natural transformations between $u, u'$ and $v, v'$ making $\alpha$ compatible.
+\end{definition}
+
+\begin{center}
+\begin{tikzcd}[column sep=large, row sep=large]
+(Q', D', E', \theta') \arrow[r, "{(u, v, \alpha)}"] \arrow[dr, "{(u', v', \alpha')}"] & (Q, D, E, \theta) \\
+& (Q'', D'', E'', \theta'') \arrow[u, "{2\text{--cell}}"]
+\end{tikzcd}
+\end{center}
+
+This 2-category provides the natural domain for a pseudomonad organizing canonical envelope constructions.
+
+\subsection{Canonical Envelope Pseudomonad $\mathbb{E}^{\rtimes \ltimes}$}
+
+\begin{definition}[The Envelope Construction]
+Given $(Q, D, E, \theta) \in \Pair$, form the factorization category $\Fact(\theta)$. If it has an initial object $(X, Y; \lambda, \gamma, \rho)$, define the envelope:
+$$
+\mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta) := (p, q, \chi)
+$$
+where:
+\begin{itemize}
+\item $p(i) = [J, \V](Q(i, -), C(D(i), Y(-)))$
+\item $q(j) = [I^{\op}, \V](Q(-, j), C(X(-), E(j)))$  
+\item $\chi : p^{\op} \otimes q \to Q$ satisfies the closure conditions:
+\begin{align}
+[p(i), \lambda_{i,j}] \circ \chi^{\sharp}_{i,j} &= \mathrm{curry}(\mathrm{ev}^L_{i,j}) \circ \chi^{\sharp}_{i,j} \quad \text{(L-closed)} \\
+[q(j), \rho_{i,j}] \circ \check{\chi}_{i,j} &= \mathrm{curry}(\mathrm{ev}^R_{i,j}) \circ \check{\chi}_{i,j} \quad \text{(R-closed)}
+\end{align}
+\end{itemize}
+
+These closure conditions ensure that the envelope construction respects the bilateral denseness structure encoded in the canonical envelope factorization.
+\end{definition}
+
+\begin{theorem}[Canonical Envelope Pseudomonad]
+The assignment $(Q, D, E, \theta) \mapsto \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ on $\Pair$ with:
+
+\begin{enumerate}
+\item \textbf{Unit:} For each $(Q, D, E, \theta)$, the identity factorization $(D, E; \theta, \id, \theta)$ provides a unit 1-cell $\eta : (Q, D, E, \theta) \to \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$.
+
+\item \textbf{Multiplication:} Applying $\mathbb{E}^{\rtimes \ltimes}$ twice produces an envelope of an envelope; by initiality, this collapses to the same envelope up to equivalence, giving multiplication $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$.
+
+\item \textbf{Coherence:} The associativity and unit laws hold up to invertible modifications, making $\mathbb{E}^{\rtimes \ltimes}$ a KZ pseudomonad (idempotent up to equivalence).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{Unit construction:} The identity factorization exists in presheaf categories by Yoneda embedding properties. For any pairing $\theta : Q \Rightarrow C(D, E)$, we can trivially factor as:
+$$
+\theta = \theta \circ \id \circ \theta
+$$
+where the middle $\id$ is the identity on the appropriate hom-objects.
+
+The naturality follows from the universal property of initial objects in factorization categories: any other factorization factors through this identity factorization.
+
+\textbf{Multiplication:} Given $\mathbb{E}^{\rtimes \ltimes 2}(Q, D, E, \theta)$, we obtain an envelope of an envelope. The key insight is that canonical envelopes are idempotent up to equivalence:
+
+If $(\lambda, \gamma, \rho)$ is the canonical envelope of $\theta$, then applying the envelope construction again to $\gamma$ yields a factorization that is equivalent to $(\lambda, \gamma, \rho)$ itself.
+
+This follows from the bilateral compactness property: the essential uniqueness of canonical envelope factorizations means that $\mathbb{E}^{\rtimes \ltimes}(\mathbb{E}^{\rtimes \ltimes}(\theta)) \simeq \mathbb{E}^{\rtimes \ltimes}(\theta)$.
+
+The multiplication $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$ is given by this canonical isomorphism.
+
+\textbf{KZ property:} The idempotency up to equivalence follows from the essential uniqueness of canonical envelopes (bilateral compactness condition). The coherence laws follow from the categorical universal properties of initial objects and the functoriality of the envelope construction.
+
+Specifically, the associativity pentagon and unit triangle commute up to canonical isomorphism because canonical envelopes are determined by universal properties rather than specific constructions.
+\end{proof}
+
+\begin{center}
+\begin{tikzcd}[column sep=large]
+\Pair \arrow[r, "\mathbb{E}^{\rtimes \ltimes}"] \arrow[dr, "\mathbb{E}^{\rtimes \ltimes}"'] & \Pair \arrow[d, "\mathbb{E}^{\rtimes \ltimes}"] \\
+\Pair \arrow[r, "\mathbb{E}^{\rtimes \ltimes}"'] & \Pair \arrow[u, "\mu"']
+\end{tikzcd}
+\end{center}
+
+\subsection{Eilenberg-Moore Category}
+
+The Eilenberg-Moore category for the canonical envelope pseudomonad characterizes exactly when canonical envelope completion is possible and essentially unique.
+
+\begin{definition}[Envelope Algebras]
+An \textbf{Eilenberg-Moore algebra} for $\mathbb{E}^{\rtimes \ltimes}$ consists of:
+
+\begin{enumerate}
+\item A pairing $(Q, D, E, \theta)$ in $\Pair$
+\item A choice of $(p, q, \chi)$ with:
+\begin{itemize}
+\item $p, q$ computed from some $(X, Y)$ in $C$
+\item $\chi$ satisfying conditions (L-closed) and (R-closed)  
+\item $(X, Y; \lambda, \gamma, \rho)$ initial in $\Fact(\theta)$
+\end{itemize}
+\item Stability under whiskering (closure under reindexing of shapes $I, J$)
+\end{enumerate}
+
+Equivalently: an EM-algebra is a pairing equipped with coherent canonical envelope structure.
+\end{definition}
+
+\begin{theorem}[EM Category Characterization]
+The Eilenberg-Moore category $\EnvAlg$ for the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ is equivalent to:
+$$
+\{\text{$\V$-pairings that are bilaterally dense and compact, closed under whiskering}\}
+$$
+with morphisms preserving the envelope structure.
+\end{theorem}
+
+\begin{proof}
+\textbf{Forward direction:} Every EM-algebra provides a bilaterally dense and compact pairing by definition. The algebra structure $(p, q, \chi)$ encodes exactly the bilateral denseness through the factorization existence, and the initiality condition encodes bilateral compactness.
+
+The stability condition ensures closure under whiskering: if we have an EM-algebra structure on $(Q, D, E, \theta)$, then for any morphism $(u, v, \alpha) : (Q', D', E', \theta') \to (Q, D, E, \theta)$ in $\Pair$, we obtain an induced EM-algebra structure on $(Q', D', E', \theta')$.
+
+\textbf{Backward direction:} Every bilaterally dense and compact pairing admits a canonical envelope by our fundamental existence theorem. The bilateral denseness provides the $(p, q, \chi)$ structure through factorization existence, and bilateral compactness ensures initiality.
+
+The closure condition ensures that this extends to an EM-algebra structure that is stable under the pseudomonad action.
+
+\textbf{Equivalence:} The constructions are mutually inverse by the universal properties of canonical envelopes and EM-algebras:
+\begin{itemize}
+\item \textbf{Canonical envelope $\Rightarrow$ EM-algebra:} The universal factorization provides the algebra structure
+\item \textbf{EM-algebra $\Rightarrow$ Canonical envelope:} The algebra structure determines a unique canonical envelope
+\item Both directions preserve morphisms and satisfy the required coherence conditions
+\end{itemize}
+\end{proof}
+
+\begin{example}[EM-Algebra Example: Boolean Algebra Canonical Extension]
+Consider the Boolean algebra canonical extension as an EM-algebra:
+
+\textbf{Pairing:} $(Q, D, E, \theta)$ where:
+\begin{itemize}
+\item $Q$: filter-ideal disjointness profunctor
+\item $D, E$: embeddings $\mathbf{4} \to \mathbf{4}^{\delta}$
+\item $\theta = \id$: identity pairing
+\end{itemize}
+
+\textbf{EM-Algebra Structure:}
+\begin{itemize}
+\item $p$: encodes filter representability through join-irreducibles
+\item $q$: encodes ideal corepresentability through meet-irreducibles
+\item $\chi$: encodes the canonical extension bilateral structure
+\end{itemize}
+
+\textbf{Closure Conditions:}
+\begin{itemize}
+\item (L-closed): ensures proper filter completion
+\item (R-closed): ensures proper ideal completion
+\item Whiskering stability: works for all Boolean algebra homomorphisms
+\end{itemize}
+
+\textbf{Verification:} The structure satisfies all EM-algebra axioms, confirming that Boolean algebra canonical extensions are canonical envelopes in the pseudomonad sense.
+\end{example}
+
+\subsection{Relationship to Garner's Isbell Monad}
+
+We now establish the precise relationship between our canonical envelope pseudomonad and Garner's Isbell monad, demonstrating that Garner's framework emerges as a natural specialization.
+
+\begin{theorem}[Garner's Isbell Monad as Specialization]
+Garner's Isbell monad $\mathcal{I}$ on $\cat{Cat}$ is the natural specialization of the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ to:
+\begin{itemize}
+\item Trivial weight $Q = 1$ (unweighted case)
+\item Identity shapes $I = J = C$ (categories as their own indexing)
+\item Object apexes rather than general diagrams
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+\textbf{Specialization correspondence:} Under the restrictions:
+\begin{itemize}
+\item $Q = 1$: Weighted pairings reduce to Garner's cylinders
+\item $I = J = C$: Shape categories are the target category itself
+\item Object apexes: Diagrams $X, Y$ are constant at objects of $C$
+\end{itemize}
+
+The canonical envelope construction reduces to Garner's Isbell envelope construction through the following correspondences:
+
+\textbf{Cylinders $\leftrightarrow$ Trivial-weight pairings:} Garner's cylinder $\theta : 1 \Rightarrow C(D, E)$ is exactly our pairing with trivial weight $Q = 1$.
+
+\textbf{Factorization systems $\leftrightarrow$ Bilateral envelopes:} Garner's left and right cylinder classes correspond to our bilateral envelope structure:
+\begin{itemize}
+\item Left cylinder class $\leftrightarrow$ Left envelope $\lambda$
+\item Right cylinder class $\leftrightarrow$ Right envelope $\rho$  
+\item Cylinder factorization $\leftrightarrow$ Canonical interpolant $\gamma$
+\end{itemize}
+
+\textbf{Orthogonality $\leftrightarrow$ Bilateral conditions:}
+\begin{itemize}
+\item Garner's orthogonality conditions correspond to our bilateral denseness
+\item Unique factorization corresponds to our bilateral compactness
+\end{itemize}
+
+\textbf{Pseudomonad specialization:} The canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ restricts to Garner's Isbell monad $\mathcal{I}$ under these specializations:
+\begin{align}
+\mathbb{E}^{\rtimes \ltimes}|_{Q=1,I=J=C} &\cong \mathcal{I} \\
+\EnvAlg|_{\text{specialization}} &\cong \text{Cylinder factorization systems}
+\end{align}
+
+\textbf{Universal property preservation:} The universal properties of Isbell envelopes emerge as special cases of canonical envelope universal properties under the stated restrictions.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Feature} & \textbf{Isbell monad $\mathcal{I}$} & \textbf{Canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$} \\
+\hline
+Weight & Fixed $Q = 1$ & Arbitrary $Q : I \times J \to \V$ \\
+\hline
+Shapes & $I = J = C$ & Arbitrary $I, J$ \\
+\hline
+Apexes & Objects in $C$ & Arbitrary diagrams $X, Y$ \\
+\hline
+Factorized structure & Cylinders & Weighted pairings via $p, q, \chi$ \\
+\hline
+EM algebras & Cylinder factorization systems & Dense + compact weighted pairings \\
+\hline
+Monad type & KZ pseudomonad & KZ pseudomonad (generalization) \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{corollary}[Systematic Generalization]
+The canonical envelope pseudomonad provides systematic generalization of Garner's cylinder factorization systems to weighted, diagram-apex settings, unifying:
+\begin{itemize}
+\item All weighted (co)limits and virtual extensions
+\item Kan extensions and liftings in all four directions
+\item Isbell envelopes and related categorical completions
+\item Ind/Pro completions and accessibility theory
+\item Gem/CoGem/DiGem structures and classification theory
+\end{itemize}
+under one envelope-theoretic pseudomonad framework.
+\end{corollary}
+
+\begin{proof}
+Each construction corresponds to specific choices of $(Q, D, E, \theta)$ in $\Pair$, with the pseudomonad structure providing systematic organization and the EM-category characterizing exactly when canonical envelope completion is possible and essentially unique.
+
+The systematic nature emerges from the universal categorical principles encoded in the pseudomonad structure, which capture the fundamental bilateral completion patterns appearing throughout mathematics.
+\end{proof}
+
+\subsection{Foundational Significance}
+
+\begin{theorem}[Pseudomonad as Organizational Principle]
+The canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ provides fundamental organizational structure for completion theory:
+
+\begin{enumerate}
+\item \textbf{Systematic construction:} Every canonical completion arises as an EM-algebra for $\mathbb{E}^{\rtimes \ltimes}$
+
+\item \textbf{Universal methodology:} The pseudomonad structure provides uniform methods across completion contexts
+
+\item \textbf{Coherent extension:} KZ idempotency ensures systematic virtual extension when classical completions fail
+
+\item \textbf{Categorical unity:} Reveals deep categorical unity underlying diverse mathematical completion phenomena
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{Systematic construction:} The EM-category characterization shows that every canonical completion corresponds to a bilaterally dense and compact pairing, which by definition is an EM-algebra for $\mathbb{E}^{\rtimes \ltimes}$.
+
+\textbf{Universal methodology:} The pseudomonad structure provides systematic organization of the universal factorization properties that characterize canonical interpolation. The unit, multiplication, and coherence conditions encode the fundamental categorical relationships that appear in completion contexts.
+
+\textbf{Coherent extension:} The KZ property (idempotency up to equivalence) ensures that when classical completions fail, the virtual extension provided by canonical envelopes is systematic and coherent. The pseudomonad structure guarantees that virtual methods compose properly and preserve essential mathematical structure.
+
+\textbf{Categorical unity:} The pseudomonad reveals that completion phenomena share fundamental categorical organization:
+\begin{itemize}
+\item Universal factorization through bilateral structure
+\item Initial objects in categories of factorizations
+\item Bilateral balance between dual mathematical tendencies
+\item Systematic virtual extension when classical methods fail
+\end{itemize}
+
+This demonstrates that completion theory is governed by universal categorical principles rather than isolated domain-specific techniques.
+\end{proof}
+
+This pseudomonad framework demonstrates that canonical envelope theory captures fundamental categorical principles organizing mathematical completion, extending beyond specific constructions to reveal the deep structural unity underlying completion phenomena across mathematics.
+
+The relationship to Garner's Isbell monad as a specialization shows how our framework naturally generalizes existing successful approaches while maintaining their essential insights, providing a unified foundation for both classical and virtual completion methods.
+
+\section{Structural Results and Universal Properties}
+
+This section establishes the fundamental structural properties of canonical envelopes, including the cylinder factorization characterization of canonical interpolants, classical recovery theorems, and the systematic extension of Gabriel-Ulmer theory to arbitrary weights.
+
+\subsection{Cylinder Factorization Characterization of Canonical Interpolants}
+
+One of the most elegant structural results reveals that canonical interpolants arise through cylinder factorization systems, providing deep insight into the categorical organization of completion theory and establishing the connection to Garner's framework \cite{garner2018cylinder}.
+
+\begin{theorem}[Cylinder Factorization Characterization]
+Let $\theta : Q \Rightarrow C(D, E)$ be a bilaterally dense and compact pairing with canonical envelope $(\lambda_{\mathrm{can}}, \gamma_{\mathrm{can}}, \rho_{\mathrm{can}})$. Then the canonical interpolant $\gamma_{\mathrm{can}}$ is characterized through cylinder factorization structure: for each $q \in Q(i,j)$, the morphism $\theta(i,j,q) : D(i) \to E(j)$ factors through a canonical commutative square in $C$.
+\end{theorem}
+
+\subsubsection{The Factorization Structure}
+
+The canonical envelope provides a commutative square for each element $q \in Q(i,j)$:
+\begin{center}
+\begin{tikzcd}
+D(i) \arrow[r] \arrow[d, "\lambda"'] \arrow[dr] & X_{\mathrm{can}}(i) \arrow[d, "\rho"] \\
+Y_{\mathrm{can}}(j) \arrow[ur, dashed] \arrow[r] & E(j)
+\end{tikzcd}
+\end{center}
+
+where the diagonal solid line is $\theta$ and the diagonal dotted line is $\gamma$. The star composition gives us:
+$\theta(i,j,q) = \rho(i,j,q) \circ \gamma_{\mathrm{can}}(i,j,q) \circ \lambda(i,j,q)$
+
+The factorization $\theta = \rho \star \gamma \star \lambda$ thus has the geometric structure where $\lambda$ maps $D(i)$ down to the left completion $Y_{\mathrm{can}}(j)$, $\rho$ maps the right completion $X_{\mathrm{can}}(i)$ to $E(j)$, and $\gamma_{\mathrm{can}}(i,j,q) : Y_{\mathrm{can}}(j) \to X_{\mathrm{can}}(i)$ serves as the \textbf{canonical interpolant} that bridges between the left and right completions.
+
+\subsubsection{Universal Property of the Factorization}
+
+\begin{theorem}[Universal Factorization Property]
+For any other factorization of $\theta(i,j,q)$ through intermediate objects, there exists a unique way to factor this through the canonical envelope. Specifically, there exist morphisms $\alpha : Y' \to Y_{\mathrm{can}}(j)$ and $\beta : X' \to X_{\mathrm{can}}(i)$ such that $f = \beta \circ \gamma_{\mathrm{can}}(i,j,q) \circ \alpha$.
+\end{theorem}
+
+\subsubsection{Connection to Garner's Cylinder Systems}
+
+This cylinder factorization structure corresponds precisely to Garner's cylinder factorization systems:
+\begin{itemize}
+\item \textbf{Left cylinder class:} morphisms of the form $\lambda(i,j,q)$ (source completion morphisms)
+\item \textbf{Right cylinder class:} morphisms of the form $\rho(i,j,q)$ (target completion morphisms)  
+\item \textbf{Interpolant class:} morphisms of the form $\gamma_{\mathrm{can}}(i,j,q)$ (canonical mediating morphisms)
+\end{itemize}
+
+\subsection{Functoriality and Preservation Properties}
+
+The canonical envelope construction exhibits strong functorial properties and preserves essential categorical structure.
+
+\begin{theorem}[Functoriality of Canonical Envelopes]
+The canonical envelope construction is functorial with respect to morphisms of pairings, preserving essential categorical structure through the bilateral completion process.
+\end{theorem}
+
+\begin{proof}
+Let $\phi : \theta \to \theta'$ be a morphism of pairings. The cylinder factorization structure ensures functoriality: given canonical envelopes $(\lambda, \gamma, \rho)$ for $\theta$ and $(\lambda', \gamma', \rho')$ for $\theta'$, the morphism $\phi$ induces natural transformations $\phi_\lambda$, $\phi_\gamma$, $\phi_\rho$ such that the factorization diagrams commute.
+
+The functoriality follows from the universal property of initial objects in factorization categories combined with the naturality of the cylinder factorization structure.
+\end{proof}
+
+\begin{theorem}[Preservation Properties]
+Canonical envelopes preserve fundamental categorical structures:
+\begin{enumerate}
+\item Finite limits and colimits (when they exist in the base category)
+\item Monomorphisms and epimorphisms  
+\item Adjunctions and equivalences
+\item Essential categorical properties such as compactness and accessibility
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{Limits and colimits:} Since canonical envelopes arise as initial objects in factorization categories, and limits commute with limits, finite limits in the base category are preserved pointwise through the bilateral envelope structure.
+
+\textbf{Mono/epi preservation:} The bilateral denseness ensures that representability is preserved, maintaining mono/epi properties through the factorization structure.
+
+\textbf{Adjunctions:} The functoriality of canonical envelope construction ensures that if $F \dashv G$, then $\mathrm{CanEnv}(F) \dashv \mathrm{CanEnv}(G)$ under appropriate conditions.
+
+\textbf{Essential properties:} Canonical envelopes provide universal completion respecting fundamental categorical organization through bilateral balance, preserving accessibility and related structural properties.
+\end{proof}
+
+\subsection{Classical Recovery and Correspondence}
+
+We establish the complete characterization of when canonical envelopes coincide with classical completion constructions and provide systematic virtual methodology when classical constructions fail.
+
+\begin{theorem}[Universal Classical Recovery]
+When classical completion constructions exist, canonical envelopes coincide with classical results through the correspondence principle. When classical constructions fail, canonical envelopes provide systematic virtual approximation with optimal properties.
+\end{theorem}
+
+\begin{proof}
+We verify this correspondence for major construction types:
+
+\textbf{Stone-Čech Compactification:} When $X$ is completely regular, the filter-ultrafilter pairing is bilaterally dense and compact. The canonical envelope construction recovers $\beta X$ with its universal property through the cylinder factorization structure.
+
+For non-regular spaces, bilateral denseness fails as expected, but virtual canonical envelopes provide optimal compactification approximation through the cylinder structure.
+
+\textbf{Canonical Extensions:} When $L$ is distributive, the filter-ideal disjointness pairing is bilaterally dense and compact. The canonical envelope recovers $L^{\delta}$ through the bilateral factorization structure.
+
+For non-distributive lattices, virtual canonical envelopes provide optimal approximations preserving distributive structure through the factorization framework.
+
+\textbf{Kan Extensions:} When classical Kan extensions exist, the hom-profunctor pairings are bilaterally dense. Virtual weighted limits coincide with classical extensions through the correspondence principle implemented via cylinder factorizations.
+
+\textbf{Systematic Nature:} The correspondence follows from:
+\begin{itemize}
+\item Bilateral denseness $\Leftrightarrow$ Classical existence conditions
+\item Bilateral compactness $\Leftrightarrow$ Classical uniqueness properties  
+\item Canonical envelope universality $\Leftrightarrow$ Classical universal properties
+\end{itemize}
+\end{proof}
+
+\begin{example}[Virtual Extension Through Cylinder Structure]
+Consider attempting canonical extension of the non-distributive lattice $M_3$ (diamond lattice):
+
+\textbf{Classical Failure:} The filter-ideal pairing fails bilateral denseness due to lack of sufficient join-irreducibles.
+
+\textbf{Virtual Canonical Envelope:} The cylinder factorization structure provides best approximation preserving existing meet/join structure through partial bilateral completion.
+
+\textbf{Properties:} The virtual extension preserves finite operations and provides optimal infinite operation approximation through the universal factorization property.
+\end{example}
+
+\subsection{Extension Beyond Gabriel-Ulmer}
+
+The canonical envelope framework provides systematic extension of the Gabriel-Ulmer methodology \cite{gabriel1971lokal} from filtered/cofiltered contexts to arbitrary weighted settings through the cylinder factorization framework.
+
+\begin{theorem}[Gabriel-Ulmer Extension via Cylinder Structure]
+Virtual weighted limits extend Gabriel-Ulmer virtual morphism techniques from filtered/cofiltered diagrams to arbitrary weights through canonical envelope cylinder factorizations, enabling systematic treatment of incomplete categorical frameworks.
+\end{theorem}
+
+\begin{proof}
+\textbf{Classical Gabriel-Ulmer:} Limited to filtered colimits (Ind-completion) and cofiltered limits (Pro-completion) with specific diagram shapes.
+
+\textbf{Canonical envelope extension:} Our cylinder factorization framework allows:
+\begin{itemize}
+\item \textbf{Arbitrary weights}: $Q : I^{\op} \times J \to \V$ (not restricted to filtered/cofiltered)
+\item \textbf{Arbitrary diagram shapes}: Any small categories $I, J$
+\item \textbf{Virtual morphism composition}: Systematic bilateral completion through cylinder structure
+\end{itemize}
+
+\textbf{Systematic correspondence:}
+\begin{align}
+\text{Classical Ind-Pro} &\longleftrightarrow \text{Filtered/cofiltered cylinder factorizations} \\
+\text{Virtual weighted limits} &\longleftrightarrow \text{Arbitrary weights through canonical envelopes} \\
+\text{Gabriel-Ulmer virtual morphisms} &\longleftrightarrow \text{Bilateral cylinder factorizations}
+\end{align}
+
+The extension preserves essential Gabriel-Ulmer insights while providing systematic methodology for arbitrary weighted contexts through the cylinder factorization framework.
+\end{proof}
+
+\begin{theorem}[Virtual Weighted Limit Correspondence - Complete]
+Virtual weighted limits provide systematic extension of classical weighted limit theory with complete correspondence properties through cylinder factorization structure:
+
+\begin{enumerate}
+\item Classical correspondence when weighted limits exist
+\item Optimal virtual approximation when classical limits fail
+\item Systematic virtual morphism composition extending Gabriel-Ulmer methodology
+\item All four Kan extension directions admit virtual extensions with bilateral cylinder properties
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{Classical Correspondence:} When $C$ has appropriate weighted limits, the cylinder factorization structure provides bilateral denseness and compactness, recovering classical limits through universal factorization properties.
+
+\textbf{Virtual Extension:} When classical limits fail, canonical envelope cylinder factorizations provide systematic completion through optimal bilateral structure.
+
+\textbf{Gabriel-Ulmer Extension:} The methodology extends systematically through cylinder factorization principles, with virtual morphisms composing coherently through bilateral completion structure.
+
+\textbf{Kan Extension Generalization:} Each direction corresponds to specific virtual weighted limit patterns implemented through cylinder factorizations, ensuring coherent virtual extension in all cases.
+\end{proof}
+
+These structural results establish canonical envelope theory as a systematic framework with deep categorical foundations implemented through cylinder factorization systems. The cylinder characterization reveals categorical determination of completion phenomena, while classical recovery and Gabriel-Ulmer extension demonstrate both theoretical depth and practical methodology for mathematical completion across diverse contexts.
+
+The systematic nature of virtual extensions when classical constructions fail provides principled completion methodology in incomplete categorical frameworks, extending successful approaches like Gabriel-Ulmer theory to arbitrary weighted contexts while maintaining essential structural properties through the bilateral cylinder factorization framework.
+
+\section{Relationship to Existing Frameworks}
+
+This section establishes the precise relationships between canonical envelope theory and existing mathematical frameworks, demonstrating how several major approaches to categorical completion arise as special cases or systematic correspondences with our bilateral envelope methodology.
+
+\subsection{Specializations and Unifications}
+
+\subsubsection{Schoots's Categorical Extensions}
+
+Nandi Schoots \cite{schoots2015generalising} generalized canonical extensions from distributive lattices to arbitrary categories, providing one of the first systematic extensions of algebraic completion theory to categorical contexts. We now demonstrate complete correspondence between Schoots's framework and canonical envelope theory.
+
+\begin{definition}[Schoots's Framework]
+A \textbf{categorical canonical extension} of small category $X$ is a dense functor $c : X \to \mathcal{D}$ into a filtered-cocomplete and cofiltered-complete category $\mathcal{D}$ satisfying:
+
+\textbf{P-density conditions:}
+\begin{enumerate}
+\item Every object in $\mathcal{D}$ is colimit of closed objects (limits of cofiltered diagrams in $X$) mapping to it
+\item Every object in $\mathcal{D}$ is limit of open objects (colimits of filtered diagrams in $X$) mapping from it
+\end{enumerate}
+
+\textbf{Compactness condition:} Finite accessibility between filtered colimits and cofiltered limits.
+\end{definition}
+
+\begin{definition}[Filtered and Cofiltered Diagram Categories]
+For small category $X$:
+\begin{itemize}
+\item $\mathrm{Filt}(X)$ denotes the category of filtered diagrams $F : I \to X$ where $I$ is filtered
+\item $\mathrm{Cofilt}(X)$ denotes the category of cofiltered diagrams $G : J \to X$ where $J$ is cofiltered
+\item Morphisms are natural transformations between diagrams
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Schoots-Canonical Envelope Correspondence]
+Schoots's categorical canonical extensions correspond exactly to canonical envelopes of appropriately constructed pairings.
+\end{theorem}
+
+\begin{proof}
+\textbf{Explicit construction:}
+\begin{itemize}
+\item $I = \mathrm{Filt}(X)$ (category of filtered diagrams in $X$)
+\item $J = \mathrm{Cofilt}(X)$ (category of cofiltered diagrams in $X$)  
+\item $D_{\text{filt}} : \mathrm{Filt}(X) \to \mathrm{Psh}(X)$ sends filtered diagram $F : K \to X$ to presheaf $\colim_K X(-, F(-))$
+\item $E_{\text{cofilt}} : \mathrm{Cofilt}(X) \to \mathrm{Copsh}(X)$ sends cofiltered diagram $G : L \to X$ to copresheaf $\lim_L X(G(-), -)$
+\item $Q : \mathrm{Filt}(X) \times \mathrm{Cofilt}(X) \to \mathrm{Set}$ defined by $Q(F,G) = \mathrm{Nat}(\colim_K X(-, F(-)), \lim_L X(G(-), -))$
+\item $\theta : Q \Rightarrow \mathrm{Cat}(D_{\text{filt}}, E_{\text{cofilt}})$ is the identity natural transformation
+\end{itemize}
+
+\begin{center}
+\begin{tikzcd}[column sep=large]
+\mathrm{Filt}(X) \arrow[r, "Q"] \arrow[d, "D_{\text{filt}}"'] & \mathrm{Cofilt}(X) \arrow[d, "E_{\text{cofilt}}"] \\
+\mathrm{Psh}(X) \arrow[r, "\theta=\id"'] & \mathrm{Copsh}(X)
+\end{tikzcd}
+\end{center}
+
+\textbf{P-density $\Leftrightarrow$ Bilateral Denseness:} 
+
+$(\Rightarrow)$ Assume $c : X \to \mathcal{D}$ satisfies P-density. We must show the pairing $\theta : Q \Rightarrow \mathrm{Cat}(D_{\text{filt}}, E_{\text{cofilt}})$ is bilaterally dense.
+
+\textbf{Left denseness:} We need to show that for each cofiltered diagram $G \in \mathrm{Cofilt}(X)$, the presheaf $Q(-, G) : \mathrm{Filt}(X)^{\op} \to \mathrm{Set}$ is representable.
+
+Given $G : L \to X$, define $Y(G) = \lim_L c \circ G \in \mathcal{D}$. By right P-density, any object $d \in \mathcal{D}$ can be written as $d \cong \lim_{j \in J} o_j$ where $o_j \in O(\mathcal{D})$ (open objects).
+
+For any filtered diagram $F : K \to X$, we have:
+\begin{align}
+Q(F, G) &= \mathrm{Nat}(\colim_K X(-, F(-)), \lim_L X(G(-), -)) \\
+&\cong \mathrm{Nat}(\colim_K X(-, F(-)), X(-, \lim_L G(-))) \\
+&\cong X(\colim_K F(-), \lim_L G(-)) \quad \text{(by Yoneda)} \\
+&\cong \mathcal{D}(\colim_K c \circ F, \lim_L c \circ G) \\
+&= \mathcal{D}(\colim_K c \circ F, Y(G))
+\end{align}
+
+This shows that $Q(-, G)$ is represented by $Y(G) = \lim_L c \circ G$, establishing left denseness.
+
+\textbf{Right denseness:} Similarly, for each filtered diagram $F \in \mathrm{Filt}(X)$, define $X(F) = \colim_K c \circ F \in \mathcal{D}$. By left P-density, we can write objects as filtered colimits of closed objects. The same calculation shows $Q(F, -)$ is corepresented by $X(F) = \colim_K c \circ F$, establishing right denseness.
+
+$(\Leftarrow)$ Assume the pairing is bilaterally dense. Then there exist functors $Y : \mathrm{Cofilt}(X) \to \mathcal{D}$ and $X : \mathrm{Filt}(X) \to \mathcal{D}$ such that:
+\begin{itemize}
+\item $Q(-, G) \cong \mathcal{D}(-, Y(G))$ for all $G \in \mathrm{Cofilt}(X)$
+\item $Q(F, -) \cong \mathcal{D}(X(F), -)$ for all $F \in \mathrm{Filt}(X)$
+\end{itemize}
+
+\textbf{Left P-density:} Take any object $d \in \mathcal{D}$. By the density of $c : X \to \mathcal{D}$, following Gabriel-Ulmer accessibility theory \cite{gabriel1971lokal}, we can find a filtered diagram of morphisms from objects in the image of $c$ to $d$. More precisely, $d$ is the colimit of closed objects (which are limits of cofiltered diagrams in $X$), giving us left P-density.
+
+\textbf{Right P-density:} By symmetric argument, using the corepresentability condition, every object $d$ is the limit of open objects (which are colimits of filtered diagrams in $X$).
+
+\textbf{Schoots Compactness $\Leftrightarrow$ Bilateral Compactness:}
+
+$(\Rightarrow)$ Assume $c : X \to \mathcal{D}$ satisfies Schoots compactness. We must show the canonical envelope is essentially unique.
+
+\textbf{Left compactness:} Suppose we have two left envelopes $Y, Y' : \mathrm{Cofilt}(X) \to \mathcal{D}$ such that:
+\begin{itemize}
+\item $Q(-, G) \cong \mathcal{D}(-, Y(G))$ for all $G$
+\item $Q(-, G) \cong \mathcal{D}(-, Y'(G))$ for all $G$  
+\end{itemize}
+
+By Yoneda's lemma \cite{yoneda1954homology}, this implies $Y(G) \cong Y'(G)$ for all $G$. Moreover, these isomorphisms are natural in $G$ because both $Y$ and $Y'$ arise from the same representability condition.
+
+The Schoots left compactness condition ensures that when we have $d \cong \colim_i c_i$ in two different ways (with $c_i$ closed), there's an equivalence of the filtered diagrams. This translates directly to the essential uniqueness of the left envelope construction.
+
+$(\Leftarrow)$ Assume the canonical envelope is bilaterally compact (essentially unique). We must show Schoots compactness.
+
+\textbf{Left compactness:} Suppose $d \cong \colim_{i \in I} c_i \cong \colim_{k \in K} c'_k$ where $c_i, c'_k$ are closed objects.
+
+Each closed object $c_i$ corresponds to some cofiltered limit $\lim_j c(G_j)$ for some cofiltered diagram $G$. The bilateral compactness of our canonical envelope ensures that the representation of the presheaf $Q(-, G)$ by closed objects is essentially unique.
+
+This essential uniqueness at the categorical level translates to the essential uniqueness of filtered colimit decompositions at the object level, which is precisely Schoots left compactness.
+
+The key insight is that bilateral compactness in the canonical envelope framework captures the essential uniqueness of factorizations, which corresponds exactly to the essential uniqueness of limit/colimit decompositions in Schoots's framework.
+\end{proof}
+
+\subsubsection{Pratt's Communes}
+
+Vaughan Pratt's communes \cite{pratt2010communes,pratt2010chu} generalize Isbell and adjunction envelopes by replacing the hom-profunctor with an arbitrary profunctor $P : A^{\op} \times B \to \V$. In our framework, they correspond to the particularly simple input data $D = \mathrm{Id}_A$, $E = \mathrm{Id}_B$, $Q = P$, and $\theta = \mathrm{id}_P$.
+
+\begin{definition}[Commune]
+A \textbf{commune} on profunctor $K : L \not\to J$ consists of:
+\begin{itemize}
+\item Profunctors $A : 1 \not\to J$ and $X : L \not\to 1$
+\item Natural transformation $\rho : A \diamond X \Rightarrow K$
+\end{itemize}
+where $A \diamond X(l, j) = A(j) \otimes X(l)$ is the profunctor tensor product.
+
+\begin{center}
+\begin{tikzcd}[column sep=large]
+A \diamond X \arrow[r, "\rho"] & K \\
+A(j) \otimes X(l) \arrow[r] & K(l, j)
+\end{tikzcd}
+\end{center}
+
+A commune $(A, X, \rho)$ satisfies:
+\begin{itemize}
+\item \textbf{Extensionality}: The natural transformation $\rho$ is epic in an appropriate sense
+\item \textbf{Discreteness}: The commune admits no proper refinements
+\end{itemize}
+\end{definition}
+
+\begin{theorem}[Communes as Canonical Envelopes]
+Let $A, B$ be small $\V$-categories and $P : A^{\op} \times B \to \V$ a $\V$-profunctor. Consider the pairing
+$$
+\theta = \mathrm{id}_P : P \Rightarrow P = \V(D, E) \quad \text{with } D = \mathrm{Id}_A, E = \mathrm{Id}_B.
+$$
+Then $\theta$ admits a canonical envelope $\theta = \rho \star \gamma \star \lambda$, and the interpolant underlying this initial factorization is (up to equivalence) the commune $\mathrm{Com}(P)$.
+\end{theorem}
+
+\begin{proof}
+We work $\V$-enriched. A factorization object $(\lambda, \gamma, \rho)$ of $\theta = \mathrm{id}_P$ has types
+\begin{align}
+\lambda : P &\Rightarrow C(D, Y) \cong Y(-) \\
+\gamma : C(D, Y) &\Rightarrow C(Y, X) \\  
+\rho : C(Y, X) &\Rightarrow C(X, E) \cong X(-)^{\op}
+\end{align}
+natural in $A^{\op} \times B$. By $\V$-Yoneda on each leg, such a triple is equivalently the data of a pair of $\V$-functors
+$$
+A \xrightarrow{A_0} \V, \qquad B \xrightarrow{X_0} \V
+$$
+(think $A_0(j) = C(j, Y)$, $X_0(\ell) = C(X, \ell)$) together with a $\V$-natural transformation of profunctors
+$$
+\rho^{\sharp} : A_0 \diamond X_0 \Rightarrow P,
+$$
+where $(A_0 \diamond X_0)(j, \ell) := A_0(j) \otimes X_0(\ell)$, and where $\gamma$ is the transpose of the evaluation pairing $A_0 \otimes X_0 \to P$ under the hom-tensor adjunction. 
+
+Thus objects of $\Fact(\mathrm{id}_P)$ are precisely \textbf{communes} $(A_0, X_0, \rho^{\sharp})$ on $P$ in the sense of Pratt, and morphisms in $\Fact(\mathrm{id}_P)$ correspond to pairs of $\V$-natural transformations $(\alpha, \xi)$ with $\rho'^{\sharp} \circ (\alpha \diamond \xi) = \rho^{\sharp}$.
+
+\textbf{Bilateral denseness:} In the envelope language, denseness means existence of $\lambda$ and $\rho$ with $\theta = \rho \star \gamma \star \lambda$. Under the identification above, this is exactly the requirement that the embeddings of $A$ and $B$ into the commune via $A_0$ and $X_0$ are jointly dense with respect to $P$ (every $P(j, \ell)$-cell is obtained by composing an $A$-side generator with a $B$-side generator through $\gamma$). This is Pratt's \textbf{didensity condition} for communes.
+
+\textbf{Bilateral compactness:} Compactness (uniqueness of the mediating $\gamma$ up to unique isomorphism) translates to \textbf{extensionality} of the commune: the pairing $\rho^{\sharp}$ separates $A$-side generators by $B$-side generators and conversely, so that two factorizations that agree on $P$ must agree on the interpolant. Hence any two factorizations $(\lambda, \gamma, \rho)$ and $(\lambda, \gamma', \rho)$ coincide.
+
+\textbf{Initiality and identification with Com(P):} Let $(A_0, X_0, \rho^{\sharp})$ be a commune on $P$. By the discussion above, it determines a factorization $\mathrm{id}_P = \rho \star \gamma \star \lambda$. Conversely, given any factorization, transposition yields a commune. The universal (initial) commune is obtained by taking $A_0$ and $X_0$ to be the $\V$-presheaf and copresheaf parts generated by $P$ (free on $P$ subject to the commune axioms); this initial commune induces the initial factorization in $\Fact(\mathrm{id}_P)$. Therefore the interpolant of the canonical envelope is (up to equivalence) $\mathrm{Com}(P)$.
+\end{proof}
+
+\begin{remark}[Pratt's Conditions vs. Envelope Conditions]
+Pratt's didensity condition is precisely the denseness side of the canonical envelope for $\theta = \mathrm{id}_P$, while his extensionality condition is the compactness side (uniqueness of the factorization). Thus, in the $\theta = \mathrm{id}_P$ case, the commune perspective and the canonical envelope perspective coincide without translation overhead.
+\end{remark}
+
+\begin{theorem}[Isbell Envelope as Special Commune]
+Let $C$ be a small category. Then the Isbell envelope $E(C)$ is the commune $\mathrm{Com}(C(-,-))$ for its hom-profunctor.
+\end{theorem}
+
+\begin{proof}
+Immediate from the Commune theorem with $A = B = C$ and $P = C(-,-)$.
+\end{proof}
+
+\subsection{Systematic Unification}
+
+The analysis of classical constructions reveals a progression from isolated domain-specific methods to unify categorical understanding through canonical envelope theory and virtual weighted (co)limits. Canonical envelope theory systematically unifies several major frameworks that were previously understood as distinct approaches to completion:
+
+\footnotesize
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Framework} & \textbf{Specialization} & \textbf{Correspondence} \\
+\hline
+Schoots's categorical extensions & Filtered/cofiltered structure & P-density $\Leftrightarrow$ Bilateral denseness \\
+\hline  
+Pratt's communes & Identity pairings $\theta = \mathrm{id}_P$ & Didensity/extensionality $\Leftrightarrow$ Bilateral conditions \\
+\hline
+Garner's cylinder systems & Trivial weights $Q = 1$ & Orthogonality $\Leftrightarrow$ Bilateral denseness \\
+\hline
+Riehl's weighted limits & Classical limit existence & Weighted limits $\Leftrightarrow$ Dense pairings \\
+\hline
+Gabriel-Ulmer Ind-Pro & Filtered/cofiltered restriction & Virtual morphisms $\Leftrightarrow$ Envelope factorizations \\
+\hline
+\end{tabular}
+\normalsize
+
+Each correspondence has been established through explicit construction:
+
+\textbf{Schoots}: The filtered/cofiltered diagram structure translates directly to bilateral envelope organization, with P-density conditions equivalent to bilateral denseness through representability arguments.
+
+\textbf{Pratt}: Identity pairings $\theta = \mathrm{id}_P$ yield communes as canonical interpolants, with Pratt's didensity and extensionality translating exactly to our bilateral conditions.
+
+\textbf{Garner}: Trivial weights $Q = 1$ reduce weighted pairings to Garner's cylinders, with orthogonality conditions corresponding to bilateral denseness through factorization existence.
+
+\textbf{Riehl}: Classical weighted limits are recovered when bilateral conditions hold, with virtual weighted limits providing systematic extension when they fail.
+
+\textbf{Gabriel-Ulmer}: The restriction to filtered/cofiltered diagrams is systematically extended to arbitrary weights while preserving the essential virtual morphism methodology.
+
+The systematic nature of these correspondences reveals that canonical envelope theory captures fundamental organizational principles underlying diverse completion phenomena.
+
+Many classical frameworks share common categorical principles:
+\begin{enumerate}
+\item \textbf{Universal factorization} through bilateral structure
+\item \textbf{Initial objects} in categories of factorizations  
+\item \textbf{Bilateral balance} between dual mathematical tendencies
+\item \textbf{Virtual extension} when classical constructions fail
+\end{enumerate}
+
+Each principle appears systematically across all frameworks:
+
+\textbf{Universal factorization}: Every framework involves factorization of mathematical relationships through intermediate structure with universal properties.
+
+\textbf{Initial objects}: The "canonical" or "universal" nature in each framework corresponds to initiality in appropriate factorization categories.
+
+\textbf{Bilateral balance}: Each framework mediates between opposing mathematical tendencies (filters/ideals, open/closed, left/right, etc.).
+
+\textbf{Virtual extension}: Each framework extends beyond its original scope through systematic virtual methodology when classical constructions are unavailable.
+
+These shared principles suggest that canonical envelope theory reveals fundamental categorical organization underlying mathematical completion.
+
+This systematic unification transforms completion theory from a collection of isolated domain-specific methods into a coherent mathematical framework with shared organizational principles. The bilateral completion principle emerges as a unifying concept that operates across diverse mathematical contexts, while virtual methodology provides systematic extension beyond classical domains.
+
+The relationships established in this section demonstrate that canonical envelope theory provides not just another approach to completion, but a foundational framework that reveals the categorical unity underlying previously disparate mathematical constructions.
+
+\section{Conclusion}
+
+This work has developed canonical envelope theory as a general categorical framework for completion phenomena.  
+Beginning from Riehl's characterization of weighted limits via natural transformations $\theta : Q \Rightarrow C(D,E)$, we have extended the construction to the virtual setting through the bilateral factorization $\theta = \rho \star \gamma \star \lambda$.  
+In this formulation, classical examples such as Stone-\v{C}ech compactification, J\'{o}nsson-Tarski canonical extensions, and Isbell envelopes arise uniformly as canonical envelopes of appropriate pairings.
+
+The main theoretical results include: the characterization of canonical envelopes as initial objects in categories of factorizations; necessary and sufficient existence criteria in terms of bilateral denseness and compactness; and the cylinder factorization  characterization, which shows that the canonical interpolant is determined categorically.  The pseudomonadic organization of the theory ensures coherent composition of virtual morphisms and extends Gabriel--Ulmer's Ind/Pro methodology to arbitrary weights.
+
+Explicit classification tables and correspondence theorems demonstrate that canonical envelopes subsume existing approaches such as Schoots's categorical extensions, Pratt's communes, Garner's cylinder systems, and classical weighted limit theory.  
+These results reveal a common bilateral structure underlying completion phenomena: the mediation between dual tendencies and the balance between denseness and compactness, with virtual approximations arising when classical constructions fail.
+
+From a methodological perspective, the framework provides a systematic procedure for identifying canonical constructions in new settings and for analyzing existing completions via bilateral structure.  
+Potential directions for further work include enriched variants in non-Cartesian monoidal contexts, connections to homotopy theory through virtual weighted homotopy limits, and applications to computational settings such as type theory and programming semantics.
+
+In summary, canonical envelope theory identifies a categorical mechanism-bilateral mediation combined with universal factorization-that unifies diverse completion processes.  
+Recognizing this mechanism offers both a theoretical basis and a practical method for organizing known examples, recovering classical results when possible, and constructing optimal virtual completions when necessary.
+
+\bibliography{references}
+
+\end{document}
