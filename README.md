@@ -122,17 +122,64 @@ A bilaterally dense pairing is **bilaterally compact** if the factorization is e
 
 ## Summary of Key Framework Components
 
+### Cylinder Factorization Characterization
+
+One of the most elegant structural results reveals that canonical interpolants arise through **cylinder factorization systems**, providing deep insight into the categorical organization of completion theory.
+
+#### The Factorization Structure
+
+**Theorem**: Let $\theta : Q \Rightarrow C(D, E)$ be a bilaterally dense and compact pairing with canonical envelope $(\lambda, \gamma, \rho)$. Then the canonical interpolant $\gamma$ is characterized through cylinder factorization structure: for each $q \in Q(i, j)$, the morphism $\theta(i, j, q) : D(i) \to E(j)$ factors as:
+
+$$D(i) \xrightarrow{\lambda(i,j,q)} Y(j) \xrightarrow{\gamma(i,j,q)} X(i) \xrightarrow{\rho(i,j,q)} E(j)$$
+
+where $\theta(i,j,q) = \rho(i,j,q) \circ \gamma(i,j,q) \circ \lambda(i,j,q)$.
+
+#### Universal Property
+**Theorem**: For any other factorization of $\theta(i,j,q)$ through intermediate objects, there exists a unique way to factor this through the canonical envelope. Specifically, there exist morphisms $\alpha : Y' \to Y(j)$ and $\beta : X' \to X(i)$ such that the alternative factorization equals $\beta \circ \gamma(i,j,q) \circ \alpha$.
+
+#### Connection to Garner's Framework
+This cylinder factorization structure corresponds precisely to Garner's cylinder factorization systems:
+
+- **Left cylinder class**: morphisms of the form $\lambda(i,j,q)$ (source completion morphisms)
+- **Right cylinder class**: morphisms of the form $\rho(i,j,q)$ (target completion morphisms)  
+- **Interpolant class**: morphisms of the form $\gamma(i,j,q)$ (canonical mediating morphisms)
+
+The **orthogonality conditions** in Garner's framework correspond exactly to the **bilateral denseness conditions** in canonical envelope theory. This reveals that canonical envelopes provide systematic weighted generalization of Garner's unweighted cylinder systems while preserving the essential geometric insight of factorization through orthogonal classes.
+
 ### The Pseudomonad Structure
 
 The canonical envelope construction organizes through a **pseudomonad** $\mathbb{E}^{\rtimes \ltimes}$ that captures the universal principles of mathematical completion:
 
-- **Domain**: Acts on the 2-category $\mathsf{Pair}$ of pairings $(Q, D, E, \theta)$
-- **Action**: Transforms pairings into their bilateral envelope completions
-- **Universal Property**: EM-algebras are precisely the bilaterally dense and compact pairings
-- **Idempotency**: KZ pseudomonad structure ensures systematic virtual extension when classical completions fail
-- **Unification**: Generalizes Garner's Isbell monad (specialization to trivial weights $Q = 1$)
+#### The Pairing 2-Category
 
-This pseudomonad reveals that diverse completion phenomena—from Stone-Čech compactification to Boolean algebra extensions—share fundamental categorical organization principles.
+Let $\mathsf{Pair}$ be the 2-category with:
+- **Objects**: Quadruples $(Q, D, E, \theta)$ where $D : I \to C$, $E : J \to C$ are $V$-functors, $Q : I \times J \to V$ is a weight, and $\theta : Q \Rightarrow C(D, E)$ is the pairing
+- **1-cells**: Triples $(u, v, \alpha)$ where $u : I' \to I$, $v : J' \to J$ are functors and $\alpha : Q' \to Q \circ (u \times v)$ makes $\theta$ compatible under whiskering
+- **2-cells**: Natural transformations between the functors making $\alpha$ compatible
+
+#### Pseudomonad Structure
+
+**Theorem**: The assignment $(Q, D, E, \theta) \mapsto \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ on $\mathsf{Pair}$ with:
+
+1. **Unit**: For each pairing, the identity factorization provides $\eta : (Q, D, E, \theta) \to \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$
+2. **Multiplication**: Applying $\mathbb{E}^{\rtimes \ltimes}$ twice gives an envelope of an envelope; by initiality this collapses to the same envelope up to equivalence, giving $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$  
+3. **Coherence**: Associativity and unit laws hold up to invertible modifications, making $\mathbb{E}^{\rtimes \ltimes}$ a KZ pseudomonad (idempotent up to equivalence)
+
+#### Eilenberg-Moore Category
+
+**Theorem**: The Eilenberg-Moore category $\mathsf{EnvAlg}$ for the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ is equivalent to:
+$$\{\text{$V$-pairings that are bilaterally dense and compact, closed under whiskering}\}$$
+
+#### Relationship to Garner's Isbell Monad
+
+**Theorem**: Garner's Isbell monad $\mathcal{I}$ on $\mathrm{Cat}$ is the natural specialization of $\mathbb{E}^{\rtimes \ltimes}$ to:
+- Trivial weight $Q = 1$ (unweighted case)
+- Identity shapes $I = J = C$ (categories as their own indexing)  
+- Object apexes rather than general diagrams
+
+Under these restrictions: $\mathbb{E}^{\rtimes \ltimes}|_{Q=1,I=J=C} \cong \mathcal{I}$
+
+This demonstrates that canonical envelopes provide systematic weighted generalization of Garner's cylinder factorization systems, unifying weighted limit theory with factorization methodology.
 
 ### Gem Theory Classification
 
@@ -142,23 +189,73 @@ This pseudomonad reveals that diverse completion phenomena—from Stone-Čech co
 - **CoGems**: Right-biased completion (Yoneda embedding on target)  
 - **DiGems**: Bilateral completion (Yoneda embeddings on both sides)
 
-The **classification principle**: For enrichment base $V$ and index category $X$:
-- $V$ determines the mathematical context (Set, Cat, Ab, etc.)
-- $X$ determines foundational granularity (atomic, Boolean, finite, general)
-- Gem type determines bilateral bias (left/right/balanced)
+#### Six Equivalent Facets of Gems
 
-This yields a **systematic map** from $(X,V)$ pairs to mathematical structures, revealing patterns like:
-- $(2, \mathrm{Set}) \mapsto$ Complete lattices (DiGem), Semilattices (Gem/CoGem)
-- $(\mathrm{FinCat}, \mathrm{Cat}) \mapsto$ Grothendieck topoi (Gem), Bitopoi (DiGem)
-- $(1, \mathrm{Ab}) \mapsto$ Rings (Gem), Commutative rings (DiGem)
+**Theorem**: For $P \in [X^{op}, V]$, the following are equivalent:
+
+1. **Canonical extension facet**: $\eta_P : \int^{x \in X} P(x) \otimes Y(x) \cong P$ is an isomorphism
+2. **Profunctor facet**: $\phi_x : C(Y(x), P) \cong P(x)$ is an isomorphism naturally in $x$  
+3. **Codensity monad facet**: $P$ is a fixed point of the codensity monad of $Y$
+4. **Kan extension facet**: The unit $P \to \mathrm{Ran}_Y(P \circ Y)$ is an isomorphism
+5. **Canonical envelope facet**: $P$ arises as the interpolant in a canonical envelope with specified data
+6. **Distributivity facet**: For finite diagrams $K : J \to [X^{op}, V]$ of representables, the canonical morphism $\mathrm{Hom}(\mathrm{colim}_j K(j), P) \to \lim_j \mathrm{Hom}(K(j), P)$ is an isomorphism
+
+These equivalences reveal that gems capture multiple fundamental categorical completion phenomena simultaneously, providing deep insight into how mathematical structures arise from bilateral completion properties.
+
+#### Systematic Correspondence Tables
+
+Different pairs $(X, V)$ yield different kinds of structures via gem/cogem/digem completion:
+
+| Base $V$ | Index $X$ | Gem$(X,V)$ | CoGem$(X,V)$ | DiGem$(X,V)$ |
+|----------|-----------|------------|--------------|--------------|
+| Set | 1 | Monoids | Comonoids | Commutative Monoids |
+| Set | 2 | Complete Semilattices | Complete Cosemilattices | Complete Lattices |
+| Set | DiscSet | Topological Spaces | Cotopological Spaces | Stably Compact Spaces |
+| Set | FinSet | Bounded Ionads | Bounded Coionads | Finite Approximations |
+| Set | FinPoset | Continuous Posets | Cocontinuous Posets | Bicontinuous Lattices |
+| Set | Span(Set) | Small Categories | Small Cocategories | Dagger Categories |
+| Cat | 1 | Monoidal Categories | Comonoidal Categories | Symmetric Monoidal Categories |
+| Cat | FinCat | Grothendieck Topoi | Grothendieck Cotopoi | Bitopoi |
+| Ab | 1 | Rings | Corings | Commutative Rings |
+
+#### Classification Principle
+
+For each row in the classification table:
+1. **$V$ fixes the enrichment scale**: discrete (Set), categorical (Cat), linear (Ab), quantum (FdHilb), relational (Rel)
+2. **$X$ fixes foundational granularity**: atomic (1), Boolean (2), finite/combinatorial (FinSet, FinCat), general (Set)  
+3. **Gem type fixes bilateral pattern**: left-biased (Gem), right-biased (CoGem), balanced (DiGem)
+
+The resulting structures are precisely those obtained by instantiating Yoneda-based completion in the $([X^{op}, V], Y)$ context, with each entry verified through the six-facet equivalence.
 
 ## Virtual Weighted Limits
 
-Canonical envelopes systematically extend classical weighted limit theory:
+Canonical envelopes systematically extend classical weighted limit theory through **virtual methodology**:
 
+### Definition
 **Virtual weighted limits** are canonical envelopes of pairings that encode classical weighted (co)limit data. When classical weighted limits exist, virtual weighted limits coincide with them. When classical limits fail, virtual weighted limits provide systematic approximation through bilateral completion.
 
-This extends the Gabriel-Ulmer methodology from filtered/cofiltered diagrams to arbitrary weights.
+### The Correspondence Principle
+**Theorem**: When the relevant classical weighted (co)limits exist in $C$, virtual weighted limits coincide with classical weighted limits. When classical limits fail to exist, virtual weighted limits provide systematic approximation through canonical envelope completion.
+
+### Virtual Extension Methodology
+
+When classical constructions fail, the virtual extension process works as follows:
+
+1. **Bilateral Analysis**: Examine why classical bilateral denseness fails - typically due to insufficient representable structure or failed compactness conditions
+
+2. **Optimal Approximation**: The canonical envelope construction provides the "best possible" completion respecting existing structure through the universal factorization property
+
+3. **Systematic Composition**: Virtual weighted limits compose coherently through the pseudomonad structure, ensuring that virtual extensions preserve essential mathematical relationships
+
+4. **Gabriel-Ulmer Extension**: The framework extends Gabriel-Ulmer virtual morphism methodology from filtered/cofiltered contexts to arbitrary weights
+
+### Key Features
+- **Coherent virtual morphism composition** extending Gabriel-Ulmer methodology  
+- **Optimal approximation properties** when classical completions fail
+- **Systematic preservation** of essential categorical structure
+- **Universal factorization** through bilateral envelope organization
+
+This extends the Gabriel-Ulmer methodology from filtered/cofiltered diagrams to arbitrary weights, providing principled completion methodology even in incomplete categorical frameworks.
 
 ## Examples
 
@@ -186,140 +283,55 @@ For a small category $C$, the Isbell envelope $E(C)$ is the canonical envelope w
 * $Q = C(-,-)$ (hom-profunctor)
 * $\theta = \mathrm{id}_{C(-,-)}$
 
-## Gem Theory
+## Applications
 
-**Gems** are special canonical envelopes whose bilateral structure is determined by representability and the Yoneda embedding, providing a systematic classification of mathematical structures according to their bilateral completion properties.
+Canonical envelope theory has applications across mathematics:
 
-### Definition of Gems
+### Topology
+* **Compactification theory**: Systematic understanding of Stone-Čech, Alexandroff, and Wallman compactifications
+* **Sobrification**: Topological completion via irreducible closed set structure  
+* **Stably compact spaces**: DiGem completion of discrete topological contexts
 
-Let $V$ be a complete and cocomplete symmetric monoidal closed category, and let $X$ be a small $V$-category. Write $C = [X^{op}, V]$ for the $V$-category of $V$-enriched presheaves.
+### Algebra  
+* **Canonical extensions**: Unified theory for Boolean algebras and distributive lattices
+* **MacNeille completions**: DiGem structure for arbitrary posets via polarity
+* **Ring completions**: Profinite and other categorical completions via bilateral structure
 
-A **gem** is a canonical envelope $(Q, D, E, \theta)$ where:
-1. $D : X \to C$ is the Yoneda embedding $Y$, so $D(x) = Y(x) := C(-, x)$
-2. $E : I \to C$ is constant at a presheaf $P \in C$ (with $I$ the unit category)  
-3. $Q : X^{op} \to V$ is a representable weight with $Q(x) \cong P(x)$ naturally in $x$
-4. $\theta : Q \Rightarrow C(D, E)$ is the identity under the isomorphisms $Q(x) \cong P(x) \cong C(Y(x), P)$
+### Category Theory
+* **Virtual limit theory**: Systematic extension when classical weighted (co)limits fail
+* **Accessibility theory**: Preservation of presentability through bilateral completion
+* **Higher category theory**: Extensions to (∞,1)-categorical and homotopical settings
 
-**CoGems** and **DiGems** are defined dually:
-- **CoGem**: $D$ constant, $E$ the Yoneda embedding  
-- **DiGem**: Both $D$ and $E$ are Yoneda embeddings (fully bilateral)
-
-### Six Equivalent Facets of Gems
-
-**Theorem**: For $P \in [X^{op}, V]$, the following are equivalent:
-
-1. **Canonical extension facet**: $\eta_P : \int^{x \in X} P(x) \otimes Y(x) \cong P$ is an isomorphism
-2. **Profunctor facet**: $\phi_x : C(Y(x), P) \cong P(x)$ is an isomorphism naturally in $x$  
-3. **Codensity monad facet**: $P$ is a fixed point of the codensity monad of $Y$
-4. **Kan extension facet**: The unit $P \to \mathrm{Ran}_Y(P \circ Y)$ is an isomorphism
-5. **Canonical envelope facet**: $P$ arises as the interpolant in a canonical envelope with specified data
-6. **Distributivity facet**: For finite diagrams $K : J \to [X^{op}, V]$ of representables, the canonical morphism $\mathrm{Hom}(\mathrm{colim}_j K(j), P) \to \lim_j \mathrm{Hom}(K(j), P)$ is an isomorphism
-
-### Systematic Classification
-
-The gem classification reveals stable patterns across mathematical domains:
-
-| Base $V$ | Index $X$ | Gem$(X,V)$ | CoGem$(X,V)$ | DiGem$(X,V)$ |
-|----------|-----------|------------|--------------|--------------|
-| Set | 1 | Monoids | Comonoids | Commutative Monoids |
-| Set | 2 | Complete Semilattices | Complete Cosemilattices | Complete Lattices |
-| Set | DiscSet | Topological Spaces | Cotopological Spaces | Stably Compact Spaces |
-| Set | FinSet | Bounded Ionads | Bounded Coionads | Finite Approximations |
-| Set | FinPoset | Continuous Posets | Cocontinuous Posets | Bicontinuous Lattices |
-| Set | Span(Set) | Small Categories | Small Cocategories | Dagger Categories |
-| Cat | 1 | Monoidal Categories | Comonoidal Categories | Symmetric Monoidal Categories |
-| Cat | FinCat | Grothendieck Topoi | Grothendieck Cotopoi | Bitopoi |
-| Ab | 1 | Rings | Corings | Commutative Rings |
-
-### Classification Principle
-
-For each row in the classification table:
-1. **$V$ fixes the enrichment scale**: discrete (Set), categorical (Cat), linear (Ab), quantum (FdHilb), relational (Rel)
-2. **$X$ fixes foundational granularity**: atomic (1), Boolean (2), finite/combinatorial (FinSet, FinCat), general (Set)  
-3. **Gem type fixes bilateral pattern**: left-biased (Gem), right-biased (CoGem), balanced (DiGem)
-
-The resulting structures are precisely those obtained by instantiating Yoneda-based completion in the $([X^{op}, V], Y)$ context, with each entry verified through the six-facet equivalence.
-
-### Examples
-
-**Complete Lattices as DiGems**: There is an equivalence $\mathrm{DiGem}(2, \mathrm{Set}) \simeq \mathrm{ComplLat}$, where 2-element Boolean algebra structure determines bilateral completion through join/meet-irreducible representation.
-
-**Grothendieck Topoi as Gems**: There is an equivalence $\mathrm{GrTop} \simeq \mathrm{Gem}(\mathrm{Cat}, \mathrm{FinCat})$, where the Yoneda embedding provides dense generation of topoi through finite-limit-preserving functors.
-
-## Categorical Foundations
-
-### The Canonical Envelope Pseudomonad
-
-The canonical envelope construction admits systematic organization through a pseudomonad, revealing deep categorical foundations for completion theory.
-
-#### The Pairing 2-Category
-
-Let $\mathsf{Pair}$ be the 2-category with:
-- **Objects**: Quadruples $(Q, D, E, \theta)$ where $D : I \to C$, $E : J \to C$ are $V$-functors, $Q : I \times J \to V$ is a weight, and $\theta : Q \Rightarrow C(D, E)$ is the pairing
-- **1-cells**: Triples $(u, v, \alpha)$ where $u : I' \to I$, $v : J' \to J$ are functors and $\alpha : Q' \to Q \circ (u \times v)$ makes $\theta$ compatible under whiskering
-- **2-cells**: Natural transformations between the functors making $\alpha$ compatible
-
-#### Pseudomonad Structure
-
-**Theorem**: The assignment $(Q, D, E, \theta) \mapsto \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ on $\mathsf{Pair}$ with:
-
-1. **Unit**: For each pairing, the identity factorization provides $\eta : (Q, D, E, \theta) \to \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$
-2. **Multiplication**: Applying $\mathbb{E}^{\rtimes \ltimes}$ twice gives an envelope of an envelope; by initiality this collapses to the same envelope up to equivalence, giving $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$  
-3. **Coherence**: Associativity and unit laws hold up to invertible modifications, making $\mathbb{E}^{\rtimes \ltimes}$ a KZ pseudomonad (idempotent up to equivalence)
-
-The **envelope construction** creates, for a pairing $(Q, D, E, \theta)$ with canonical envelope $(X, Y; \lambda, \gamma, \rho)$:
-- $p(i) = [J, V](Q(i, -), C(D(i), Y(-)))$
-- $q(j) = [I^{op}, V](Q(-, j), C(X(-), E(j)))$  
-- $\chi : p^{op} \otimes q \to Q$ satisfying closure conditions ensuring bilateral denseness
-
-#### Eilenberg-Moore Category
-
-**Theorem**: The Eilenberg-Moore category $\mathsf{EnvAlg}$ for the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ is equivalent to:
-$\{\text{$V$-pairings that are bilaterally dense and compact, closed under whiskering}\}$
-
-An **EM-algebra** consists of:
-1. A pairing $(Q, D, E, \theta)$ in $\mathsf{Pair}$
-2. A choice of $(p, q, \chi)$ computed from completion functors $(X, Y)$ in $C$
-3. Stability under whiskering (closure under reindexing)
-
-#### Relationship to Garner's Isbell Monad
-
-**Theorem**: Garner's Isbell monad $\mathcal{I}$ on $\mathrm{Cat}$ is the natural specialization of $\mathbb{E}^{\rtimes \ltimes}$ to:
-- Trivial weight $Q = 1$ (unweighted case)
-- Identity shapes $I = J = C$ (categories as their own indexing)  
-- Object apexes rather than general diagrams
-
-Under these restrictions: $\mathbb{E}^{\rtimes \ltimes}|_{Q=1,I=J=C} \cong \mathcal{I}$
-
-This demonstrates that canonical envelopes provide systematic weighted generalization of Garner's cylinder factorization systems, unifying weighted limit theory with factorization methodology.
-
-### Relationship to Existing Theory
-
-Canonical envelope theory unifies several classical frameworks:
-
-* **Garner's cylinder factorization systems**: Special case with trivial weight $Q = 1$
-* **Schoots's categorical extensions**: Correspondence via filtered/cofiltered diagram structure  
-* **Pratt's communes**: Equivalence for identity pairings $\theta = \mathrm{id}_P$
-* **Riehl's weighted limits**: Direct generalization to virtual contexts
+### Logic and Computer Science  
+* **Type theory**: Completion of type contexts via dependent bilateral structure
+* **Domain theory**: Continuous and algebraic domain completion via canonical envelopes
+* **Programming semantics**: Denotational semantics through virtual weighted limit methodology
 
 ## Properties
-
-### Pullback Characterization
-
-**Theorem**: The canonical interpolant $\gamma$ in a canonical envelope factorization arises as a pullback in the category of natural transformations, demonstrating that canonical interpolants are categorically determined rather than arbitrary constructions.
 
 ### Classical Recovery
 
 When classical completion constructions exist, canonical envelopes coincide with classical results. When classical constructions fail, canonical envelopes provide systematic virtual approximation with optimal properties.
 
-## Applications
+## Related Concepts
 
-Canonical envelope theory has applications across mathematics:
+### Core Category Theory
+* [[weighted limit]] - Classical weighted (co)limits that canonical envelopes generalize
+* [[profunctor]] - Bilateral weights Q : I^op × J → V in the framework
+* [[enriched category theory]] - Foundational setting following Kelly's development
+* [[Kan extension]] - Recovered as special cases via gem theory facet equivalences
 
-* **Topology**: Systematic understanding of compactification procedures
-* **Algebra**: Unified theory of canonical extensions and completions  
-* **Category Theory**: Virtual extensions of weighted limit theory
-* **Logic**: Systematic treatment of logical completion phenomena
+### Completion Theory  
+* [[Isbell envelope]] - Canonical envelope with hom-profunctor and identity diagrams
+* [[canonical extension]] - Boolean/lattice completions via filter-ideal pairings  
+* [[Stone-Čech compactification]] - Topological completion via filter-ultrafilter structure
+* [[Gabriel-Ulmer duality]] - Extended to arbitrary weights via virtual methodology
+
+### Advanced Structures
+* [[virtual double category]] - Higher categorical extensions of the framework
+* [[pseudomonad]] - Organizational structure for canonical envelope completion
+* [[factorization system]] - Cylinder characterization of canonical interpolants
+* [[accessible category]] - Preservation properties under canonical envelope completion
 
 ## References
 
@@ -330,17 +342,6 @@ Canonical envelope theory has applications across mathematics:
 * Richard Garner, *The Isbell monad*, Advances in Mathematics 333:1-31, 2018
 
 * Vaughan Pratt, *Communes*, Category Theory 2010 Abstracts, 2010
-
-## Related Concepts
-
-* [[weighted limit]]
-* [[virtual double category]]  
-* [[Isbell envelope]]
-* [[canonical extension]]
-* [[Stone-Čech compactification]]
-* [[profunctor]]
-* [[enriched category theory]]
-* [[Gabriel-Ulmer duality]]
 
 [[!redirects canonical envelope]]
 [[!redirects canonical envelopes]]
