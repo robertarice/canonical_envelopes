@@ -74,7 +74,7 @@
 \newcommand{\tensor}{\otimes}
 
 % Title and author information
-\title{Canonical Envelopes: A Mathematical Framework for Virtual Weighted Limits and Completion Theory}
+\title{Canonical Envelopes and Virtual Weighted (Co)limits}
 \author{Robert A. Rice\\
 \texttt{robert.a.rice@gmail.com}}
 \date{\today}
@@ -163,7 +163,7 @@ naturally in $X \in \C$.
 
 These classical definitions only apply when the relevant limits exist. Our framework systematically extends this theory to virtual contexts through canonical envelope factorizations.
 
-\subsection{Pairings: The Foundation}
+\subsection{Pairings}
 
 The foundation of our framework rests on Riehl's insight \cite{riehl2008weighted,riehl2014categorical} that weighted (co)limits are characterized by natural transformations. We systematize this through the concept of pairings.
 
@@ -189,29 +189,6 @@ A \textbf{canonical envelope} of $\theta$ is a factorization $(\lambda, \gamma, 
 \end{definition}
 
 This definition captures the essence of Riehl's characterization while extending it to contexts where classical weighted limits fail. The factorization $\theta = \rho \star \gamma \star \lambda$ systematically decomposes any pairing through bilateral completion structure.
-
-\begin{example}[Motivating Example: Boolean Algebra Pairing]
-Consider the four-element Boolean algebra $\mathbf{4} = \{0, a, b, 1\}$ with $a \wedge b = 0$ and $a \vee b = 1$. The canonical extension to the 8-element Boolean algebra $\mathbf{4}^{\delta}$ arises from the following pairing:
-
-\textbf{Setup:}
-\begin{itemize}
-\item $I = \mathrm{Filt}(\mathbf{4})^{\op} = \{\{1\}, \{a,1\}, \{b,1\}, \{a,b,1\}\}^{\op}$ (filters)
-\item $J = \mathrm{Idl}(\mathbf{4}) = \{\{0\}, \{0,a\}, \{0,b\}, \{0,a,b,1\}\}$ (ideals)
-\item $D, E : \mathbf{4} \to \mathbf{4}^{\delta}$ (embeddings into canonical extension)
-\item $Q(F,I) = \begin{cases} \{*\} & \text{if } F \cap I = \emptyset \\ \emptyset & \text{otherwise} \end{cases}$ (filter-ideal disjointness)
-\item $\theta = \id_Q$ (internal completion)
-\end{itemize}
-
-\textbf{Canonical Envelope Construction:} The bilateral factorization yields:
-\begin{itemize}
-\item $Y = X = \mathbf{4}^{\delta}$ (8-element canonical extension)
-\item $\lambda$: Each filter $F$ generates join-irreducible elements via $\bigvee F$
-\item $\rho$: Each ideal $I$ generates meet-irreducible elements via $\bigwedge I$
-\item $\gamma$: The canonical extension itself, mediating between filter and ideal completion
-\end{itemize}
-
-\textbf{Verification:} The disjointness condition $F \cap I = \emptyset$ captures when filter-generated elements are below ideal-generated elements in $\mathbf{4}^{\delta}$, confirming the factorization property.
-\end{example}
 
 \subsection{Canonical Envelopes as Initial Factorizations}
 
@@ -465,7 +442,7 @@ We say the completion is \textbf{bilaterally dense} if (Existence) holds, and \t
 \end{center}
 
 \begin{theorem}[Universal Character of Completions]
-Every classical "completion" or "compactification" that is the free addition of $Q$-weighted (co)limits fits the above definition of $Q$-completion. Conversely, every $Q$-completion is the initial $\V$-category containing $\mathcal{C}$ in which the given $Q$-weighted factorization of $\theta$ exists.
+Every classical ``completion" or ``compactification" that is the free addition of $Q$-weighted (co)limits fits the above definition of $Q$-completion. Conversely, every $Q$-completion is the initial $\V$-category containing $\mathcal{C}$ in which the given $Q$-weighted factorization of $\theta$ exists.
 \end{theorem}
 
 \begin{proof}
@@ -817,7 +794,7 @@ Set & 2 & Complete Semilattices & Complete Cosemilattices & Complete Lattices \\
 \hline
 Set & DiscSet & Topological Spaces & Cotopological Spaces & Stably Compact Spaces \\
 \hline
-Set & FinSet & Bounded Ionads & Bounded Coionads & Finite Approximations \\
+Set & FinDiscSet & Bounded Ionads & Bounded Coionads & Di-ionads \\
 \hline
 Set & FinPoset & Continuous Posets & Cocontinuous Posets & Bicontinuous Lattices \\
 \hline
@@ -825,14 +802,15 @@ Set & Span(Set) & Small Categories & Small Cocategories & Dagger Categories \\
 \hline
 Cat & 1 & Monoidal Categories & Comonoidal Categories & Symmetric Monoidal Categories \\
 \hline
-Cat & FinCat & Grothendieck Topoi & Grothendieck Cotopoi & Bitopoi \\
+Cat & FinCat & Grothendieck Topoi & Grothendieck Cotopoi & Di-topoi \\
 \hline
 Ab & 1 & Rings & Corings & Commutative Rings \\
 \hline
-FdHilb & FinSet & Quantum Algebras & Quantum Coalgebras & Finite Quantum Systems \\
+Ord & 2 & HeytAlg & CoHeytAlg & BiHeytAlg \\
 \hline
 \end{tabular}
 \end{center}
+(``Di-topoi'' and ``Di-ionads'' are proposed constructs, and the subjects of future work.)
 
 \begin{remark}[Classification Principle]
 For each row, the choice of:
@@ -935,7 +913,7 @@ The canonical envelope interpolant is (isomorphic to) $L^\delta$.
 We verify the six Gem facets (cf.\ \cite{kelly1982basic}, and the equivalences stated earlier in the paper) in the enriched setting.
 
 \emph{(1) Coend facet.}
-Define $\eta_P$ by the universal property of the coend: the dinatural family $P(x)\otimes Y(x)\to P$ sends an element $a\in P(x)$ and a map $Y(x)\to Y(t)$ (i.e.\ $x\le t$) to the element $a\in P(t)$ (since $a\le x\le t$). The coend quotient identifies along $x\le t$, so $\eta_P$ is well-defined. Surjectivity: for $b\in P(t)$ choose some $x\le t$ with $b\le x$; then $b$ is in the image of $P(x)\otimes Y(x)\to P(t)$. Injectivity follows because coend identifications along $x\le t$ are the only relations—these are precisely the inclusions of $\downarrow x$ into larger $\downarrow t$. Hence $\eta_P$ is an isomorphism in $[X^{op},\V]$.
+Define $\eta_P$ by the universal property of the coend: the dinatural family $P(x)\otimes Y(x)\to P$ sends an element $a\in P(x)$ and a map $Y(x)\to Y(t)$ (i.e.\ $x\le t$) to the element $a\in P(t)$ (since $a\le x\le t$). The coend quotient identifies along $x\le t$, so $\eta_P$ is well-defined. Surjectivity: for $b\in P(t)$ choose some $x\le t$ with $b\le x$; then $b$ is in the image of $P(x)\otimes Y(x)\to P(t)$. Injectivity follows because coend identifications along $x\le t$ are the only relations-these are precisely the inclusions of $\downarrow x$ into larger $\downarrow t$. Hence $\eta_P$ is an isomorphism in $[X^{op},\V]$.
 
 \emph{(2) Profunctor/Yoneda facet.}
 For each $x$, the Yoneda comparison
@@ -972,7 +950,7 @@ For a poset $(P,\le)$, its MacNeille completion $P^M$ is (equivalent to) the int
 \end{theorem}
 
 \begin{proof}
-Replicate the argument in \S\ref{ssec:gem-canonical-extension}, with $P(0)=P^M$ (complete lattice), $P(1)$ the poset of finitely generated cuts, and $r$ inclusion. Coend reconstruction gives arbitrary joins from the $0$-side and finite meets from the $1$-side; dually, co-Yoneda yields finite joins distributing over arbitrary meets. The MacNeille Galois connection $D\mapsto D^{\uparrow\downarrow}$ and $U\mapsto U^{\downarrow\uparrow}$ is exactly the Beck–Chevalley interchange forced by the coend identifications along the unique arrow $0\to 1$. Uniqueness follows from enriched Yoneda (both sides), so the envelope is initial and identifies with $P^M$.
+Replicate the argument in \S\ref{ssec:gem-canonical-extension}, with $P(0)=P^M$ (complete lattice), $P(1)$ the poset of finitely generated cuts, and $r$ inclusion. Coend reconstruction gives arbitrary joins from the $0$-side and finite meets from the $1$-side; dually, co-Yoneda yields finite joins distributing over arbitrary meets. The MacNeille Galois connection $D\mapsto D^{\uparrow\downarrow}$ and $U\mapsto U^{\downarrow\uparrow}$ is exactly the Beck-Chevalley interchange forced by the coend identifications along the unique arrow $0\to 1$. Uniqueness follows from enriched Yoneda (both sides), so the envelope is initial and identifies with $P^M$.
 \end{proof}
 
 \subsection{Sobrification as a Gem}\label{ssec:gem-sobrification}
@@ -987,7 +965,7 @@ Define $P\in [X_0^{op},\Set]$ by
 $$
 P(C) \ :=\ \{\,U\in \Omega(X)\mid C\cap U\neq \varnothing\,\},
 $$
-with restriction maps $P(C')\hookrightarrow P(C)$ for $C\subseteq C'$. Thus $P$ records “opens hit by $C$.”
+with restriction maps $P(C')\hookrightarrow P(C)$ for $C\subseteq C'$. Thus $P$ records ``opens hit by $C$."
 
 \begin{theorem}[Sobrification as Gem]
 $P$ satisfies the Gem coend reconstruction $\int^{C}P(C)\times Y(C)\xrightarrow{\ \cong\ } P$, and the canonical envelope interpolant is (homeomorphic to) the sobrification $\Sob(X)$.
@@ -1124,12 +1102,12 @@ $$
 
 This 2-category provides the natural domain for a pseudomonad organizing canonical envelope constructions.
 
-\subsection{Canonical Envelope Pseudomonad $\mathbb{E}^{\rtimes \ltimes}$}
+\subsection{Canonical Envelope Pseudomonad $\mathbb{ENV}$}
 
 \begin{definition}[The Envelope Construction]
 Given $(Q, D, E, \theta) \in \Pair$, form the factorization category $\Fact(\theta)$. If it has an initial object $(X, Y; \lambda, \gamma, \rho)$, define the envelope:
 $$
-\mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta) := (p, q, \chi)
+\mathbb{ENV}(Q, D, E, \theta) := (p, q, \chi)
 $$
 where:
 \begin{itemize}
@@ -1146,14 +1124,14 @@ These closure conditions ensure that the envelope construction respects the bila
 \end{definition}
 
 \begin{theorem}[Canonical Envelope Pseudomonad]
-The assignment $(Q, D, E, \theta) \mapsto \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ on $\Pair$ with:
+The assignment $(Q, D, E, \theta) \mapsto \mathbb{ENV}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{ENV}$ on $\Pair$ with:
 
 \begin{enumerate}
-\item \textbf{Unit:} For each $(Q, D, E, \theta)$, the identity factorization $(D, E; \theta, \id, \theta)$ provides a unit 1-cell $\eta : (Q, D, E, \theta) \to \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$.
+\item \textbf{Unit:} For each $(Q, D, E, \theta)$, the identity factorization $(D, E; \theta, \id, \theta)$ provides a unit 1-cell $\eta : (Q, D, E, \theta) \to \mathbb{ENV}(Q, D, E, \theta)$.
 
-\item \textbf{Multiplication:} Applying $\mathbb{E}^{\rtimes \ltimes}$ twice produces an envelope of an envelope; by initiality, this collapses to the same envelope up to equivalence, giving multiplication $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$.
+\item \textbf{Multiplication:} Applying $\mathbb{ENV}$ twice produces an envelope of an envelope; by initiality, this collapses to the same envelope up to equivalence, giving multiplication $\mu : \mathbb{ENV}^2 \Rightarrow \mathbb{ENV}$.
 
-\item \textbf{Coherence:} The associativity and unit laws hold up to invertible modifications, making $\mathbb{E}^{\rtimes \ltimes}$ a KZ pseudomonad (idempotent up to equivalence).
+\item \textbf{Coherence:} The associativity and unit laws hold up to invertible modifications, making $\mathbb{ENV}$ a KZ pseudomonad (idempotent up to equivalence).
 \end{enumerate}
 \end{theorem}
 
@@ -1166,32 +1144,25 @@ where the middle $\id$ is the identity on the appropriate hom-objects.
 
 The naturality follows from the universal property of initial objects in factorization categories: any other factorization factors through this identity factorization.
 
-\textbf{Multiplication:} Given $\mathbb{E}^{\rtimes \ltimes 2}(Q, D, E, \theta)$, we obtain an envelope of an envelope. The key insight is that canonical envelopes are idempotent up to equivalence:
+\textbf{Multiplication:} Given $\mathbb{ENV}^2(Q, D, E, \theta)$, we obtain an envelope of an envelope. The key insight is that canonical envelopes are idempotent up to equivalence:
 
 If $(\lambda, \gamma, \rho)$ is the canonical envelope of $\theta$, then applying the envelope construction again to $\gamma$ yields a factorization that is equivalent to $(\lambda, \gamma, \rho)$ itself.
 
-This follows from the bilateral compactness property: the essential uniqueness of canonical envelope factorizations means that $\mathbb{E}^{\rtimes \ltimes}(\mathbb{E}^{\rtimes \ltimes}(\theta)) \simeq \mathbb{E}^{\rtimes \ltimes}(\theta)$.
+This follows from the bilateral compactness property: the essential uniqueness of canonical envelope factorizations means that $\mathbb{ENV}(\mathbb{ENV}(\theta)) \simeq \mathbb{ENV}(\theta)$.
 
-The multiplication $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$ is given by this canonical isomorphism.
+The multiplication $\mu : \mathbb{ENV}^2 \Rightarrow \mathbb{ENV}$ is given by this canonical isomorphism.
 
 \textbf{KZ property:} The idempotency up to equivalence follows from the essential uniqueness of canonical envelopes (bilateral compactness condition). The coherence laws follow from the categorical universal properties of initial objects and the functoriality of the envelope construction.
 
 Specifically, the associativity pentagon and unit triangle commute up to canonical isomorphism because canonical envelopes are determined by universal properties rather than specific constructions.
 \end{proof}
 
-\begin{center}
-\begin{tikzcd}[column sep=large]
-\Pair \arrow[r, "\mathbb{E}^{\rtimes \ltimes}"] \arrow[dr, "\mathbb{E}^{\rtimes \ltimes}"'] & \Pair \arrow[d, "\mathbb{E}^{\rtimes \ltimes}"] \\
-\Pair \arrow[r, "\mathbb{E}^{\rtimes \ltimes}"'] & \Pair \arrow[u, "\mu"']
-\end{tikzcd}
-\end{center}
-
 \subsection{Eilenberg-Moore Category}
 
 The Eilenberg-Moore category for the canonical envelope pseudomonad characterizes exactly when canonical envelope completion is possible and essentially unique.
 
 \begin{definition}[Envelope Algebras]
-An \textbf{Eilenberg-Moore algebra} for $\mathbb{E}^{\rtimes \ltimes}$ consists of:
+An \textbf{Eilenberg-Moore algebra} for $\mathbb{ENV}$ consists of:
 
 \begin{enumerate}
 \item A pairing $(Q, D, E, \theta)$ in $\Pair$
@@ -1208,7 +1179,7 @@ Equivalently: an EM-algebra is a pairing equipped with coherent canonical envelo
 \end{definition}
 
 \begin{theorem}[EM Category Characterization]
-The Eilenberg-Moore category $\EnvAlg$ for the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ is equivalent to:
+The Eilenberg-Moore category $\EnvAlg$ for the canonical envelope pseudomonad $\mathbb{ENV}$ is equivalent to:
 $$
 \{\text{$\V$-pairings that are bilaterally dense and compact, closed under whiskering}\}
 $$
@@ -1232,39 +1203,12 @@ The closure condition ensures that this extends to an EM-algebra structure that 
 \end{itemize}
 \end{proof}
 
-\begin{example}[EM-Algebra Example: Boolean Algebra Canonical Extension]
-Consider the Boolean algebra canonical extension as an EM-algebra:
-
-\textbf{Pairing:} $(Q, D, E, \theta)$ where:
-\begin{itemize}
-\item $Q$: filter-ideal disjointness profunctor
-\item $D, E$: embeddings $\mathbf{4} \to \mathbf{4}^{\delta}$
-\item $\theta = \id$: identity pairing
-\end{itemize}
-
-\textbf{EM-Algebra Structure:}
-\begin{itemize}
-\item $p$: encodes filter representability through join-irreducibles
-\item $q$: encodes ideal corepresentability through meet-irreducibles
-\item $\chi$: encodes the canonical extension bilateral structure
-\end{itemize}
-
-\textbf{Closure Conditions:}
-\begin{itemize}
-\item (L-closed): ensures proper filter completion
-\item (R-closed): ensures proper ideal completion
-\item Whiskering stability: works for all Boolean algebra homomorphisms
-\end{itemize}
-
-\textbf{Verification:} The structure satisfies all EM-algebra axioms, confirming that Boolean algebra canonical extensions are canonical envelopes in the pseudomonad sense.
-\end{example}
-
 \subsection{Relationship to Garner's Isbell Monad}
 
 We now establish the precise relationship between our canonical envelope pseudomonad and Garner's Isbell monad, demonstrating that Garner's framework emerges as a natural specialization.
 
 \begin{theorem}[Garner's Isbell Monad as Specialization]
-Garner's Isbell monad $\mathcal{I}$ on $\cat{Cat}$ is the natural specialization of the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ to:
+Garner's Isbell monad $\mathcal{I}$ on $\cat{Cat}$ is the natural specialization of the canonical envelope pseudomonad $\mathbb{ENV}$ to:
 \begin{itemize}
 \item Trivial weight $Q = 1$ (unweighted case)
 \item Identity shapes $I = J = C$ (categories as their own indexing)
@@ -1297,9 +1241,9 @@ The canonical envelope construction reduces to Garner's Isbell envelope construc
 \item Unique factorization corresponds to our bilateral compactness
 \end{itemize}
 
-\textbf{Pseudomonad specialization:} The canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ restricts to Garner's Isbell monad $\mathcal{I}$ under these specializations:
+\textbf{Pseudomonad specialization:} The canonical envelope pseudomonad $\mathbb{ENV}$ restricts to Garner's Isbell monad $\mathcal{I}$ under these specializations:
 \begin{align}
-\mathbb{E}^{\rtimes \ltimes}|_{Q=1,I=J=C} &\cong \mathcal{I} \\
+\mathbb{ENV}|_{Q=1,I=J=C} &\cong \mathcal{I} \\
 \EnvAlg|_{\text{specialization}} &\cong \text{Cylinder factorization systems}
 \end{align}
 
@@ -1309,7 +1253,7 @@ The canonical envelope construction reduces to Garner's Isbell envelope construc
 \begin{center}
 \begin{tabular}{|c|c|c|}
 \hline
-\textbf{Feature} & \textbf{Isbell monad $\mathcal{I}$} & \textbf{Canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$} \\
+\textbf{Feature} & \textbf{Isbell monad $\mathcal{I}$} & \textbf{Canonical envelope pseudomonad $\mathbb{ENV}$} \\
 \hline
 Weight & Fixed $Q = 1$ & Arbitrary $Q : I \times J \to \V$ \\
 \hline
@@ -1347,10 +1291,10 @@ The systematic nature emerges from the universal categorical principles encoded 
 \subsection{Foundational Significance}
 
 \begin{theorem}[Pseudomonad as Organizational Principle]
-The canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ provides fundamental organizational structure for completion theory:
+The canonical envelope pseudomonad $\mathbb{ENV}$ provides fundamental organizational structure for completion theory:
 
 \begin{enumerate}
-\item \textbf{Systematic construction:} Every canonical completion arises as an EM-algebra for $\mathbb{E}^{\rtimes \ltimes}$
+\item \textbf{Systematic construction:} Every canonical completion arises as an EM-algebra for $\mathbb{ENV}$
 
 \item \textbf{Universal methodology:} The pseudomonad structure provides uniform methods across completion contexts
 
@@ -1361,7 +1305,7 @@ The canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ provides funda
 \end{theorem}
 
 \begin{proof}
-\textbf{Systematic construction:} The EM-category characterization shows that every canonical completion corresponds to a bilaterally dense and compact pairing, which by definition is an EM-algebra for $\mathbb{E}^{\rtimes \ltimes}$.
+\textbf{Systematic construction:} The EM-category characterization shows that every canonical completion corresponds to a bilaterally dense and compact pairing, which by definition is an EM-algebra for $\mathbb{ENV}$.
 
 \textbf{Universal methodology:} The pseudomonad structure provides systematic organization of the universal factorization properties that characterize canonical interpolation. The unit, multiplication, and coherence conditions encode the fundamental categorical relationships that appear in completion contexts.
 
@@ -1469,7 +1413,7 @@ When classical completion constructions exist, canonical envelopes coincide with
 \begin{proof}
 We verify this correspondence for major construction types:
 
-\textbf{Stone-Čech Compactification:} When $X$ is completely regular, the filter-ultrafilter pairing is bilaterally dense and compact. The canonical envelope construction recovers $\beta X$ with its universal property through the cylinder factorization structure.
+\textbf{Stone-\v{C}ech Compactification:} When $X$ is completely regular, the filter-ultrafilter pairing is bilaterally dense and compact. The canonical envelope construction recovers $\beta X$ with its universal property through the cylinder factorization structure.
 
 For non-regular spaces, bilateral denseness fails as expected, but virtual canonical envelopes provide optimal compactification approximation through the cylinder structure.
 
@@ -1644,7 +1588,7 @@ $(\Rightarrow)$ Assume $c : X \to \mathcal{D}$ satisfies Schoots compactness. We
 \item $Q(-, G) \cong \mathcal{D}(-, Y'(G))$ for all $G$  
 \end{itemize}
 
-By Yoneda's lemma \cite{yoneda1954homology}, this implies $Y(G) \cong Y'(G)$ for all $G$. Moreover, these isomorphisms are natural in $G$ because both $Y$ and $Y'$ arise from the same representability condition.
+By Yoneda, this implies $Y(G) \cong Y'(G)$ for all $G$. Moreover, these isomorphisms are natural in $G$ because both $Y$ and $Y'$ arise from the same representability condition.
 
 The Schoots left compactness condition ensures that when we have $d \cong \colim_i c_i$ in two different ways (with $c_i$ closed), there's an equivalence of the filtered diagrams. This translates directly to the essential uniqueness of the left envelope construction.
 
