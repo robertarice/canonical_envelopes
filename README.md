@@ -148,7 +148,7 @@ The **orthogonality conditions** in Garner's framework correspond exactly to the
 
 ### The Pseudomonad Structure
 
-The canonical envelope construction organizes through a **pseudomonad** $\mathbb{E}^{\rtimes \ltimes}$ that captures the universal principles of mathematical completion:
+The canonical envelope construction organizes through a **pseudomonad** $\mathbb{ENV}$ that captures the universal principles of mathematical completion:
 
 #### The Pairing 2-Category
 
@@ -159,25 +159,25 @@ Let $\mathsf{Pair}$ be the 2-category with:
 
 #### Pseudomonad Structure
 
-**Theorem**: The assignment $(Q, D, E, \theta) \mapsto \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ on $\mathsf{Pair}$ with:
+**Theorem**: The assignment $(Q, D, E, \theta) \mapsto \mathbb{ENV}(Q, D, E, \theta)$ extends to a pseudomonad $\mathbb{ENV}$ on $\mathsf{Pair}$ with:
 
-1. **Unit**: For each pairing, the identity factorization provides $\eta : (Q, D, E, \theta) \to \mathbb{E}^{\rtimes \ltimes}(Q, D, E, \theta)$
-2. **Multiplication**: Applying $\mathbb{E}^{\rtimes \ltimes}$ twice gives an envelope of an envelope; by initiality this collapses to the same envelope up to equivalence, giving $\mu : \mathbb{E}^{\rtimes \ltimes 2} \Rightarrow \mathbb{E}^{\rtimes \ltimes}$  
-3. **Coherence**: Associativity and unit laws hold up to invertible modifications, making $\mathbb{E}^{\rtimes \ltimes}$ a KZ pseudomonad (idempotent up to equivalence)
+1. **Unit**: For each pairing, the identity factorization provides $\eta : (Q, D, E, \theta) \to \mathbb{ENV}(Q, D, E, \theta)$
+2. **Multiplication**: Applying $\mathbb{ENV}$ twice gives an envelope of an envelope; by initiality this collapses to the same envelope up to equivalence, giving $\mu : \mathbb{ENV}^2 \Rightarrow \mathbb{ENV}$  
+3. **Coherence**: Associativity and unit laws hold up to invertible modifications, making $\mathbb{ENV}$ a KZ pseudomonad (idempotent up to equivalence)
 
 #### Eilenberg-Moore Category
 
-**Theorem**: The Eilenberg-Moore category $\mathsf{EnvAlg}$ for the canonical envelope pseudomonad $\mathbb{E}^{\rtimes \ltimes}$ is equivalent to:
+**Theorem**: The Eilenberg-Moore category $\mathsf{EnvAlg}$ for the canonical envelope pseudomonad $\mathbb{ENV}$ is equivalent to:
 $$\{\text{$V$-pairings that are bilaterally dense and compact, closed under whiskering}\}$$
 
 #### Relationship to Garner's Isbell Monad
 
-**Theorem**: Garner's Isbell monad $\mathcal{I}$ on $\mathrm{Cat}$ is the natural specialization of $\mathbb{E}^{\rtimes \ltimes}$ to:
+**Theorem**: Garner's Isbell monad $\mathcal{I}$ on $\mathrm{Cat}$ is the natural specialization of $\mathbb{ENV}$ to:
 - Trivial weight $Q = 1$ (unweighted case)
 - Identity shapes $I = J = C$ (categories as their own indexing)  
 - Object apexes rather than general diagrams
 
-Under these restrictions: $\mathbb{E}^{\rtimes \ltimes}|_{Q=1,I=J=C} \cong \mathcal{I}$
+Under these restrictions: $\mathbb{ENV}|_{Q=1,I=J=C} \cong \mathcal{I}$
 
 This demonstrates that canonical envelopes provide systematic weighted generalization of Garner's cylinder factorization systems, unifying weighted limit theory with factorization methodology.
 
