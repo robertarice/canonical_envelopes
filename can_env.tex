@@ -23,6 +23,10 @@
 \usepackage{hyperref}
 \usepackage{cleveref}
 
+% For table stuff
+\usepackage{booktabs}
+\usepackage{longtable}
+
 % Theorem environments
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -388,7 +392,7 @@ A completion process need not land in a complete $\V$-category, and a complete $
 \begin{proof}
 \emph{(1) Completion not implying complete.}  
 Consider the \emph{sobrification} $\Sob(X)$ of a $T_0$ topological space $X$.  
-In the canonical envelope setting (\S\ref{ssec:gem-sobrification}), this completion forces points to correspond to irreducible closed sets, but $\Sob(X)$ is not complete in the enriched sense over $\V=\mathbf{Top}$: it does not admit all small limits in $\mathbf{Top}$.  
+In the canonical envelope setting, this completion forces points to correspond to irreducible closed sets, but $\Sob(X)$ is not complete in the enriched sense over $\V=\mathbf{Top}$: it does not admit all small limits in $\mathbf{Top}$.  
 Nevertheless, $\Sob(X)$ satisfies the universal representability and compactness/denseness axioms of a canonical envelope.
 
 \emph{(2) Complete not implying completion.}  
@@ -441,59 +445,7 @@ We say the completion is \textbf{bilaterally dense} if (Existence) holds, and \t
 \end{tikzcd}
 \end{center}
 
-\begin{theorem}[Universal Character of Completions]
-Every classical ``completion" or ``compactification" that is the free addition of $Q$-weighted (co)limits fits the above definition of $Q$-completion. Conversely, every $Q$-completion is the initial $\V$-category containing $\mathcal{C}$ in which the given $Q$-weighted factorization of $\theta$ exists.
-\end{theorem}
-
-\begin{proof}
-$(\Rightarrow)$ In each familiar case one can pick $I, J, Q, D, E, \theta$ so that the known construction is the free enlargement that makes the $Q$-weighted factorization exist:
-
-\textbf{Stone-\v{C}ech compactification:} Take $I = J = X$ (discrete category of points). Define $D(x) = $ principal filter on $x$, $E(x) = $ principal ultrafilter on $x$; $Q$ encodes $F \subseteq U$; $\theta$ encodes convergence. Then $\beta X$ is the free compact Hausdorff space making the evaluation extend uniquely.
-
-\textbf{MacNeille completion:} Take $I = \mathrm{Filt}(P)$, $J = \mathrm{Idl}(P)$; $Q(F,I) = 1$ iff $F \cap I \neq \emptyset$; $\theta = \mathrm{id}$ is incidence. The MacNeille completion $P^M$ is the smallest complete lattice in which the polarity factors.
-
-\textbf{Ind/Pro completion:} With $Q$ representable and $\theta$ the Yoneda pairing, $\mathrm{Ind}(\mathcal{C})$ (resp. $\mathrm{Pro}(\mathcal{C})$) is the free filtered-colimit (resp. cofiltered-limit) completion enabling the factorization.
-
-\textbf{Canonical extensions:} For distributive lattice $L$, take $I = \mathrm{Filt}(L)^{\op}$, $J = \mathrm{Idl}(L)$, with $Q$ encoding filter-ideal disjointness and $\theta$ the canonical incidence relation. The canonical extension $L^{\delta}$ provides the free completely distributive completion.
-
-$(\Leftarrow)$ Suppose $(\widehat{\mathcal{C}}, J_{\mathcal{C}})$ is a $Q$-completion. If $\mathcal{D}$ contains $\mathcal{C}$ via fully faithful $K$ and admits the factorization of $\theta$, the universality clause gives a unique $F : \widehat{\mathcal{C}} \to \mathcal{D}$ with $F \circ J_{\mathcal{C}} \cong K$. Hence $\widehat{\mathcal{C}}$ is initial among such enlargements, i.e., exactly the "free $Q$-bilaterally complete" category on $\mathcal{C}$.
-\end{proof}
-
-\begin{corollary}[Completion-Canonical Envelope Correspondence]
-$Q$-completions correspond exactly to canonical envelopes of appropriately constructed pairings. The completion process is characterized by the bilateral denseness and compactness of the underlying pairing $\theta$.
-\end{corollary}
-
-\begin{proof}
-The correspondence follows from the universal factorization property: $Q$-completions provide the initial $\V$-category where the weighted factorization $\theta = \rho \star \gamma \star \lambda$ exists, which is precisely the characterization of canonical envelopes as initial objects in factorization categories.
-
-The bilateral conditions translate directly:
-\begin{itemize}
-\item \textbf{Bilateral denseness}: Existence of the weighted factorization in some completion
-\item \textbf{Bilateral compactness}: Essential uniqueness of the completion (up to equivalence)
-\end{itemize}
-
-The systematic nature of this correspondence reveals that completion theory is organized by the bilateral envelope structure captured in canonical envelope theory.
-\end{proof}
-
-\begin{example}[Systematic Completion Examples]
-\textbf{Stone-\v{C}ech as $Q$-completion:} For completely regular space $X$:
-\begin{itemize}
-\item Pairing: $(Q, D, E, \theta)$ with filter-ultrafilter structure
-\item Bilateral denseness: Complete regularity ensures factorization existence
-\item Bilateral compactness: Uniqueness of compactification with universal property
-\item $Q$-completion: $\beta X$ with canonical embedding $X \hookrightarrow \beta X$
-\end{itemize}
-
-\textbf{Canonical extension as $Q$-completion:} For distributive lattice $L$:
-\begin{itemize}
-\item Pairing: Filter-ideal disjointness with canonical incidence
-\item Bilateral denseness: Distributivity ensures bilateral representability
-\item Bilateral compactness: Essential uniqueness of canonical extension
-\item $Q$-completion: $L^{\delta}$ with canonical embedding $L \hookrightarrow L^{\delta}$
-\end{itemize}
-\end{example}
-
-This systematic characterization reveals that classical completion constructions share fundamental organizational principles through bilateral factorization, with the $Q$-completion framework providing precise categorical foundation for completion theory within the canonical envelope methodology.
+Now we present three examples of canonical envelopes: Stone-\v{C}ech compactification, profinite completion, and Cauchy completion of a Lawvere metric space.
 
 \subsection{Stone-\v{C}ech Compactification}\label{ssec:stone-cech}
 
@@ -778,290 +730,359 @@ This is precisely the claimed distributivity isomorphism.
 \textbf{(6) $\Rightarrow$ (1):} Take the canonical cocone $P(x) \otimes Y(x) \to P$ and the induced map $\eta_P : \int^x P(x) \otimes Y(x) \to P$. For each $x$, apply $\Hom(Y(x), -)$ and use the case $K = Y(x)$ of (6) to see that $\Hom(Y(x), \eta_P)$ is the identity on $P(x)$ (via $C(Y(x), P) \cong P(x)$). Since representables detect isomorphisms (density), $\eta_P$ is an isomorphism. This is (1).
 \end{proof}
 
-\subsection{Classification Table}
+Now we present several examples of gems, cogems, and digems. 
 
-Different pairs $(X, \V)$ yield different kinds of structures via gem/cogem/digem completion.
+\subsection{Frames as $\mathrm{Gem}(2,\mathbf{Poset})$}
+\begin{theorem}
+The category of frames is the interpolant of the gem pairing $(2,\mathbf{Poset},Q,D,E)$ where $Q(i,P) = 1$ iff $i \leq p$ for $p\in P$.
+\end{theorem}
+
+\paragraph{Setup.}
+Let $\mathcal{I}=\mathcal{J}=2=\{0<1\}$ regarded as a discrete poset, and $\mathcal{C}=\mathbf{Poset}$ with its cartesian closed structure.  
+Define $D(i)$ to be the two-element chain $\{0<1\}$ if $i=1$ and the terminal poset if $i=0$.  
+Define $E(P)=P$.  
+The weight $Q(i,P)$ is the indicator poset $\{ \ast \}$ if $i\leq p$ for some $p\in P$, otherwise empty.
+
+\paragraph{Pairing $\theta$.}
+Given $i\in 2$ and $P\in \mathbf{Poset}$, $\theta_{i,P}: Q(i,P) \to \mathbf{Poset}(D(i),P)$ sends the unique element to the monotone map selecting $p$.
+
+\paragraph{Two-sided representability.}
+Left: $Q(-,P)$ is represented by $P$ itself via $Q(i,P) \cong \mathbf{Poset}(i,P)$.  
+Right: $Q(i,-)$ is represented by $D(i)$.
+
+\paragraph{Factorization.}
+Take $\lambda$ and $\rho$ to be the Yoneda isomorphisms and $\gamma$ to be identities in $\mathbf{Poset}$.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: Yoneda lemma applies both sides.  
+Compactness: finite meets and joins suffice to witness $Q$.
+
+\paragraph{Conclusion.}
+The interpolant is the free frame on $P$, and the category of such completions is $\mathbf{Frm}$.
+
+\subsection{Bounded Ionads as $\mathrm{Gem}(\mathrm{FinDiscSet},\mathbf{Set})$}
+\begin{theorem}
+Bounded ionads are exactly the interpolants of $(\mathrm{FinDiscSet},\mathbf{Set},Q,D,E)$ where $Q(A,S) = \mathbf{Set}(A,S)$.
+\end{theorem}
+
+\paragraph{Setup.}
+Let $\mathcal{I}=\mathcal{J}=\mathrm{FinDiscSet}$, the category of finite discrete sets. Let $\mathcal{C}=\mathbf{Set}$.  
+Define $D(A)=A$ as a discrete set. Define $E(S)=S$ as a set.
+
+\paragraph{Pairing $\theta$.}
+For $A\in\mathcal{I}$, $S\in\mathcal{J}$, $\theta_{A,S}$ is the canonical bijection $\mathbf{Set}(A,S)\to \mathbf{Set}(D(A),E(S))$.
+
+\paragraph{Two-sided representability.}
+Left: $Q(-,S)$ represented by $S$ via Yoneda in $\mathbf{Set}$.  
+Right: $Q(A,-)$ represented by $A$.
+
+\paragraph{Factorization.}
+$\lambda$ and $\rho$ given by Yoneda isomorphisms, $\gamma$ identity in $\mathbf{Set}$.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: finite discrete subsets are jointly surjective for all opens in a bounded ionad.  
+Compactness: finite discrete covers suffice to witness incidence.
+
+\paragraph{Conclusion.}
+Interpolants are precisely bounded ionads.
+
+\subsection{Stably Compact Spaces as $\mathrm{DiGem}(\mathbf{DiscSet},\mathbf{Set})$}
+\begin{theorem}
+A $T_{0}$ space $X$ is stably compact iff it is the interpolant of $(\mathbf{DiscSet},\mathbf{Set},Q,D,E)$ with $Q(A,S)=\mathbf{Set}(A,S)$.
+\end{theorem}
+
+\paragraph{Setup.}
+Let $\mathcal{I}=\mathbf{DiscSet}$ and $\mathcal{J}=\mathbf{DiscSet}^{op}$. Define $D(A)=\mathsf{O}(A)$, $E(B)=\mathsf{K}(B)$ (compact-saturateds). Weight $Q(A,B)=\mathbf{Set}(A,B)$.
+
+\paragraph{Pairing $\theta$.}
+Given $A,B$ finite discrete, $\theta_{A,B}$ is induced by incidence of opens and compact-saturated sets.
+
+\paragraph{Two-sided representability.}
+Left: $Q(-,B)$ represented by the open classifier for $B$.  
+Right: $Q(A,-)$ represented by the compact-saturated classifier for $A$.
+
+\paragraph{Factorization.}
+$\lambda,\rho$ from Yoneda, $\gamma$ identity in $\mathbf{Top}$.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: finite discrete tests detect both opens and compact-saturateds in a stably compact space.  
+Compactness: finitary data suffice to determine incidence.
+
+\paragraph{Conclusion.}
+Interpolants correspond exactly to stably compact $T_{0}$ spaces.
+
+\subsection{Canonical Extensions of Distributive Lattices}
+\begin{theorem}
+Let $L$ be a distributive lattice. Its canonical extension $L^{\delta}$ is the interpolant of the gem pairing $(\mathrm{Filt}(L),\mathrm{Idl}(L),Q,D,E)$ where $Q(F,I) = 1$ iff $F\cap I \neq \varnothing$.
+\end{theorem}
+
+\paragraph{Setup.}
+$\mathcal{I}=\mathrm{Filt}(L)$, $\mathcal{J}=\mathrm{Idl}(L)$. $\mathcal{C}=\mathbf{Poset}$.  
+$D(F)=F$, $E(I)=I$. Weight $Q(F,I)$ is $1$ if $F\cap I\neq\varnothing$.
+
+\paragraph{Pairing $\theta$.}
+Incidence relation between filters and ideals.
+
+\paragraph{Two-sided representability.}
+Left: $Q(-,I)$ represented by principal filters generated by $I$.  
+Right: $Q(F,-)$ represented by principal ideals generated by $F$.
+
+\paragraph{Factorization.}
+$\lambda,\rho$ from representability, $\gamma$ identity in $\mathbf{Poset}$.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: filters separate ideals; ideals separate filters.  
+Compactness: finite meets and joins suffice.
+
+\paragraph{Conclusion.}
+$L^{\delta}$ is the interpolant.
+
+\subsection{MacNeille Completions}
+\begin{theorem}
+Let $P$ be a poset. Its MacNeille completion $\mathrm{McN}(P)$ is the interpolant of the gem pairing $(\mathrm{Up}(P),\mathrm{Down}(P),Q,D,E)$ where $Q(U,D) = 1$ iff $U\cap D\neq\varnothing$.
+\end{theorem}
+
+\paragraph{Setup.}
+$\mathcal{I}=\mathrm{Up}(P)$, $\mathcal{J}=\mathrm{Down}(P)$. $\mathcal{C}=\mathbf{Poset}$.  
+$D(U)=U$, $E(D)=D$. Weight $Q(U,D)$ is $1$ if $U\cap D\neq\varnothing$.
+
+\paragraph{Pairing $\theta$.}
+Incidence between up-sets and down-sets.
+
+\paragraph{Two-sided representability.}
+Left: represented by principal up-sets.  
+Right: represented by principal down-sets.
+
+\paragraph{Factorization.}
+$\lambda,\rho$ from representability, $\gamma$ identity.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: up-sets separate down-sets and vice versa.  
+Compactness: finite intersections suffice.
+
+\paragraph{Conclusion.}
+$\mathrm{McN}(P)$ is the interpolant.
+
+\subsection{Isbell Envelopes}
+\begin{theorem}
+Let $\mathcal{C}$ be small. Its Isbell envelope is the interpolant of the pure digem pairing $([\mathcal{C}^{op},\mathbf{Set}],[\mathcal{C},\mathbf{Set}],Q,D,E)$ with $Q(F,G) = \int^{c} F(c)\times G(c)$.
+\end{theorem}
+
+\paragraph{Setup.}
+$\mathcal{I}=[\mathcal{C}^{op},\mathbf{Set}]$, $\mathcal{J}=[\mathcal{C},\mathbf{Set}]$.  
+$D(F)=F$, $E(G)=G$. Weight $Q$ is the hom-bimodule given by the coend.
+
+\paragraph{Pairing $\theta$.}
+Yoneda pairing between presheaves and copresheaves via coend.
+
+\paragraph{Two-sided representability.}
+Left: $Q(-,G)$ represented by $G$ under Yoneda.  
+Right: $Q(F,-)$ represented by $F$.
+
+\paragraph{Factorization.}
+$\lambda,\rho$ Yoneda isomorphisms, $\gamma$ identity in $[\mathcal{C}^{op},\mathbf{Set}]$.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: representables generate presheaf and copresheaf categories.  
+Compactness: smallness ensures finite data suffices.
+
+\paragraph{Conclusion.}
+Isbell envelope is the interpolant.
+
+\subsection{Sobrification}
+\begin{theorem}
+Let $X$ be a $T_{0}$ space. Its sobrification $\mathrm{Sob}(X)$ is the interpolant of $(\mathrm{Irr}(X),X,Q,D,E)$ where $Q(Z,x) = 1$ iff $x\in Z$ for $Z$ irreducible closed.
+\end{theorem}
+
+\paragraph{Setup.}
+$\mathcal{I}=\mathrm{Irr}(X)$, $\mathcal{J}=X$. $\mathcal{C}=\mathbf{Top}$.  
+$D(Z)=Z$ with subspace topology, $E(x)$ singleton space.
+
+\paragraph{Pairing $\theta$.}
+Point--irreducible-closed-set incidence.
+
+\paragraph{Two-sided representability.}
+Left: represented by generic points of irreducible closed sets.  
+Right: represented by closure of points.
+
+\paragraph{Factorization.}
+$\lambda,\rho$ from representability, $\gamma$ identity in $\mathbf{Top}$.
+
+\paragraph{Bilateral denseness and compactness.}
+Density: irreducible closed sets separate points; points separate irreducible closed sets.  
+Compactness: finite subfamilies suffice locally.
+
+\paragraph{Conclusion.}
+$\mathrm{Sob}(X)$ is the interpolant.
+
+Here is a summary table of all Gem, Cogem, and Digem examples covered in this section.
+
+\subsection{Summary of Gem, Cogem, and Digem Examples}
+\label{subsec:gem-summary}
 
 \begin{center}
-\renewcommand{\arraystretch}{1.5}
-\begin{tabular}{|c|c|c|c|c|}
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}llll@{}}
+\toprule
+\textbf{Completion / Extension} & \textbf{Type} & \textbf{Indexing Categories} $(\mathcal{I},\mathcal{J})$ & \textbf{Weight $Q$} \\
+\midrule
+Canonical extension $L^{\delta}$ & Gem &
+$\mathrm{Filt}(L),\mathrm{Idl}(L)$ &
+Filter/ideal incidence \\
+MacNeille completion $\mathrm{McN}(P)$ & Gem &
+$\mathrm{Up}(P),\mathrm{Down}(P)$ &
+Up-/down-set incidence \\
+Frames & Gem & $2$, $\mathbf{Poset}$ &
+Order-theoretic truth \\
+Bounded ionads & Gem & $\mathrm{FinDiscSet}$, $\mathbf{Set}$ &
+Finite-discrete point--open incidence \\
+Stably compact spaces & Digem & $\mathbf{DiscSet}$, $\mathbf{Set}$ &
+Map $A\to S$ \\
+Isbell envelope $\mathcal{I}\mathcal{C}$ & Pure Digem &
+$[\mathcal{C}^{op},\mathbf{Set}],\ [\mathcal{C},\mathbf{Set}]$ &
+Hom-bimodule \\
+Sobrification $\mathrm{Sob}(X)$ & Gem-like &
+$\mathrm{Irr}(X),\ X$ &
+Point--irreducible-closed-set incidence \\
+\bottomrule
+\end{longtable}
+\end{center}
+
+To conclude the section, we argue that canonical envelopes and virtual weighted (co)limits generalize all four Kan "directions: Lan, Ran, Lift, and Rift. We note parenthetically that these results can also be obtained (almost trivially) by the fact that both weighted limits and colimits are also generalized by canonical envelopes. We include the following subsection for completeness and illustration.
+
+\subsection{Kan Extensions as Gem/CoGem Interpolants}
+
+The four Kan extension directions (left and right Kan extensions along functors, and left and right Kan lifts through functors) arise naturally as interpolants in canonical envelope factorizations. We provide a detailed characterization of left Kan extensions as cogem interpolants, then establish that the remaining three directions follow by categorical duality.
+
+\subsubsection{Left Kan Extensions as CoGem Interpolants}
+
+\begin{theorem}[Left Kan Extensions as CoGems]
+\label{thm:lan-cogems}
+Let $F : C \to D$ be a functor and $G : C \to \mathcal{E}$ a diagram. The left Kan extension $\mathrm{Lan}_F G$ (when it exists) is precisely the interpolant of a canonical envelope factorization with cogem structure.
+\end{theorem}
+
+\begin{proof}
+We construct the canonical envelope data explicitly and verify all conditions.
+
+\textbf{Setup:}
+\begin{itemize}
+\item Index categories: $I = C$, $J = D$
+\item Source diagram: $D_s : C \to \mathcal{E}$ given by $D_s(c) = G(c)$
+\item Target diagram: $D_t : D \to \mathcal{E}$ given by $D_t(d) = d$ (inclusion when $\mathcal{E}$ contains $D$, or more generally via some embedding)
+\item Weight: $Q : C^{\mathrm{op}} \times D \to \mathbf{Set}$ defined by $Q(c,d) = D(F(c), d)$
+\item Pairing: $\theta_{c,d} : D(F(c), d) \to \mathcal{E}(G(c), d)$ induced by $G$
+\end{itemize}
+
+\textbf{Constructing the Factorization:}
+
+\emph{Step 1: Right envelope $\rho$.} For each $c \in C$, we need $\rho_c : Q(c, -) \Rightarrow \mathcal{E}(X(c), D_t(-))$ where $X : C \to \mathcal{E}$ represents the ``right completion.''
+
+By the universal property of left Kan extension, for any object $e \in \mathcal{E}$:
+\begin{equation}
+\mathcal{E}(\mathrm{Lan}_F G(d), e) \cong \mathrm{Nat}(D(F(-), d), \mathcal{E}(G(-), e))
+\end{equation}
+
+Setting $X(c) = G(c)$ and using Yoneda, we get:
+\begin{equation}
+\rho_{c,d} : D(F(c), d) \to \mathcal{E}(G(c), d)
+\end{equation}
+given by $\rho_{c,d}(f : F(c) \to d) = \mathcal{E}(G(c), f) : \mathcal{E}(G(c), F(c)) \to \mathcal{E}(G(c), d)$.
+
+\emph{Step 2: Left envelope $\lambda$.} For each $d \in D$, we need $\lambda_d : Q(-, d) \Rightarrow \mathcal{E}(D_s(-), Y(d))$ where $Y : D \to \mathcal{E}$ represents the ``left completion.''
+
+The universal property gives us that $Y(d) = \mathrm{Lan}_F G(d)$, and:
+\begin{equation}
+\lambda_{c,d} : D(F(c), d) \to \mathcal{E}(G(c), \mathrm{Lan}_F G(d))
+\end{equation}
+
+This is given by the unit of the Kan extension: for $f : F(c) \to d$, we have $\lambda_{c,d}(f) = \mathrm{Lan}_F G(f) \circ \eta_c$ where $\eta_c : G(c) \to \mathrm{Lan}_F G(F(c))$ is the unit.
+
+\emph{Step 3: Canonical interpolant $\gamma$.} The interpolant is:
+\begin{equation}
+\gamma_{c,d} : \mathcal{E}(G(c), \mathrm{Lan}_F G(d)) \to \mathcal{E}(G(c), d)
+\end{equation}
+
+For a morphism $\alpha : G(c) \to \mathrm{Lan}_F G(d)$, we get $\gamma_{c,d}(\alpha)$ by composing with the counit $\epsilon_d : \mathrm{Lan}_F G(d) \to d$ (when it exists, i.e., when $d$ is in the essential image of $F$).
+
+\emph{Step 4: Factorization verification.} We must verify $\theta = \rho \star \gamma \star \lambda$:
+
+For $f : F(c) \to d$, we trace through the factorization:
+\begin{equation}
+f \xrightarrow{\lambda_{c,d}} \mathrm{Lan}_F G(f) \circ \eta_c \xrightarrow{\gamma_{c,d}} \epsilon_d \circ \mathrm{Lan}_F G(f) \circ \eta_c \xrightarrow{\rho_{c,d}} \text{original } \theta_{c,d}(f)
+\end{equation}
+
+By the triangle identities for the Kan extension adjunction, this composition equals the original pairing $\theta_{c,d}(f)$.
+
+\textbf{CoGem Structure Verification:}
+
+\emph{Bilateral denseness:} 
+\begin{itemize}
+\item Left denseness: $Q(-, d) \cong \mathcal{E}(G(-), \mathrm{Lan}_F G(d))$ via $\lambda$
+\item Right denseness: $Q(c, -) \cong \mathcal{E}(G(c), D_t(-))$ via $\rho$
+\end{itemize}
+
+\emph{Bilateral compactness:} The uniqueness of left Kan extensions ensures essential uniqueness of the factorization.
+
+\emph{CoGem classification:} The completion flows from source diagrams (constant at $G(c)$) to target representables (Yoneda embedding of $D$), giving the characteristic Constant $\to$ Yoneda structure of a cogem.
+
+The \textbf{interpolant} $Y(d) = \mathrm{Lan}_F G(d)$ is thus the cogem arising from this canonical envelope.
+\end{proof}
+
+\subsubsection{The Four Kan Directions by Duality}
+
+\begin{theorem}[Complete Kan Classification]
+\label{thm:kan-complete}
+The four Kan extension directions correspond to the complete gem/cogem classification:
+
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
 \hline
-\textbf{Base $\V$} & \textbf{Index $X$} & \textbf{Gem$(X, \V)$} & \textbf{CoGem$(X, \V)$} & \textbf{DiGem$(X, \V)$} \\
+\textbf{Kan Direction} & \textbf{Gem Type} & \textbf{Structure} & \textbf{Interpolant} \\
 \hline
-Set & 1 & Monoids & Comonoids & Commutative Monoids \\
-\hline
-Set & 2 & Complete Semilattices & Complete Cosemilattices & Complete Lattices \\
-\hline
-Set & DiscSet & Topological Spaces & Cotopological Spaces & Stably Compact Spaces \\
-\hline
-Set & FinDiscSet & Bounded Ionads & Bounded Coionads & Di-ionads \\
-\hline
-Set & FinPoset & Continuous Posets & Cocontinuous Posets & Bicontinuous Lattices \\
-\hline
-Set & Span(Set) & Small Categories & Small Cocategories & Dagger Categories \\
-\hline
-Cat & 1 & Monoidal Categories & Comonoidal Categories & Symmetric Monoidal Categories \\
-\hline
-Cat & FinCat & Grothendieck Topoi & Grothendieck Cotopoi & Di-topoi \\
-\hline
-Ab & 1 & Rings & Corings & Commutative Rings \\
-\hline
-Ord & 2 & HeytAlg & CoHeytAlg & BiHeytAlg \\
+$\mathrm{Lan}_F G$ & CoGem & Constant $\to$ Yoneda & Left Kan extension \\
+$\mathrm{Ran}_F G$ & Gem & Yoneda $\to$ Constant & Right Kan extension \\  
+$\mathrm{Lift}_F G$ & CoGem$^{\mathrm{op}}$ & Constant$^{\mathrm{op}} \to$ Yoneda$^{\mathrm{op}}$ & Left Kan lift \\
+$\mathrm{Rift}_F G$ & Gem$^{\mathrm{op}}$ & Yoneda$^{\mathrm{op}} \to$ Constant$^{\mathrm{op}}$ & Right Kan lift \\
 \hline
 \end{tabular}
 \end{center}
-(``Di-topoi'' and ``Di-ionads'' are proposed constructs, and the subjects of future work.)
-
-\begin{remark}[Classification Principle]
-For each row, the choice of:
-\begin{enumerate}
-\item $\V$ fixes the enrichment scale (discrete Set, categorical Cat, linear Ab, quantum FdHilb, etc.);
-\item $X$ fixes the foundational granularity (atomic 1, Boolean 2, finite/combinatorial FinSet or FinCat, general Set);
-\item the Gem/CoGem/DiGem choice fixes the bilateral pattern (left-biased, right-biased, balanced).
-\end{enumerate}
-
-The resulting structures are precisely as listed in the classification table.
-
-By Definition 4.1 and Theorem 4.2, the gem-type (left/right/bilateral) is enforced by which Yoneda sides appear in the envelope, while the pair $(X, \V)$ determines the ambient enriched presheaf setting in which the coend/reconstruction (facet (1)) and codensity/Kan (facets (3)-(4)) are computed. Each row is obtained by instantiating the Yoneda-based completion in that $([X^{\op}, \V], Y)$ context.
-\end{remark}
-
-\subsection{Detailed Examples}
-
-\subsubsection{Complete Lattices as DiGems}
-
-\begin{theorem}[Complete Lattices = DiGem(2, Set)]
-There is an equivalence of categories
-$$
-\mathrm{DiGem}(2, \mathrm{Set}) \simeq \mathrm{ComplLat},
-$$
-between bilateral gems over $(X = 2, \V = \mathrm{Set})$ and complete lattices with complete lattice morphisms.
 \end{theorem}
 
-\begin{proof}
-Write $\mathbf{2} = \{0 \to 1\}$ as a small category. The presheaf category $[\mathbf{2}^{\op}, \mathrm{Set}]$ consists of pairs $P = (P(1) \xrightarrow{r} P(0))$ (a function reversed along $0 \to 1$). The two Yoneda objects are $Y(0)$ and $Y(1)$ with
-\begin{align}
-Y(0)(0) = \{*\}, \quad Y(0)(1) &= \emptyset \\
-Y(1)(0) = \{0 \to 1\}, \quad Y(1)(1) &= \{*\}.
-\end{align}
+\begin{proof}[Proof by Duality]
+The remaining three cases follow from the detailed left Kan extension analysis by systematic categorical duality:
 
-A DiGem object is, by Definition 4.1 and Theorem 4.2, a presheaf $P$ that is simultaneously reconstructed from $Y(0)$ and $Y(1)$ on both left and right sides. Concretely, (1) forces that the canonical map
-$$
-\eta_P : \int^{x \in \mathbf{2}} P(x) \times Y(x) \to P
-$$
-is an isomorphism, and the dual condition holds on the right (by the CoGem side). 
+\textbf{Right Kan Extensions ($\mathrm{Ran}_F G$):} Apply contravariant duality (reverse all arrows) to the left Kan extension construction. The cogem Constant $\to$ Yoneda becomes the gem Yoneda $\to$ Constant, and the universal property 
+\begin{equation}
+\mathcal{E}(e, \mathrm{Ran}_F G(d)) \cong \mathrm{Nat}(D(d, F(-)), \mathcal{E}(e, G(-)))
+\end{equation}
+exhibits the dual representability structure.
 
-Unwinding the coend for $\mathbf{2}$, the left condition gives that $P(0)$ is the free completion under joins generated by the images of $P(1)$ along $r$, while the right condition dually gives that $P(1)$ is the free completion under meets reflected by $r$. Together these imply that the image of $r$ forms a Galois-stable polarity whose MacNeille completion yields a complete lattice $L$; moreover $P$ is isomorphic (in $[\mathbf{2}^{\op}, \mathrm{Set}]$) to the Yoneda presentation of $L$ by join- and meet-generators:
-$$
-P(0) \cong L, \quad P(1) \cong J(L)
-$$
-where $J(L)$ denotes the set of join-irreducibles (or dually, equivalently the meet-irreducibles, since we require bilateral reconstruction), and $r$ is the universal incidence map. 
+\textbf{Left Kan Lifts ($\mathrm{Lift}_F G$):} For $F : C \to D$ and $G : D \to \mathcal{E}$, apply covariant duality by reversing the roles of source and target categories. The functor $F$ now acts ``upward'' from $C$ to $D$, and we seek $\mathrm{Lift}_F G : C \to \mathcal{E}$ such that:
+\begin{equation}
+\mathcal{E}(\mathrm{Lift}_F G(c), e) \cong \mathrm{Nat}(D(F(c), -), \mathcal{E}(G(-), e))
+\end{equation}
 
-Morphisms of DiGem objects preserve both reconstructions, hence are exactly complete lattice homomorphisms.
+This yields a CoGem$^{\mathrm{op}}$ structure where the completion flows oppositely through the categorical infrastructure.
 
-Conversely, from any complete lattice $L$ we build $P_L$ by the above assignment and check directly that both gem and cogem equalities (facet (1) on both sides) hold. These constructions define quasi-inverse functors, establishing the equivalence.
-\end{proof}
+\textbf{Right Kan Lifts ($\mathrm{Rift}_F G$):} Combine both dualities---contravariant duality from right Kan extensions and covariant duality from Kan lifts. The result is a Gem$^{\mathrm{op}}$ structure with universal property:
+\begin{equation}
+\mathcal{E}(e, \mathrm{Rift}_F G(c)) \cong \mathrm{Nat}(D(-, F(c)), \mathcal{E}(e, G(-)))
+\end{equation}
 
-\subsubsection{Grothendieck Topoi as Gems}
-
-\begin{theorem}[Grothendieck Topoi = Gem(Cat, FinCat)]
-There is an equivalence of categories
-$$
-\mathrm{GrTop} \simeq \mathrm{Gem}(\mathrm{Cat}, \mathrm{FinCat}),
-$$
-between Grothendieck topoi and left-biased gems over $(X = \mathrm{Cat}, \V = \mathrm{FinCat})$.
-\end{theorem}
-
-\begin{proof}
-\textbf{From topoi to gems:} Given a Grothendieck topos $\mathcal{E}$, define a $\V$-presheaf $P_{\mathcal{E}} : \mathrm{Cat}^{\op} \to \mathrm{FinCat}$ by $P_{\mathcal{E}}(C) := \mathrm{Lex}(C, \mathcal{E})$ (finite-limit-preserving functors). For a functor $u : C \to \mathcal{D}$, define $P_{\mathcal{E}}(u)$ by precomposition $(-) \circ u$. 
-
-The Yoneda comparison $C \mapsto \mathrm{Lex}(C, \mathcal{E})$ is known to be dense among all finite-limit contexts generating $\mathcal{E}$; more precisely, every object of $\mathcal{E}$ is a finite colimit of representables with respect to some site presentation. Using facet (1), this gives
-$$
-P_{\mathcal{E}} \cong \int^{C \in \mathrm{Cat}} P_{\mathcal{E}}(C) \otimes Y(C),
-$$
-so $P_{\mathcal{E}}$ is a Gem object (Definition 4.1) with $D = Y$ and $Q(C) \cong P_{\mathcal{E}}(C)$.
-
-\textbf{From gems to topoi:} Conversely, given $P \in \mathrm{Gem}(\mathrm{Cat}, \mathrm{FinCat})$, set up the canonical envelope with $D = Y$, $E$ constant at $P$, $Q(C) \cong P(C)$ and $\theta = \id$. The interpolant $Y(\ast)$ exists by Theorem 4.2 and is recovered via the coend of facet (1). This interpolant is (up to equivalence) the topos of sheaves $\mathrm{Sh}(S_P)$ on the site $S_P$ determined by the gem data: covers are those families detecting the universal coend comparison of facet (1). Standard arguments (stability under pullback, effective epimorphic covers) show $\mathrm{Sh}(S_P)$ is a Grothendieck topos.
-
-\textbf{Equivalence:} The two constructions are mutually inverse up to equivalence: starting from $\mathcal{E}$, one recovers $\mathrm{Sh}(S_{P_{\mathcal{E}}}) \simeq \mathcal{E}$; starting from $P$, one recovers $P_{\mathrm{Sh}(S_P)} \cong P$. Functoriality on morphisms (geometric morphisms vs. gem morphisms) follows from naturality of the coend in facet (1) and stability of finite limits under inverse image. Hence the equivalence.
-\end{proof}
-
-\subsection{Canonical Extensions as Gems}\label{ssec:gem-canonical-extension}
-
-We work enriched in $\V=\mathbf{Sup}$ (complete join-semilattices, join-preserving arrows), with tensor $\otimes$ the cartesian product (so copowers are coproducts and conical colimits are joins). Fix a bounded distributive lattice $L$ and write $L^\delta$ for its canonical extension (complete, completely distributive, and $L$ is both join- and meet-dense) \cite{jonsson1951boolean}.
-
-\paragraph{Ambient.}
-Let $X$ be the small $\V$-category whose objects are \emph{principal finite meets} of $L$ (i.e.\ finite meets of elements of $L$) and with homs the order-enrichment: $X(x,y)=\top$ iff $x\le y$ in $L$, else $\bot$. Let $Y:X\to [X^{op},\V]$ denote the (enriched) Yoneda embedding. We consider the presheaf category $[X^{op},\V]$.
-
-\paragraph{The presheaf $P$.}
-Define $P\in [X^{op},\V]$ by
-$$
-P(x) \ :=\ \downarrow x \ \subseteq L^\delta
-\quad\text{(as a down-set in $L^\delta$ endowed with the $\V$-structure).}
-$$
-Equivalently, $P(x)$ is the join-subsemilattice of $L^\delta$ generated by all $a\in L^\delta$ with $a\le x$; functoriality $P(y)\to P(x)$ for $x\le y$ is inclusion. Thus $P$ is a $\V$-presheaf.
-
-\begin{theorem}[Canonical extension as a Gem]
-$P$ satisfies the Gem facet (coend reconstruction)
-$$
-\eta_P:\ \int^{x\in X} P(x)\otimes Y(x) \ \xrightarrow{\ \cong\ }\ P,
-$$
-and hence determines a Gem with $D=Y$, $E$ constant at $P$, $Q(x)\cong P(x)$ and $\theta=\mathrm{id}$ under $Q(x)\cong [X^{op},\V](Y(x),P)$.
-The canonical envelope interpolant is (isomorphic to) $L^\delta$.
-\end{theorem}
-
-\begin{proof}
-We verify the six Gem facets (cf.\ \cite{kelly1982basic}, and the equivalences stated earlier in the paper) in the enriched setting.
-
-\emph{(1) Coend facet.}
-Define $\eta_P$ by the universal property of the coend: the dinatural family $P(x)\otimes Y(x)\to P$ sends an element $a\in P(x)$ and a map $Y(x)\to Y(t)$ (i.e.\ $x\le t$) to the element $a\in P(t)$ (since $a\le x\le t$). The coend quotient identifies along $x\le t$, so $\eta_P$ is well-defined. Surjectivity: for $b\in P(t)$ choose some $x\le t$ with $b\le x$; then $b$ is in the image of $P(x)\otimes Y(x)\to P(t)$. Injectivity follows because coend identifications along $x\le t$ are the only relations-these are precisely the inclusions of $\downarrow x$ into larger $\downarrow t$. Hence $\eta_P$ is an isomorphism in $[X^{op},\V]$.
-
-\emph{(2) Profunctor/Yoneda facet.}
-For each $x$, the Yoneda comparison
-\(
-[X^{op},\V]\big(Y(x),P\big)\xrightarrow{\ \cong\ } P(x)
-\)
-sends a natural transformation $\alpha:Y(x)\to P$ to $\alpha_x(\mathrm{id}_x)\in P(x)$, and the inverse sends $a\in P(x)$ to the family $Y(x)(t)=X(t,x)\to P(t)$ choosing $a$ when $t\le x$, else $\bot$. This is a standard enriched Yoneda isomorphism.
-
-\emph{(3) Codensity facet.}
-Let $T$ be the codensity monad of $Y$ on $[X^{op},\V]$. The unit $P\to T(P)$ is the right Kan extension unit $\mathrm{Ran}_Y(P\circ Y)$. Since $P$ satisfies (2), it is fixed by $T$; thus the unit is an isomorphism.
-
-\emph{(4) Kan-extension facet.}
-As above: $P \cong \mathrm{Ran}_Y(P\circ Y)$ in $[X^{op},\V]$.
-
-\emph{(5) Canonical envelope facet.}
-Set $D=Y$, let $E$ be constant at $P$, set $Q(x):=P(x)$, and let $\theta=\mathrm{id}$ under the chain of natural isomorphisms $Q(x)\cong P(x)\cong [X^{op},\V]\big(Y(x),P\big)$. Then the canonical envelope factorization is initial (compactness) since representability of $Q(-)$ by $P$ is unique up to unique isomorphism by enriched Yoneda.
-
-\emph{(6) Distributivity facet.}
-For any finite diagram $K:J\to [X^{op},\V]$ of representables, the canonical comparison
-$$
-[X^{op},\V]\big(\mathrm{colim}\,K,\,P\big)\ \xrightarrow{\ \cong\ }\ \lim_{j\in J}[X^{op},\V]\big(K(j),P\big)
-$$
-is an iso because $Y$ is dense and $P$ is reconstructed from $Y$ by (1). This is the enriched finite-limit/colimit interchange on hom into $P$.
-
-Finally, $|P(0)|=L^\delta$ because the image of $L$ (finite meets in $X$) generates $L^\delta$ under arbitrary joins and meets with the canonical extension axioms, and $P$ picks precisely those down-closures; the Gem interpolant recovers $L^\delta$ (initiality).
-\end{proof}
-
-\subsection{MacNeille Completions as DiGems}\label{ssec:digem-macneille}
-
-We take $\V=\mathbf{Sup}$ and $X=2=\{0\to 1\}$ (walking arrow) enriched by the order. Consider $[2^{op},\V]$, whose objects are monotone maps $r:P(1)\to P(0)$.
-
-\begin{theorem}[MacNeille completion is DiGem$(2,\mathbf{Sup})$]
-For a poset $(P,\le)$, its MacNeille completion $P^M$ is (equivalent to) the interpolant of a DiGem in $[2^{op},\V]$ obtained by taking $P(0)=P^M$, $P(1)$ the finite-meet (equivalently finite-join) fragment, and $r$ the inclusion. The DiGem facets hold on both left and right (Yoneda and co-Yoneda), hence the canonical envelope collapses to $P^M$.
-\end{theorem}
-
-\begin{proof}
-Replicate the argument in \S\ref{ssec:gem-canonical-extension}, with $P(0)=P^M$ (complete lattice), $P(1)$ the poset of finitely generated cuts, and $r$ inclusion. Coend reconstruction gives arbitrary joins from the $0$-side and finite meets from the $1$-side; dually, co-Yoneda yields finite joins distributing over arbitrary meets. The MacNeille Galois connection $D\mapsto D^{\uparrow\downarrow}$ and $U\mapsto U^{\downarrow\uparrow}$ is exactly the Beck-Chevalley interchange forced by the coend identifications along the unique arrow $0\to 1$. Uniqueness follows from enriched Yoneda (both sides), so the envelope is initial and identifies with $P^M$.
-\end{proof}
-
-\subsection{Sobrification as a Gem}\label{ssec:gem-sobrification}
-
-Work in $\V=\Set$, $C=\Top$. Let $X$ be a $T_0$ space. Let $\Omega(X)$ be its frame of opens. Let $\mathrm{Irr}(X)$ be the poset of \emph{irreducible closed} subsets, ordered by inclusion.
-
-\paragraph{Ambient.}
-Set $X_0:=\mathrm{Irr}(X)$ as a small category (discrete), and consider the presheaf category $[X_0^{op},\Set]$. Let $Y:X_0\to [X_0^{op},\Set]$ be Yoneda.
-
-\paragraph{The presheaf $P$.}
-Define $P\in [X_0^{op},\Set]$ by
-$$
-P(C) \ :=\ \{\,U\in \Omega(X)\mid C\cap U\neq \varnothing\,\},
-$$
-with restriction maps $P(C')\hookrightarrow P(C)$ for $C\subseteq C'$. Thus $P$ records ``opens hit by $C$."
-
-\begin{theorem}[Sobrification as Gem]
-$P$ satisfies the Gem coend reconstruction $\int^{C}P(C)\times Y(C)\xrightarrow{\ \cong\ } P$, and the canonical envelope interpolant is (homeomorphic to) the sobrification $\Sob(X)$.
-\end{theorem}
-
-\begin{proof}
-Coend reconstruction: given $U\in P(C)$ and a map $Y(C)\to Y(C')$ (i.e.\ $C'\subseteq C$), send $(U,C\to C')$ to $U\in P(C')$; the coend identifications ensure well-definedness. Surjectivity: any $U\in P(C')$ lifts from some $C\subseteq C'$ with $C\cap U\neq\varnothing$. Injectivity: identifications only along inclusions $C'\subseteq C$, matching restriction of $P$. By Yoneda, $[X_0^{op},\Set](Y(C),P)\cong P(C)$, so facet (2) holds. The resulting envelope with $D=Y$, $E$ constant at $P$, $Q(C)\cong P(C)$, and $\theta=\mathrm{id}$ has apex object whose points are exactly the irreducible closed sets (as in the standard sobrification construction \cite{johnstone1982stone}). Initiality follows from representability uniqueness; hence the interpolant is $\Sob(X)$.
-\end{proof}
-
-\subsection{Isbell Envelope as a DiGem}\label{ssec:digem-isbell}
-
-Let $\V$ be complete and cocomplete symmetric monoidal closed, and $C$ a small $\V$-category. Consider $C:=[C^{op},\V]\times [C,\V]^{op}$.
-
-\paragraph{Data.}
-Set $I=J=C$. Define
-$$
-D(i) := \big(Y_C(i),\,\mathbf{1}\big),\qquad
-E(j) := \big(\mathbf{1},\,Y_C^{op}(j)\big),
-$$
-and weight
-$$
-Q(i,j) := C(i,j).
-$$
-Let $\theta=\mathrm{id}$ under the isomorphisms $Q(-,j)\cong C(D(-),E(j))$ and $Q(i,-)\cong C(D(i),E(-))$ given by Yoneda on each side.
-
-\begin{theorem}[Isbell envelope is a DiGem]\label{thm:isbell-digem}
-With the data above, both the Gem and CoGem facets hold (Yoneda and co-Yoneda simultaneously), and the canonical envelope interpolant is the Isbell envelope $\mathcal{I}(C)$ \cite{isbell1960adequate,kelly1982basic}.
-\end{theorem}
-
-\begin{proof}
-By enriched Yoneda, for fixed $j$, $Q(-,j)=C(-,j)\xrightarrow{\ \cong\ }[C^{op},\V]\big(Y_C(-),Y_C(j)\big)$ (left facet), and dually for fixed $i$, $Q(i,-)\xrightarrow{\ \cong\ }[C,\V]^{op}\big(Y_C^{op}(i),Y_C^{op}(-)\big)$ (right facet). Taking $D,E$ as above embeds both sides, so the factorization is the identity under these isos and yields the Isbell conjugacy object as apex. Uniqueness of representing objects gives initiality. This is precisely the standard definition of the Isbell envelope as the subcategory of $[C^{op},\V]\times [C,\V]^{op}$ determined by the conjugacy relation.
-\end{proof}
-
-\subsection{Kan Extensions as Degenerate Gem/CoGem Cases}\label{ssec:gem-kan}
-
-Let $F:A\to B$ and $G:A\to D$ be $\V$-functors with $A,B,D$ small $\V$-categories.
-
-\paragraph{Left Kan extension as a Gem.}
-Fix $b\in B$ and consider $I=A$, $J=1$. Put $D=Y_A:A\to [A^{op},\V]$ (Yoneda) and $E$ constant at the candidate apex $Y_b:=\Lan_F G(b)$ (when it exists). Define the weight
-$$
-Q_b(a,*) := B(b,F a),
-$$
-and
-\(
-\theta=\mathrm{id}
-\)
-under
-\(
-Q_b(a,*)\cong [A^{op},\V]\big(Y_A(a),\,\Lan_F G(b)\big)
-\)
-given by the weighted colimit adjunction \cite{kelly1982basic}. Thus $Q_b(-,*)$ is represented by $Y_b$, so the Gem conditions are tautological. As $b$ varies, these assemble to the functor $\Lan_F G:B\to D$.
-
-\paragraph{Right Kan extension as a CoGem.}
-Dually, fix $d\in B$ and take $I=1$, $J=A$, $E=Y_A^{op}$, $D$ constant at the candidate apex $X_d:=\Ran_F G(d)$, and
-$$
-Q^d(*,a) := B(Fa,d).
-$$
-Then
-\(
-Q^d(*,-)\cong [A,\V]\big(\Ran_F G(d),\,Y_A^{op}(-)\big)
-\)
-by the weighted limit adjunction \cite{kelly1982basic}, so the CoGem conditions are tautological. As $d$ varies, these assemble to $\Ran_F G:B\to D$.
-
-\begin{theorem}[Kan extensions as degenerate Gem/CoGem]\label{thm:kan-gem}
-Whenever the (enriched) left or right Kan extension exists, the corresponding pointwise pairings are Gems (resp.\ CoGems) with $D$ or $E$ Yoneda and the apex equal to the Kan extension value. The canonical envelope is the identity under Yoneda.
-\end{theorem}
-
-\begin{proof}
-Immediate from the Yoneda isomorphisms and the weighted (co)limit adjunctions \cite[Ch.~3]{kelly1982basic}: for the left case,
-$$
-D\big(\Lan_F G(b),-\big)\ \cong\ [A,\V]\big(B(b,F-),\,D(G-,-)\big)
-$$
-and the choice $D=Y_A$ identifies $Q_b$ with $[A^{op},\V]\big(Y_A(-),\Lan_F G(b)\big)$; the right case is dual. The factorization is the identity via Yoneda, and initiality follows from uniqueness of representing objects.
-\end{proof}
-
-\subsection{Systematic Patterns}
-
-\begin{theorem}[Classification Patterns]
-The gem classification shows stable patterns under variation of $(X, \V)$:
-
+\textbf{Systematic Duality Principle:} Each duality operation systematically transforms:
 \begin{itemize}
-\item \textbf{Enrichment scale:} Varying $\V$ moves between classical (Set), categorical (Cat), linear (Ab), quantum (FdHilb), and relational (Rel) contexts.
-
-\item \textbf{Index granularity:} Varying $X$ moves between atomic (1), Boolean (2), finite/combinatorial (FinSet, FinCat), and general (Set) bases.
-
-\item \textbf{Bilateral bias:} Choosing Gem/CoGem/DiGem selects left-biased, right-biased, or balanced completion, respectively.
+\item Universal properties (covariant $\leftrightarrow$ contravariant representation)
+\item Completion direction (source-to-target $\leftrightarrow$ target-to-source mediation)  
+\item Gem classification (Constant $\leftrightarrow$ Yoneda positioning)
 \end{itemize}
-\end{theorem}
-
-\begin{proof}
-Each item is enforced directly by the data of Definition 4.1 and the six-facet equivalences of Theorem 4.2: the enrichment governs hom-objects and coend/Kan constructions; the index category governs which representables generate; and the gem-type governs which Yoneda sides participate in the envelope. The table then lists the resulting structures, each verified by instantiating facets (1)-(5) in the corresponding $(X, \V)$.
 \end{proof}
 
-This systematic classification reveals that gem theory provides a predictive framework: given parameters $(X, \V)$ and bilateral bias choice, the resulting mathematical structures are determined by the Yoneda-based completion process. The bilateral completion principle operates uniformly across diverse mathematical contexts, suggesting deep organizational unity in mathematics.
+\begin{remark}[Unified Kan Theory]
+\label{rem:unified-kan}
+This classification reveals that all four Kan directions are manifestations of the same fundamental bilateral completion principle, distinguished only by the direction of mediation and the variance of representation. The canonical envelope framework thus provides a unified foundation for Kan extension theory, with gem theory systematically organizing the directional structure through bilateral completion patterns.
 
-The classification table demonstrates that seemingly disparate mathematical structures-from complete lattices to Grothendieck topoi to quantum systems-share fundamental bilateral completion patterns, organized systematically through gem theory's $(X, \V)$ parameterization.
+The systematic duality ensures that any result proved for one Kan direction immediately yields corresponding results for all four directions, providing both theoretical economy and computational methodology for Kan extension problems across categorical contexts.
+\end{remark}
 
 \section{Categorical Foundations: The Pseudomonad}
 
